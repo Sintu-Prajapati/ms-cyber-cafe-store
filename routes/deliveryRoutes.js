@@ -6,7 +6,7 @@ const router = express.Router();
 const DeliveryPerson =
     require("../models/DeliveryPerson");
 
-const Order = require("../models/Order");
+const Order = require("../models/order");
 const deliveryAuth = require("../middleware/deliveryAuth");
 
 
