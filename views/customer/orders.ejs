@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | MS Cyber Cafe</title>
+
+    <link rel="stylesheet" href="/css/orders.css">
+     <link rel="stylesheet" href="/css/customer-home.css">
+</head>
+
+<body>
+ <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon"  onclick="window.location.href='/'">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+       
+
+
+        <div class="nav-actions">
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+                title="Search"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+               
+             
+
+                <a
+                  href="/customer/profile"
+                  class="action-link profile-btn"
+                  title="Profile"
+                >
+                    👤 Profile
+                </a>
+
+                
+               
+
+        </div>
+
+    </header>
+
+
+    <main class="orders-page">
+
+        <div class="orders-container">
+
+            <div class="page-heading">
+
+                <span>📦 MY ORDERS</span>
+
+                <h1>My Orders</h1>
+
+                <p>
+                    View and track all your home delivery orders.
+                </p>
+
+            </div>
+
+
+            <% if (!orders || orders.length === 0) { %>
+
+                <div class="empty-orders">
+
+                    <div>📦</div>
+
+                    <h2>No Orders Yet</h2>
+
+                    <p>
+                        You haven't placed any order yet.
+                    </p>
+
+                    <a href="/customer/home">
+                        Start Shopping →
+                    </a>
+
+                </div>
+
+            <% } else { %>
+
+
+                <div class="orders-list">
+
+                    <% orders.forEach(order => { %>
+
+                        <div class="order-card">
+
+
+                            <!-- HEADER -->
+
+                            <div class="order-top">
+
+                                <div>
+
+                                    <span>
+                                        ORDER ID
+                                    </span>
+
+                                    <strong>
+                                        #<%= order.orderId %>
+                                    </strong>
+
+                                    <small>
+
+                                        <%= new Date(
+                                            order.createdAt
+                                        ).toLocaleDateString(
+                                            "en-IN"
+                                        ) %>
+
+                                    </small>
+
+                                </div>
+
+
+                                <div class="status <%= order.orderStatus
+                                    .toLowerCase()
+                                    .replaceAll(' ', '-') %>">
+
+                                    <%= order.orderStatus %>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PRODUCTS -->
+
+                            <div class="order-products">
+
+                                <% order.products.forEach(item => { %>
+
+                                    <div class="order-product">
+
+                                        <div class="product-img">
+
+                                            <% if (item.image) { %>
+
+                                                <img
+                                                    src="<%= item.image %>"
+                                                    alt="<%= item.name %>"
+                                                >
+
+                                            <% } else { %>
+
+                                                🛍️
+
+                                            <% } %>
+
+                                        </div>
+
+
+                                        <div class="product-info">
+
+                                            <strong>
+                                                <%= item.name %>
+                                            </strong>
+
+                                            <span>
+                                                Qty:
+                                                <%= item.quantity %>
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong>
+                                            ₹<%= Number(
+                                                item.total
+                                            ).toFixed(2) %>
+                                        </strong>
+
+                                    </div>
+
+                                <% }) %>
+
+                            </div>
+
+
+                            <!-- FOOTER -->
+
+                            <div class="order-bottom">
+
+                                <div>
+
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <strong>
+                                        ₹<%= Number(
+                                            order.grandTotal
+                                        ).toFixed(2) %>
+                                    </strong>
+
+                                </div>
+
+
+                                <a
+                                    href="/customer/track-order/<%= order._id %>"
+                                >
+                                    🚚 Track Order
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    <% }) %>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+
+        </small>
+
+
+    </footer>
+
+</body>
+
+</html>

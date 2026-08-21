@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Delivery Dashboard | MS Cyber Cafe
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/delivery-dashboard.css"
+    >
+    <link rel="stylesheet" href="/css/customer-home.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🚚
+            </div>
+
+            <div>
+
+                <strong>
+                    MS Cyber Cafe
+                </strong>
+
+                <span>
+                    Delivery Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <div class="delivery-user">
+
+                <div class="avatar">
+                    <%= (
+                        session.deliveryPersonName ||
+                        "D"
+                    ).charAt(0).toUpperCase() %>
+                </div>
+
+                <div>
+
+                    <strong>
+                        <%= session.deliveryPersonName ||
+                            "Delivery Boy" %>
+                    </strong>
+
+                    <small>
+                        Delivery Partner
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="/delivery/logout"
+                class="logout-btn"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+
+    <main class="dashboard">
+
+
+        <!-- WELCOME -->
+
+        <section class="welcome">
+
+            <div>
+
+                <span>
+                    DELIVERY DASHBOARD
+                </span>
+
+                <h1>
+                    Hello,
+                    <%= session.deliveryPersonName ||
+                        "Delivery Partner" %> 👋
+                </h1>
+
+                <p>
+                    Manage your assigned orders and deliveries.
+                </p>
+
+            </div>
+
+            <div class="welcome-icon">
+                🛵
+            </div>
+
+        </section>
+
+
+
+        <!-- STATS -->
+
+        <section class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    📦
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Orders
+                    </span>
+
+                    <strong>
+                        <%= totalOrders %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong>
+                        <%= pendingOrders %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    🛵
+                </div>
+
+                <div>
+
+                    <span>
+                        Out for Delivery
+                    </span>
+
+                    <strong>
+                        <%= outForDelivery %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        Delivered
+                    </span>
+
+                    <strong>
+                        <%= deliveredOrders %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- COD -->
+
+        <section class="cod-card">
+
+            <div class="cod-icon">
+                ₹
+            </div>
+
+            <div>
+
+                <span>
+                    COD TO COLLECT
+                </span>
+
+                <strong>
+                    ₹<%= Number(
+                        codAmount
+                    ).toFixed(2) %>
+                </strong>
+
+                <p>
+                    Pending cash collection from customers
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- RECENT ORDERS -->
+
+        <section class="orders-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        MY DELIVERIES
+                    </span>
+
+                    <h2>
+                        Recent Orders
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="/delivery/orders"
+                    class="view-all"
+                >
+                    View All →
+                </a>
+
+            </div>
+
+
+
+            <% if (
+                recentOrders.length === 0
+            ) { %>
+
+
+                <div class="empty">
+
+                    <div>
+                        📦
+                    </div>
+
+                    <h3>
+                        No Orders Assigned
+                    </h3>
+
+                    <p>
+                        New assigned orders will appear here.
+                    </p>
+
+                </div>
+
+
+            <% } else { %>
+
+
+                <div class="orders-list">
+
+
+                    <% recentOrders.forEach(
+                        order => {
+                    %>
+
+
+                        <div class="order-card">
+
+
+                            <div class="order-main">
+
+
+                                <div class="order-icon">
+                                    🛍️
+                                </div>
+
+
+                                <div class="order-info">
+
+                                    <strong>
+                                        #<%= order.orderId %>
+                                    </strong>
+
+                                    <span>
+
+                                        <%= order.customer
+                                            ? order.customer.name
+                                            : order.deliveryAddress.name
+                                        %>
+
+                                    </span>
+
+                                    <small>
+
+                                        📞
+                                        <%= order.deliveryAddress.number %>
+
+                                    </small>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="order-right">
+
+                                <strong>
+                                    ₹<%= Number(
+                                        order.grandTotal
+                                    ).toFixed(2) %>
+                                </strong>
+
+
+                                <% if (
+                                    order.paymentMethod === "COD"
+                                ) { %>
+
+                                    <% if (
+                                        order.paymentStatus === "Paid"
+                                    ) { %>
+
+                                        <span class="payment paid">
+                                            COD Paid
+                                        </span>
+
+                                    <% } else { %>
+
+                                        <span class="payment cod">
+                                            COD ₹<%= Number(
+                                                order.grandTotal
+                                            ).toFixed(2) %>
+                                        </span>
+
+                                    <% } %>
+
+                                <% } else { %>
+
+                                    <span class="payment paid">
+                                        UPI
+                                        <%= order.paymentStatus %>
+                                    </span>
+
+                                <% } %>
+
+
+                            </div>
+
+
+                            <span class="status">
+
+                                <%= order.orderStatus %>
+
+                            </span>
+
+
+                            <a
+                                href="/delivery/orders/<%= order._id %>"
+                                class="details-btn"
+                            >
+                                View
+                            </a>
+
+
+                        </div>
+
+
+                    <% }) %>
+
+
+                </div>
+
+
+            <% } %>
+
+
+        </section>
+
+
+    </main>
+
+    <footer>
+
+       
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store   
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+        </small>
+
+
+
+
+    </footer>
+
+    <div
+    id="deliveryNotification"
+    class="delivery-notification"
+>
+
+    <div class="delivery-notification-icon">
+        🚚
+    </div>
+
+    <div class="delivery-notification-content">
+
+        <strong>
+            New Delivery Order!
+        </strong>
+
+        <span>
+            A new order has been assigned to you.
+        </span>
+
+    </div>
+
+    <button
+        onclick="closeDeliveryNotification()"
+    >
+        ×
+    </button>
+
+</div>
+
+<script>
+
+let currentDeliveryOrders =
+    <%= pendingOrders %>;
+
+
+async function checkDeliveryOrders() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/delivery/pending-order-count"
+            );
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data =
+            await response.json();
+
+        if (!data.success) {
+            return;
+        }
+
+        const newCount =
+            Number(data.pendingOrders);
+
+
+        // New assigned order
+        if (
+            newCount >
+            currentDeliveryOrders
+        ) {
+
+            showDeliveryNotification();
+
+        }
+
+
+        currentDeliveryOrders =
+            newCount;
+
+
+        updateDeliveryBadge(
+            newCount
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Delivery notification error:",
+            error
+        );
+
+    }
+
+}
+
+
+// ==========================================
+// BADGE
+// ==========================================
+
+function updateDeliveryBadge(count) {
+
+    const badge =
+        document.getElementById(
+            "deliveryPendingBadge"
+        );
+
+    if (count > 0) {
+
+        if (badge) {
+
+            badge.textContent =
+                count;
+
+        } else {
+
+            location.reload();
+
+        }
+
+    } else {
+
+        if (badge) {
+            badge.remove();
+        }
+
+    }
+
+}
+
+
+// ==========================================
+// NOTIFICATION
+// ==========================================
+
+function showDeliveryNotification() {
+
+    const notification =
+        document.getElementById(
+            "deliveryNotification"
+        );
+
+    notification.classList.add("show");
+
+
+    setTimeout(() => {
+
+        notification.classList.remove(
+            "show"
+        );
+
+    }, 7000);
+
+}
+
+
+// ==========================================
+// CLOSE
+// ==========================================
+
+function closeDeliveryNotification() {
+
+    document
+        .getElementById(
+            "deliveryNotification"
+        )
+        .classList.remove("show");
+
+}
+
+
+// Check every 5 seconds
+
+setInterval(
+    checkDeliveryOrders,
+    5000
+);
+
+</script>
+
+
+</body>
+
+</html>

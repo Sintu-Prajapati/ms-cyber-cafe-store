@@ -1,0 +1,411 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f8fc;
+    color: #172033;
+}
+
+.summary-page {
+    padding: 35px 15px 60px;
+}
+
+.summary-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.page-heading {
+    margin-bottom: 25px;
+}
+
+.page-heading span {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.page-heading h1 {
+    margin: 7px 0;
+    font-size: 30px;
+}
+
+.page-heading p {
+    color: #718096;
+    font-size: 14px;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 22px;
+}
+
+.left-side {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.summary-card,
+.price-card {
+    background: #fff;
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 30px rgba(20, 40, 80, .06);
+}
+
+.summary-card {
+    padding: 22px;
+}
+
+
+/* =========================
+   CARD HEADING
+========================= */
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.card-heading > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-heading > div > span {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    background: #eff6ff;
+
+    font-size: 20px;
+}
+
+.card-heading h2 {
+    font-size: 17px;
+}
+
+.card-heading p {
+    color: #718096;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.card-heading a {
+    color: #2563eb;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+.product-list {
+    border-top: 1px solid #edf0f5;
+}
+
+.product-item {
+    display: flex;
+    gap: 15px;
+
+    padding: 16px 0;
+
+    border-bottom: 1px solid #edf0f5;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-image {
+    width: 75px;
+    height: 75px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    background: #f1f5f9;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 30px;
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.product-details p {
+    color: #718096;
+    font-size: 12px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 10px;
+}
+
+.price-row span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.price-row strong {
+    font-size: 14px;
+}
+
+
+/* =========================
+   ADDRESS
+========================= */
+
+.address-box {
+    background: #f8fafc;
+
+    border: 1px solid #edf0f5;
+
+    border-radius: 10px;
+
+    padding: 16px;
+}
+
+.address-box h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.address-box p {
+    color: #64748b;
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.location-selected {
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    background: #f0fdf4;
+
+    color: #15803d;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* =========================
+   PRICE CARD
+========================= */
+
+.price-card {
+    height: fit-content;
+
+    padding: 24px;
+
+    position: sticky;
+    top: 20px;
+}
+
+.price-card h2 {
+    font-size: 19px;
+
+    margin-bottom: 20px;
+}
+
+.price-line {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+
+    font-size: 13px;
+
+    color: #64748b;
+}
+
+.price-line strong {
+    color: #172033;
+}
+
+.price-line.discount {
+    color: #16a34a;
+}
+
+.price-line.discount strong {
+    color: #16a34a;
+}
+
+.divider {
+    height: 1px;
+
+    background: #edf0f5;
+
+    margin: 18px 0;
+}
+
+.total-line {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.total-line span {
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+.total-line strong {
+    font-size: 22px;
+
+    color: #2563eb;
+}
+
+
+/* =========================
+   PLACE ORDER
+========================= */
+
+.place-order-btn {
+    width: 100%;
+    height: 48px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.place-order-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+}
+
+.secure-text {
+    text-align: center;
+
+    margin-top: 13px;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .price-card {
+        position: static;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .summary-page {
+        padding: 20px 12px 40px;
+    }
+
+    .summary-card {
+        padding: 17px;
+    }
+
+    .page-heading h1 {
+        font-size: 25px;
+    }
+
+    .product-image {
+        width: 65px;
+        height: 65px;
+    }
+
+}

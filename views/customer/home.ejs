@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MS Cyber Cafe & General Store</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/customer-home.css"
+
+    >
+   
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon"  onclick="window.location.href='/'">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+       
+
+
+        <div class="nav-actions">
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+                title="Search"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+               
+             
+
+                <a
+                  href="/customer/profile"
+                  class="action-link profile-btn"
+                  title="Profile"
+                >
+                    👤 Profile
+                </a>
+
+               
+               
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                🏪 Welcome to our store
+            </span>
+
+
+            <h2>
+
+                Your Daily Needs,
+
+                <br>
+
+                <span>
+                    All in One Place
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                Grocery, snacks, stationery and
+                daily-use products at the best price.
+
+            </p>
+
+
+            <button
+                class="shop-btn"
+                onclick="scrollToProducts()"
+            >
+
+                🛍️ Explore Products
+
+            </button>
+
+        </div>
+
+
+        <div class="hero-emoji">
+
+            🛒
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         SEARCH
+    ========================== -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <span>
+                🔍
+            </span>
+
+
+            <input
+                type="text"
+                id="productSearch"
+                placeholder="Search product..."
+                oninput="searchProducts()"
+            >
+
+
+            <button
+                id="clearSearch"
+                onclick="clearSearch()"
+            >
+                ×
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         CATEGORIES
+    ========================== -->
+
+    <section class="categories">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span>
+                    Browse
+                </span>
+
+                <h2>
+                    Categories
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="category-list">
+
+
+            <button
+                class="category active"
+                onclick="filterProducts('all', this)"
+            >
+
+                <span>
+                    🛒
+                </span>
+
+                <small>
+                    All
+                </small>
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="filterProducts('grocery', this)"
+            >
+
+                <span>
+                    🌾
+                </span>
+
+                <small>
+                    Grocery
+                </small>
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="filterProducts('snacks', this)"
+            >
+
+                <span>
+                    🍪
+                </span>
+
+                <small>
+                    Snacks
+                </small>
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="filterProducts('drinks', this)"
+            >
+
+                <span>
+                    🥤
+                </span>
+
+                <small>
+                    Drinks
+                </small>
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="filterProducts('personal-care', this)"
+            >
+
+                <span>
+                    🧴
+                </span>
+
+                <small>
+                    Beauty
+                </small>
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="filterProducts('stationery', this)"
+            >
+
+                <span>
+                    📚
+                </span>
+
+                <small>
+                    Stationery
+                </small>
+
+            </button>
+
+
+            <button
+                class="category"
+                onclick="filterProducts('mobile', this)"
+            >
+                
+                <span>
+                   📱
+                </span>
+
+                <small>
+                    Mobile
+                </small>
+
+            </button>
+            <button
+                class="category"
+                onclick="filterProducts('electronics', this)"
+            >
+                <span>
+                    💻
+                </span>
+
+                <small>
+                    Electronics
+                </small>
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         PRODUCTS
+    ========================== -->
+
+    <main
+        class="products-section"
+        id="products"
+    >
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span>
+                    Our Store
+                </span>
+
+                <h2>
+                    All Products
+                </h2>
+
+            </div>
+
+
+            <span id="productResult">
+                <%= products ? products.length : 0 %> Products
+            </span>
+
+        </div>
+
+
+
+        <div
+            class="product-grid"
+            id="productGrid"
+        >
+
+
+            <% if (products && products.length > 0) { %>
+
+
+                <% products.forEach(product => { %>
+
+
+                    <%
+
+                        const mrp =
+                            Number(product.printPrice || 0);
+
+                        const sellingPrice =
+                            Number(product.sellingPrice || 0);
+
+                        const discount =
+                            mrp > sellingPrice && mrp > 0
+                                ? Math.round(
+                                    (
+                                        (mrp - sellingPrice)
+                                        / mrp
+                                    ) * 100
+                                )
+                                : 0;
+
+                        const stock =
+                            Number(product.stock || 0);
+
+                        const unit =
+                            product.weight ||
+                            product.unit ||
+                            "1 Pc";
+
+                    %>
+
+
+                    <article
+                        class="product-card"
+                        data-name="<%= product.name.toLowerCase() %>"
+                        data-category="<%= (product.category || 'all').toLowerCase() %>"
+                    >
+
+
+                        <!-- PRODUCT IMAGE -->
+
+                        <div class="product-image">
+
+
+                            <% if (product.image) { %>
+
+                                <img
+                                    src="<%= product.image %>"
+                                    alt="<%= product.name %>"
+                                >
+
+                            <% } else { %>
+
+                                <span class="no-image">
+                                    🛍️
+                                </span>
+
+                            <% } %>
+
+
+
+                            <!-- DISCOUNT -->
+
+                            <% if (discount > 0) { %>
+
+                                <span class="offer-badge">
+
+                                    <%= discount %>% OFF
+
+                                </span>
+
+                            <% } %>
+
+
+                        </div>
+
+
+
+                        <!-- PRODUCT DETAILS -->
+
+                        <div class="product-details">
+
+
+                            <h3>
+                                <%= product.name %>
+                            </h3>
+
+
+                            <p class="product-unit">
+
+                                <%= unit %>
+
+                            </p>
+
+
+
+                            <!-- PRICE -->
+
+                            <div class="price-row">
+
+
+                                <strong>
+
+                                    ₹<%= sellingPrice.toFixed(2) %>
+
+                                </strong>
+
+
+
+                                <% if (
+                                    mrp > sellingPrice
+                                ) { %>
+
+
+                                    <del>
+
+                                        ₹<%= mrp.toFixed(2) %>
+
+                                    </del>
+
+
+                                    <span class="discount">
+
+                                        <%= discount %>% OFF
+
+                                    </span>
+
+
+                                <% } %>
+
+
+                            </div>
+
+
+
+                            <!-- STOCK -->
+
+                            <% if (stock > 0) { %>
+
+
+                                <div class="stock available">
+
+                                    ✓ Available
+
+                                </div>
+
+
+                                <button
+                                   onclick="addToCart(
+    '<%= product._id %>',
+    '<%= product.name.replace(/'/g, "\\'") %>',
+    <%= sellingPrice %>,
+    '<%= unit %>',
+    '<%= product.image || "" %>'
+)"
+                                >
+
+                                    <span>
+                                        +
+                                    </span>
+
+                                    Add to Cart
+
+                                </button>
+
+
+                            <% } else { %>
+
+
+                                <div class="stock unavailable">
+
+                                    ✕ Out of Stock
+
+                                </div>
+
+
+                                <button
+                                    class="add-cart disabled"
+                                    disabled
+                                >
+
+                                    Out of Stock
+
+                                </button>
+
+
+                            <% } %>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                <% }) %>
+
+
+            <% } else { %>
+
+
+                <div class="empty-products">
+
+                    <div>
+                        🛍️
+                    </div>
+
+                    <h3>
+                        Products Coming Soon
+                    </h3>
+
+                    <p>
+                        Store products will appear here.
+                    </p>
+
+                </div>
+
+
+            <% } %>
+
+
+        </div>
+
+
+
+        <!-- NO SEARCH RESULT -->
+
+        <div
+            id="noResult"
+            class="no-result"
+            style="display:none;"
+        >
+
+            <div>
+                🔍
+            </div>
+
+            <h3>
+                Product Not Found
+            </h3>
+
+            <p>
+                Try another product name or category.
+            </p>
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =========================
+         CART DRAWER
+    ========================== -->
+
+    <div
+        class="cart-overlay"
+        id="cartOverlay"
+        onclick="closeCart()"
+    ></div>
+
+
+    <aside
+        class="cart-drawer"
+        id="cartDrawer"
+    >
+
+
+        <div class="cart-header">
+
+            <div>
+
+                <span>
+                    Your Shopping
+                </span>
+
+                <h2>
+                    🛒 Cart
+                </h2>
+
+            </div>
+
+
+            <button
+                class="close-cart"
+                onclick="closeCart()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <div
+            class="cart-items"
+            id="cartItems"
+        >
+
+            <div class="empty-cart">
+
+                <div>
+                    🛒
+                </div>
+
+                <h3>
+                    Your cart is empty
+                </h3>
+
+                <p>
+                    Add some products to continue.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="cart-footer">
+
+
+            <div class="cart-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong id="cartTotal">
+                    ₹0.00
+                </strong>
+
+            </div>
+
+
+            <button
+                
+                class="checkout-btn"
+                onclick="checkout()"
+            >
+
+                Continue to Order
+
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+       
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store   
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+        </small>
+
+
+
+
+    </footer>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        let cart = [];
+
+
+        /* =========================
+           SEARCH
+        ========================== */
+
+        function focusSearch() {
+
+            document
+                .getElementById("productSearch")
+                .focus();
+
+        }
+
+
+        function searchProducts() {
+
+            const input =
+                document.getElementById(
+                    "productSearch"
+                );
+
+            const value =
+                input.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const cards =
+                document.querySelectorAll(
+                    ".product-card"
+                );
+
+
+            let visible = 0;
+
+
+            cards.forEach(card => {
+
+                const name =
+                    card.dataset.name || "";
+
+
+                const category =
+                    card.dataset.category || "";
+
+
+                if (
+                    name.includes(value) ||
+                    category.includes(value)
+                ) {
+
+                    card.style.display = "";
+
+                    visible++;
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+
+            document
+                .getElementById("noResult")
+                .style.display =
+                    visible === 0
+                        ? "block"
+                        : "none";
+
+
+            document
+                .getElementById("productResult")
+                .textContent =
+                    visible + " Products";
+
+        }
+
+
+        function clearSearch() {
+
+            const input =
+                document.getElementById(
+                    "productSearch"
+                );
+
+
+            input.value = "";
+
+            searchProducts();
+
+            input.focus();
+
+        }
+
+
+
+        /* =========================
+           CATEGORY FILTER
+        ========================== */
+
+        function filterProducts(
+            category,
+            button
+        ) {
+
+
+            document
+                .querySelectorAll(".category")
+                .forEach(btn => {
+
+                    btn.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+            button.classList.add("active");
+
+
+            const cards =
+                document.querySelectorAll(
+                    ".product-card"
+                );
+
+
+            let visible = 0;
+
+
+            cards.forEach(card => {
+
+                const cardCategory =
+                    card.dataset.category || "";
+
+
+                if (
+                    category === "all" ||
+                    cardCategory === category
+                ) {
+
+                    card.style.display = "";
+
+                    visible++;
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+
+            document
+                .getElementById("noResult")
+                .style.display =
+                    visible === 0
+                        ? "block"
+                        : "none";
+
+
+            document
+                .getElementById("productResult")
+                .textContent =
+                    visible + " Products";
+
+        }
+
+
+
+        /* =========================
+           SCROLL
+        ========================== */
+
+        function scrollToProducts() {
+
+            document
+                .getElementById("products")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+
+
+        /* =========================
+           ADD TO CART
+        ========================== */
+
+        function addToCart(
+    id,
+    name,
+    price,
+    unit,
+    image
+) {
+
+    const existing =
+        cart.find(item => item.id === id);
+
+
+    if (existing) {
+
+        existing.quantity++;
+
+    } else {
+
+        cart.push({
+
+            id: id,
+
+            name: name,
+
+            price: Number(price),
+
+            unit: unit,
+
+            image: image,
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    updateCart();
+
+    openCart();
+}
+
+
+
+        /* =========================
+           UPDATE CART
+        ========================== */
+
+        function updateCart() {
+
+
+            const cartCount =
+                document.getElementById(
+                    "cartCount"
+                );
+
+
+            const totalQuantity =
+                cart.reduce(
+                    (total, item) =>
+                        total + item.quantity,
+                    0
+                );
+
+
+            cartCount.textContent =
+                totalQuantity;
+
+
+            const cartItems =
+                document.getElementById(
+                    "cartItems"
+                );
+
+
+            const cartTotal =
+                document.getElementById(
+                    "cartTotal"
+                );
+
+
+            if (cart.length === 0) {
+
+                cartItems.innerHTML = `
+
+                    <div class="empty-cart">
+
+                        <div>🛒</div>
+
+                        <h3>
+                            Your cart is empty
+                        </h3>
+
+                        <p>
+                            Add some products to continue.
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                cartTotal.textContent =
+                    "₹0.00";
+
+
+                return;
+
+            }
+
+
+            let total = 0;
+
+
+            cartItems.innerHTML =
+                cart.map(item => {
+
+
+                    const itemTotal =
+                        item.price *
+                        item.quantity;
+
+
+                    total += itemTotal;
+
+
+                    return `
+
+                        <div class="cart-item">
+
+                            <div class="cart-item-info">
+
+                                <h4>
+                                    ${item.name}
+                                </h4>
+
+                                <small>
+                                    ${item.unit}
+                                </small>
+
+                                <strong>
+                                    ₹${item.price.toFixed(2)}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="quantity-box">
+
+                                <button
+                                    onclick="changeQuantity(
+                                        '${item.id}',
+                                        -1
+                                    )"
+                                >
+                                    −
+                                </button>
+
+                                <span>
+                                    ${item.quantity}
+                                </span>
+
+                                <button
+                                    onclick="changeQuantity(
+                                        '${item.id}',
+                                        1
+                                    )"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+
+            cartTotal.textContent =
+                "₹" + total.toFixed(2);
+
+        }
+
+
+
+        /* =========================
+           CHANGE QUANTITY
+        ========================== */
+
+        function changeQuantity(
+            id,
+            change
+        ) {
+
+
+            const item =
+                cart.find(
+                    item => item.id === id
+                );
+
+
+            if (!item) return;
+
+
+            item.quantity += change;
+
+
+            if (item.quantity <= 0) {
+
+                cart =
+                    cart.filter(
+                        item => item.id !== id
+                    );
+
+            }
+
+
+            updateCart();
+
+        }
+
+
+
+        /* =========================
+           CART OPEN
+        ========================== */
+
+        function openCart() {
+
+            document
+                .getElementById("cartDrawer")
+                .classList.add("open");
+
+
+            document
+                .getElementById("cartOverlay")
+                .classList.add("show");
+
+        }
+
+
+
+        /* =========================
+           CART CLOSE
+        ========================== */
+
+        function closeCart() {
+
+            document
+                .getElementById("cartDrawer")
+                .classList.remove("open");
+
+
+            document
+                .getElementById("cartOverlay")
+                .classList.remove("show");
+
+        }
+
+
+
+        /* =========================
+           CHECKOUT
+        ========================== */
+
+        async function checkout() {
+
+    if (cart.length === 0) {
+
+        alert(
+            "Your cart is empty. Please add products to proceed."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const response = await fetch(
+            "/customer/save-cart",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    cart: cart
+                })
+            }
+        );
+
+
+        const result =
+            await response.json();
+
+
+        if (result.success) {
+
+            window.location.href =
+                "/customer/order";
+
+        } else {
+
+            alert(
+                result.message ||
+                "Unable to continue."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Something went wrong. Please try again."
+        );
+
+    }
+
+}
+    </script>
+
+
+</body>
+
+</html>

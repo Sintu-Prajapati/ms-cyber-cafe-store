@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Review Order | MS Cyber Cafe</title>
+
+    <link rel="stylesheet" href="/css/order-summary.css">
+    <link rel="stylesheet" href="/css/customer-home.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon" onclick="window.location.href='/'">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <button class="search-btn" onclick="focusSearch()" title="Search">
+                🔍
+            </button>
+
+
+            <button class="cart-btn" onclick="openCart()" title="Cart">
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+            <a href="/customer/Profile" class="action-link login-btn" title="Profile">
+                👤 Profile
+            </a>
+
+            
+        </div>
+
+    </header>
+
+
+
+    <main class="summary-page">
+
+        <div class="summary-container">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-heading">
+
+                <span>🛒 Checkout</span>
+
+                <h1>
+                    Review Your Order
+                </h1>
+
+                <p>
+                    Check your products and delivery
+                    address before placing the order.
+                </p>
+
+            </div>
+
+
+            <div class="summary-grid">
+
+
+                <!-- =========================
+                     LEFT SIDE
+                ========================== -->
+
+                <div class="left-side">
+
+
+                    <!-- PRODUCTS -->
+
+                    <section class="summary-card">
+
+                        <div class="card-heading">
+
+                            <div>
+                                <span>🛍️</span>
+
+                                <div>
+                                    <h2>
+                                        Your Products
+                                    </h2>
+
+                                    <p>
+                                        <%= cart.length %>
+                                            item(s)
+                                    </p>
+                                </div>
+                            </div>
+
+                            <a href="/customer/home">
+                                Edit Cart
+                            </a>
+
+                        </div>
+
+
+                        <div class="product-list">
+
+                            <% cart.forEach(function(item) { %>
+
+                                <div class="product-item">
+
+
+                                    <!-- IMAGE -->
+
+                                    <div class="product-image">
+
+                                        <% if (item.image) { %>
+
+                                            <img src="<%= item.image %>" alt="<%= item.name %>">
+
+                                            <% } else { %>
+
+                                                <div class="no-image">
+                                                    🛍️
+                                                </div>
+
+                                                <% } %>
+
+                                    </div>
+
+
+                                    <!-- DETAILS -->
+
+                                    <div class="product-details">
+
+                                        <h3>
+                                            <%= item.name %>
+                                        </h3>
+
+                                        <p>
+                                            Quantity:
+                                            <strong>
+                                                <%= item.quantity %>
+                                            </strong>
+                                        </p>
+
+                                        <div class="price-row">
+
+                                            <span>
+                                                ₹<%= Number(item.price).toFixed(2) %>
+                                            </span>
+
+                                            <strong>
+                                                ₹<%= ( Number(item.price) * Number(item.quantity) ).toFixed(2) %>
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+
+                    </section>
+
+
+
+                    <!-- =========================
+                         DELIVERY ADDRESS
+                    ========================== -->
+
+                    <section class="summary-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span>📍</span>
+
+                                <div>
+
+                                    <h2>
+                                        Delivery Address
+                                    </h2>
+
+                                    <p>
+                                        Your selected delivery location
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <a href="/customer/order">
+                                Edit
+                            </a>
+
+                        </div>
+
+
+                        <div class="address-box">
+
+                            <h3>
+                                <%= address.name %>
+                            </h3>
+
+                            <p>
+                                📞 <%= address.number %>
+                            </p>
+
+                            <p>
+                                <%= address.house %>,
+                                    <%= address.village %>
+                            </p>
+
+                            <p>
+                                <%= address.district %>,
+                                    <%= address.state %>
+                                        -
+                                        <%= address.pincode %>
+                            </p>
+
+                        </div>
+
+                        <a href="/customer/change-address" class="change-address-btn">
+                            ✏️ Change Address
+                        </a>
+
+
+                        <% if (address.latitude && address.longitude) { %>
+
+                            <div class="location-selected">
+
+                                📍 Location selected on map
+
+                            </div>
+
+                            <% } %>
+
+                    </section>
+
+
+                </div>
+
+
+
+                <!-- =========================
+                     RIGHT SIDE
+                ========================== -->
+
+                <aside class="price-card">
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+
+                    <!-- SUBTOTAL -->
+
+                    <div class="price-line">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹<%= Number(subtotal).toFixed(2) %>
+                        </strong>
+
+                    </div>
+
+
+                    <!-- DISCOUNT -->
+
+                    <% if (discount> 0) { %>
+
+                        <div class="price-line discount">
+
+                            <span>
+                                Discount
+                            </span>
+
+                            <strong>
+                                -₹<%= Number(discount).toFixed(2) %>
+                            </strong>
+
+                        </div>
+
+                        <% } %>
+
+
+                            <!-- DELIVERY -->
+                            <!-- DELIVERY -->
+
+                            <div class="price-line">
+
+                                <span>
+                                    Delivery
+                                </span>
+
+                                <strong>
+                                    <% if (deliveryCharge> 0) { %>
+
+                                        ₹<%= Number(deliveryCharge).toFixed(2) %>
+
+                                            <% } else { %>
+
+                                                FREE
+
+                                                <% } %>
+                                </strong>
+
+                            </div>
+
+
+                            <!-- PLATFORM CHARGE -->
+
+                            <div class="price-line">
+
+                                <span>
+                                    Platform Charge
+                                </span>
+
+                                <strong>
+                                    ₹<%= Number(platformCharge).toFixed(2) %>
+                                </strong>
+
+                            </div>
+
+
+                            <div class="divider"></div>
+
+
+                            <!-- TOTAL -->
+
+                            <div class="total-line">
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong>
+                                    ₹<%= Number(grandTotal).toFixed(2) %>
+                                </strong>
+
+                            </div>
+
+
+                            <!-- PLACE ORDER -->
+
+                            <form action="/customer/place-order" method="POST">
+
+                                <!-- ADDRESS -->
+
+                                <input type="hidden" name="name" value="<%= address.name %>">
+
+                                <input type="hidden" name="number" value="<%= address.number %>">
+
+                                <input type="hidden" name="house" value="<%= address.house %>">
+
+                                <input type="hidden" name="village" value="<%= address.village %>">
+
+                                <input type="hidden" name="district" value="<%= address.district %>">
+
+                                <input type="hidden" name="state" value="<%= address.state %>">
+
+                                <input type="hidden" name="pincode" value="<%= address.pincode %>">
+
+                                <input type="hidden" name="latitude" value="<%= address.latitude || '' %>">
+
+                                <input type="hidden" name="longitude" value="<%= address.longitude || '' %>">
+
+
+                                <a href="/customer/payment" class="place-order-btn">
+                                    Continue to Payment →
+                                </a>
+
+                            </form>
+
+
+                            <p class="secure-text">
+                                🔒 Your order information is secure
+                            </p>
+
+                </aside>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="customer-footer">
+
+        <div class="footer-content">
+
+            <p>
+                &copy; 2026 MS Cyber Cafe & General Store. All rights reserved.
+            </p>
+           
+
+
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+
+            
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

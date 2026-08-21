@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Customer Home | MS Cyber Cafe & General Store</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/home.css"
+    >
+    <link rel="stylesheet" href="/css/customer-home.css">
+</head>
+
+<body>
+
+        <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon"
+            onclick="window.location.href='/'"
+            >
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+                title="Search"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+                <a
+                    href="/customer/Profile"
+                    class="action-link login-btn"
+                    title="Profile"
+                >
+                    👤 Profile
+                </a>
+
+                <a
+                    href="/customer/logout"
+                    class="action-link signup-btn"
+                    title="Logout"
+                >
+                    🚪 Logout
+                </a>
+
+               
+        </div>
+
+    </header>
+
+   
+
+
+    <!-- =========================
+         MAIN HOME
+    ========================== -->
+
+    <main class="customer-home">
+
+
+        <!-- HERO SECTION -->
+
+        <section class="welcome-hero">
+
+            <div class="hero-content">
+
+                <span class="welcome-tag">
+                    👋 Welcome Back
+                </span>
+
+                <h1>
+                    Hello,
+                    <span>
+                        <%= customerName %>
+                    </span>
+                </h1>
+
+                <p>
+                    Welcome to MS Cyber Cafe & General Store.
+                    Shop your daily needs easily at the best
+                    available price.
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="/products"
+                        class="shop-btn"
+                    >
+                        🛍️ Start Shopping
+                    </a>
+
+                    <a
+                        href="/customer/cart"
+                        class="cart-btn"
+                    >
+                        🛒 My Cart
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-illustration">
+
+                <div class="shopping-circle">
+                    🛒
+                </div>
+
+                <div class="floating-card card-one">
+                    🏷️ Best Offers
+                </div>
+
+                <div class="floating-card card-two">
+                    📦 Daily Products
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             QUICK ACCESS
+        ========================== -->
+
+        <section class="quick-section">
+
+            <div class="section-heading">
+
+                <span>
+                    Quick Access
+                </span>
+
+                <h2>
+                    What do you want to do?
+                </h2>
+
+            </div>
+
+
+            <div class="quick-grid">
+
+
+                <!-- PRODUCTS -->
+
+                <a
+                    href="/products"
+                    class="quick-card"
+                >
+
+                    <div class="quick-icon">
+                        🛍️
+                    </div>
+
+                    <div class="quick-info">
+
+                        <h3>
+                            Products
+                        </h3>
+
+                        <p>
+                            Browse all store products
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- CART -->
+
+                <a
+                    href="/customer/cart"
+                    class="quick-card"
+                >
+
+                    <div class="quick-icon">
+                        🛒
+                    </div>
+
+                    <div class="quick-info">
+
+                        <h3>
+                            My Cart
+                        </h3>
+
+                        <p>
+                            View your selected products
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- PROFILE -->
+
+                <a
+                    href="/customer/profile"
+                    class="quick-card"
+                >
+
+                    <div class="quick-icon">
+                        👤
+                    </div>
+
+                    <div class="quick-info">
+
+                        <h3>
+                            My Profile
+                        </h3>
+
+                        <p>
+                            Manage your account details
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- ORDERS -->
+
+                <a
+                    href="/customer/orders"
+                    class="quick-card"
+                >
+
+                    <div class="quick-icon">
+                        📦
+                    </div>
+
+                    <div class="quick-info">
+
+                        <h3>
+                            My Orders
+                        </h3>
+
+                        <p>
+                            Check your previous orders
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             OFFER BANNER
+        ========================== -->
+
+        <section class="offer-banner">
+
+            <div class="offer-content">
+
+                <span class="offer-label">
+                    🔥 Special Offers
+                </span>
+
+                <h2>
+                    Shop More,
+                    Save More!
+                </h2>
+
+                <p>
+                    Check our latest products and
+                    available offers before shopping.
+                </p>
+
+                <a
+                    href="/products"
+                    class="offer-btn"
+                >
+                    Explore Products →
+                </a>
+
+            </div>
+
+
+            <div class="offer-icon">
+                🏷️
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             WHY SHOP WITH US
+        ========================== -->
+
+        <section class="benefits-section">
+
+            <div class="section-heading center">
+
+                <span>
+                    Why Choose Us
+                </span>
+
+                <h2>
+                    Easy & Simple Shopping
+                </h2>
+
+            </div>
+
+
+            <div class="benefits-grid">
+
+
+                <div class="benefit-card">
+
+                    <div class="benefit-icon">
+                        🏷️
+                    </div>
+
+                    <h3>
+                        Best Price
+                    </h3>
+
+                    <p>
+                        Get products at reasonable
+                        prices.
+                    </p>
+
+                </div>
+
+
+                <div class="benefit-card">
+
+                    <div class="benefit-icon">
+                        🛒
+                    </div>
+
+                    <h3>
+                        Easy Cart
+                    </h3>
+
+                    <p>
+                        Add products to your cart
+                        before ordering.
+                    </p>
+
+                </div>
+
+
+                <div class="benefit-card">
+
+                    <div class="benefit-icon">
+                        📦
+                    </div>
+
+                    <h3>
+                        Easy Ordering
+                    </h3>
+
+                    <p>
+                        Place your order easily
+                        from your account.
+                    </p>
+
+                </div>
+
+
+                <div class="benefit-card">
+
+                    <div class="benefit-icon">
+                        👤
+                    </div>
+
+                    <h3>
+                        Your Account
+                    </h3>
+
+                    <p>
+                        Manage your profile and
+                        orders in one place.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =========================
+         CUSTOMER FOOTER
+    ========================== -->
+
+    <footer class="customer-footer">
+
+        <div class="footer-content">
+
+            <p>
+                &copy; 2024 MS Cyber Cafe & General Store. All rights reserved.
+            </p>
+
+            <p>
+                Developed by Sintu Das
+            </p>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>

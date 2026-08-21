@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | MS Cyber Cafe</title>
+
+    <link rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="/css/customer-home.css">
+</head>
+
+<body>
+
+    <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon"  onclick="window.location.href='/'">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+       
+
+
+        <div class="nav-actions">
+
+           
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+               
+             
+
+                <a
+                  href="/customer/profile"
+                  class="action-link profile-btn"
+                  title="Profile"
+                >
+                    👤 Profile
+                </a>
+               
+
+        </div>
+
+    </header>
+
+    <main class="profile-page">
+
+        <div class="profile-container">
+
+            <div class="profile-heading">
+                <span>👤 MY ACCOUNT</span>
+                <h1>My Profile</h1>
+                <p>Manage your account and delivery information.</p>
+            </div>
+
+
+            <!-- PROFILE TOP -->
+
+            <section class="profile-card profile-top">
+
+                <div class="profile-avatar">
+                    <%= (customer.name || "C").charAt(0).toUpperCase() %>
+                </div>
+
+                <div class="profile-main-info">
+
+                    <h2>
+                        <%= customer.name %>
+                    </h2>
+
+                    <p>
+                        📧 <%= customer.email %>
+                    </p>
+
+                    <p>
+                        📞 <%= customer.number %>
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <div class="profile-grid">
+
+
+                <!-- PERSONAL INFORMATION -->
+
+                <section class="profile-card">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span>👤</span>
+
+                            <div>
+                                <h2>Personal Information</h2>
+                                <p>Your account details</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-list">
+
+                        <div class="info-row">
+
+                            <span>Name</span>
+
+                            <strong>
+                                <%= customer.name %>
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>Mobile Number</span>
+
+                            <strong>
+                                <%= customer.number %>
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-row">
+
+                            <span>Email</span>
+
+                            <strong>
+                                <%= customer.email %>
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DELIVERY ADDRESS -->
+
+                <section class="profile-card">
+
+                    <div class="section-heading">
+
+                        <div>
+                            <span>📍</span>
+
+                            <div>
+                                <h2>Delivery Address</h2>
+                                <p>Default home delivery address</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <% if (
+                        customer.address &&
+                        customer.address.pincode
+                    ) { %>
+
+                        <div class="address-box">
+
+                            <h3>
+                                <%= customer.address.name %>
+                            </h3>
+
+                            <p>
+                                📞 <%= customer.address.number %>
+                            </p>
+
+                            <p>
+                                <%= customer.address.house %>,
+                                <%= customer.address.village %>
+                            </p>
+
+                            <p>
+                                <%= customer.address.district %>,
+                                <%= customer.address.state %>
+                                -
+                                <%= customer.address.pincode %>
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="/customer/change-address"
+                            class="change-address-btn"
+                        >
+                            ✏️ Change Address
+                        </a>
+
+                    <% } else { %>
+
+                        <div class="no-address">
+
+                            <span>📍</span>
+
+                            <p>
+                                No delivery address saved yet.
+                            </p>
+
+                            <a href="/customer/order">
+                                Add Address
+                            </a>
+
+                        </div>
+
+                    <% } %>
+
+                </section>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <section class="quick-actions">
+
+                <a href="/customer/orders" class="action-card">
+
+                    <span>📦</span>
+
+                    <div>
+                        <strong>My Orders</strong>
+                        <p>View your previous orders</p>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="/customer/home" class="action-card">
+
+                    <span>🛍️</span>
+
+                    <div>
+                        <strong>Continue Shopping</strong>
+                        <p>Explore our products</p>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+
+                <a href="/customer/logout" class="action-card logout-action">
+
+                    <span>🚪</span>
+
+                    <div>
+                        <strong>Logout</strong>
+                        <p>Sign out from your account</p>
+                    </div>
+
+                    <b>→</b>
+
+                </a>
+
+            </section>
+
+        </div>
+
+    </main>
+
+    <footer>
+
+
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store
+
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+
+        </small>
+
+
+    </footer>
+
+</body>
+
+</html>

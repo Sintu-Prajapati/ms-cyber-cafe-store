@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment | MS Cyber Cafe</title>
+
+    <link rel="stylesheet" href="/css/payment.css">
+    <link rel="stylesheet" href="/css/customer-home.css">
+</head>
+
+<body>
+
+    <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon"  onclick="window.location.href='/'">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+       
+
+
+        <div class="nav-actions">
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+                title="Search"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+               
+             
+
+                <a
+                  href="/customer/profile"
+                  class="action-link profile-btn"
+                  title="Profile"
+                >
+                    👤 Profile
+                </a>
+
+                
+               
+
+        </div>
+
+    </header>
+
+
+
+
+    <main class="payment-page">
+
+        
+        <div class="payment-container">
+
+            <div class="page-heading">
+
+                <span>💳 CHECKOUT</span>
+               
+                <h1>Choose Payment Method</h1>
+
+                <p>
+                    Select how you want to pay for your order.
+                </p>
+
+
+            </div>
+            <% if (error === "min-products") { %>
+
+    <div class="order-error">
+        Minimum 3 products/items required to place an order.
+    </div>
+
+<% } %>
+
+
+<% if (error === "min-order") { %>
+
+    <div class="order-error">
+        Minimum order value is ₹100.
+    </div>
+
+<% } %>
+
+
+
+            <div class="payment-grid">
+
+
+                <!-- PAYMENT OPTIONS -->
+
+                <div class="payment-card">
+
+                    <h2>Payment Method</h2>
+
+                    <form
+                        action="/customer/place-order"
+                        method="POST"
+                    >
+
+                        <!-- COD -->
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="COD"
+                                checked
+                            >
+
+                            <div class="payment-icon">
+                                💵
+                            </div>
+
+                            <div class="payment-info">
+
+                                <strong>
+                                    Cash on Delivery
+                                </strong>
+
+                                <span>
+                                    Pay when your order is delivered.
+                                </span>
+
+                            </div>
+
+                        </label>
+
+
+                        <!-- UPI -->
+
+                        <label class="payment-option">
+
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="UPI"
+                            >
+
+                            <div class="payment-icon">
+                                📱
+                            </div>
+
+                            <div class="payment-info">
+
+                                <strong>
+                                    UPI / Online Payment
+                                </strong>
+
+                                <span>
+                                    Pay online using UPI.
+                                </span>
+
+                            </div>
+
+                        </label>
+
+
+                        <button
+                            type="submit"
+                            class="place-order-btn"
+                        >
+                            Place Order
+                            →
+                        </button>
+
+                    </form>
+
+                </div>
+
+
+
+                <!-- ORDER SUMMARY -->
+
+                <div class="amount-card">
+
+                    <h2>Order Summary</h2>
+
+
+                    <div class="amount-line">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹<%= Number(subtotal).toFixed(2) %>
+                        </strong>
+
+                    </div>
+
+
+                    <% if (discount > 0) { %>
+
+                        <div class="amount-line discount">
+
+                            <span>
+                                Discount
+                            </span>
+
+                            <strong>
+                                -₹<%= Number(discount).toFixed(2) %>
+                            </strong>
+
+                        </div>
+
+                    <% } %>
+
+
+                    <div class="amount-line">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <strong>
+
+                            <% if (deliveryCharge > 0) { %>
+
+                                ₹<%= Number(deliveryCharge).toFixed(2) %>
+
+                            <% } else { %>
+
+                                FREE
+
+                            <% } %>
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="amount-line">
+
+                        <span>
+                            Platform Charge
+                        </span>
+
+                        <strong>
+                            ₹<%= Number(platformCharge).toFixed(2) %>
+                        </strong>
+
+                    </div>
+
+
+                    <div class="divider"></div>
+
+
+                    <div class="grand-total">
+
+                        <span>
+                            Total Payable
+                        </span>
+
+                        <strong>
+                            ₹<%= Number(grandTotal).toFixed(2) %>
+                        </strong>
+
+                    </div>
+
+
+                    <div class="address-preview">
+
+                        <strong>
+                            📍 Delivery Address
+                        </strong>
+
+                        <p>
+                            <%= address.name %>,
+                            <%= address.house %>,
+                            <%= address.village %>
+                        </p>
+
+                        <p>
+                            <%= address.district %>,
+                            <%= address.state %>
+                            -
+                            <%= address.pincode %>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+  
+    <footer>
+
+
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store
+
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+
+        </small>
+
+
+    </footer>
+
+</body>
+
+</html>

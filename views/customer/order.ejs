@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delivery Address | MS Cyber Cafe</title>
+
+    <link rel="stylesheet" href="/css/customer-order.css">
+    <link rel="stylesheet" href="/css/customer-home.css">
+
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="customer-navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon" onclick="window.location.href='/'">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <button class="search-btn" onclick="focusSearch()" title="Search">
+                🔍
+            </button>
+
+
+            <button class="cart-btn" onclick="openCart()" title="Cart">
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+            <a href="/customer/Profile" class="action-link login-btn" title="Profile">
+                👤 Profile
+            </a>
+
+           
+
+
+        </div>
+
+    </header>
+
+
+    <main class="order-page">
+
+        <div class="order-container">
+
+            <div class="order-heading">
+
+                <span>📦 Order</span>
+
+                <h1>Delivery Address</h1>
+
+                <p>
+                    Enter your address and select your delivery
+                    location from the map.
+                </p>
+
+            </div>
+
+
+            <form action="/customer/order" method="POST" class="address-form">
+
+                <!-- NAME + MOBILE -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input type="text" name="name" placeholder="Enter your name"
+                            value="<%= address?.name || customerName || '' %>" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Mobile Number
+                        </label>
+
+                        <input type="tel" name="number" placeholder="Enter mobile number" maxlength="10"
+                            pattern="[0-9]{10}" value="<%= address?.number || '' %>" required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HOUSE -->
+
+                <div class="form-group">
+
+                    <label>
+                        House Name / House No.
+                    </label>
+
+                    <input type="text" name="house" placeholder="House name or house number"
+                        value="<%= address?.house || '' %>" required>
+
+                </div>
+
+
+                <!-- VILLAGE + DISTRICT -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            Village
+                        </label>
+
+                        <input type="text" name="village" placeholder="Enter village" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            District
+                        </label>
+
+                        <input type="text" name="district" placeholder="Enter district" required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATE + PIN -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>
+                            State
+                        </label>
+
+                        <input type="text" name="state" placeholder="Enter state" value="Bihar" required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            PIN Code
+                        </label>
+
+                        <input type="text" name="pincode" placeholder="6 digit PIN code" maxlength="6"
+                            pattern="[0-9]{6}" required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAP -->
+
+                <div class="map-section">
+
+                    <div class="map-heading">
+
+                        <div>
+
+                            <h3>
+                                📍 Select Delivery Location
+                            </h3>
+
+                            <p>
+                                Drag the marker to your exact
+                                delivery location.
+                            </p>
+
+                        </div>
+
+
+                        <button type="button" id="locationBtn" class="location-btn">
+                            📍 Use My Location
+                        </button>
+
+                    </div>
+
+
+                    <!-- MAP -->
+
+                    <div id="map" class="map-box"></div>
+
+
+                    <!-- LATITUDE -->
+
+                    <input type="hidden" name="latitude" id="latitude">
+
+
+                    <!-- LONGITUDE -->
+
+                    <input type="hidden" name="longitude" id="longitude">
+
+
+                    <div id="locationStatus" class="location-status">
+                        📍 Location not selected
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit" class="continue-btn">
+                    Continue to Order →
+                </button>
+
+            </form>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+
+    <footer class="customer-footer">
+
+        <div class="footer-content">
+
+            <p>
+                &copy; 2026 MS Cyber Cafe & General Store. All rights reserved.
+            </p>
+
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+
+        </div>
+
+    </footer>
+
+
+    <!-- Leaflet JS -->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+    <script>
+
+        /*
+        =====================================
+        DEFAULT LOCATION
+        =====================================
+        */
+
+        const defaultLat = 24.75;
+        const defaultLng = 84.98;
+
+
+        /*
+        =====================================
+        CREATE MAP
+        =====================================
+        */
+
+        const map = L.map("map").setView(
+            [defaultLat, defaultLng],
+            13
+        );
+
+
+        /*
+        =====================================
+        OPEN STREET MAP
+        =====================================
+        */
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                maxZoom: 19,
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }
+        ).addTo(map);
+
+
+        /*
+        =====================================
+        CREATE MARKER
+        =====================================
+        */
+
+        let marker = L.marker(
+            [defaultLat, defaultLng],
+            {
+                draggable: true
+            }
+        ).addTo(map);
+
+
+        /*
+        =====================================
+        ELEMENTS
+        =====================================
+        */
+
+        const latitude =
+            document.getElementById("latitude");
+
+        const longitude =
+            document.getElementById("longitude");
+
+        const locationStatus =
+            document.getElementById("locationStatus");
+
+        const locationBtn =
+            document.getElementById("locationBtn");
+
+
+        /*
+        =====================================
+        SET LOCATION
+        =====================================
+        */
+
+        function setLocation(lat, lng) {
+
+            latitude.value =
+                lat.toFixed(7);
+
+            longitude.value =
+                lng.toFixed(7);
+
+            marker.setLatLng([lat, lng]);
+
+            map.setView(
+                [lat, lng],
+                16
+            );
+
+            locationStatus.innerHTML =
+                "✓ Location selected";
+
+        }
+
+
+        /*
+        =====================================
+        MARKER DRAG
+        =====================================
+        */
+
+        marker.on(
+            "dragend",
+            function () {
+
+                const position =
+                    marker.getLatLng();
+
+                setLocation(
+                    position.lat,
+                    position.lng
+                );
+
+            }
+        );
+
+
+        /*
+        =====================================
+        MAP CLICK
+        =====================================
+        */
+
+        map.on(
+            "click",
+            function (event) {
+
+                setLocation(
+                    event.latlng.lat,
+                    event.latlng.lng
+                );
+
+            }
+        );
+
+
+        /*
+        =====================================
+        USE MY LOCATION
+        =====================================
+        */
+
+        locationBtn.addEventListener(
+            "click",
+            function () {
+
+                if (!navigator.geolocation) {
+
+                    locationStatus.innerHTML =
+                        "❌ Location is not supported.";
+
+                    return;
+
+                }
+
+
+                locationStatus.innerHTML =
+                    "📍 Getting your location...";
+
+
+                navigator.geolocation.getCurrentPosition(
+
+                    function (position) {
+
+                        const lat =
+                            position.coords.latitude;
+
+                        const lng =
+                            position.coords.longitude;
+
+
+                        setLocation(
+                            lat,
+                            lng
+                        );
+
+
+                        locationBtn.innerHTML =
+                            "✓ Location Selected";
+
+                    },
+
+                    function () {
+
+                        locationStatus.innerHTML =
+                            "❌ Unable to get your location.";
+
+                    },
+
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+
+                );
+
+            }
+        );
+
+
+        /*
+        =====================================
+        INITIAL LOCATION
+        =====================================
+        */
+
+        setLocation(
+            defaultLat,
+            defaultLng
+        );
+
+    </script>
+
+
+</body>
+
+</html>

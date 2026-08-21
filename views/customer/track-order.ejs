@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Track Order | MS Cyber Cafe
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/customer-track-order.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/css/customer-home.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="customer-navbar">
+
+        <div
+            class="brand"
+            onclick="window.location.href='/'"
+        >
+
+            <div class="brand-icon">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+                title="Search"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+
+            <a
+                href="/customer/profile"
+                class="action-link profile-btn"
+                title="Profile"
+            >
+                👤 Profile
+            </a>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="track-page">
+
+        <div class="track-container">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <span>
+                    🚚 ORDER TRACKING
+                </span>
+
+                <h1>
+                    Track Your Order
+                </h1>
+
+                <p>
+                    Order #<%= order.orderId %>
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CURRENT STATUS
+            ========================== -->
+
+            <section class="track-card">
+
+                <div class="current-status">
+
+                    <div class="truck-icon">
+
+                        <% if (
+                            order.orderStatus ===
+                            "Delivered"
+                        ) { %>
+
+                            ✓
+
+                        <% } else if (
+                            order.orderStatus ===
+                            "Out for Delivery"
+                        ) { %>
+
+                            🛵
+
+                        <% } else { %>
+
+                            📦
+
+                        <% } %>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            CURRENT STATUS
+                        </span>
+
+                        <h2>
+                            <%= order.orderStatus %>
+                        </h2>
+
+                        <% if (
+                            order.orderStatus ===
+                            "Out for Delivery"
+                        ) { %>
+
+                            <p class="status-message">
+                                Your order is on the way.
+                            </p>
+
+                        <% } else if (
+                            order.orderStatus ===
+                            "Delivered"
+                        ) { %>
+
+                            <p class="status-message">
+                                Your order has been delivered.
+                            </p>
+
+                        <% } else { %>
+
+                            <p class="status-message">
+                                We are processing your order.
+                            </p>
+
+                        <% } %>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     TIMELINE
+                ========================== -->
+
+                <div class="timeline">
+
+
+                    <!-- ORDER PLACED -->
+
+                    <div class="timeline-item
+                        <%= [
+                            'Pending',
+                            'Accepted',
+                            'Preparing',
+                            'Ready for Delivery',
+                            'Out for Delivery',
+                            'Delivered'
+                        ].includes(order.orderStatus)
+                            ? 'completed'
+                            : '' %>
+                    ">
+
+                        <div class="timeline-dot">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Order Placed
+                            </h3>
+
+                            <p>
+                                Your order has been received.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ACCEPTED -->
+
+                    <div class="timeline-item
+                        <%= [
+                            'Accepted',
+                            'Preparing',
+                            'Ready for Delivery',
+                            'Out for Delivery',
+                            'Delivered'
+                        ].includes(order.orderStatus)
+                            ? 'completed'
+                            : '' %>
+                    ">
+
+                        <div class="timeline-dot">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Order Accepted
+                            </h3>
+
+                            <p>
+                                Store has accepted your order.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- PREPARING -->
+
+                    <div class="timeline-item
+                        <%= [
+                            'Preparing',
+                            'Ready for Delivery',
+                            'Out for Delivery',
+                            'Delivered'
+                        ].includes(order.orderStatus)
+                            ? 'completed'
+                            : '' %>
+                    ">
+
+                        <div class="timeline-dot">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Preparing
+                            </h3>
+
+                            <p>
+                                Your products are being prepared.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- READY -->
+
+                    <div class="timeline-item
+                        <%= [
+                            'Ready for Delivery',
+                            'Out for Delivery',
+                            'Delivered'
+                        ].includes(order.orderStatus)
+                            ? 'completed'
+                            : '' %>
+                    ">
+
+                        <div class="timeline-dot">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Ready for Delivery
+                            </h3>
+
+                            <p>
+                                Your order is ready for delivery.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- OUT FOR DELIVERY -->
+
+                    <div class="timeline-item
+                        <%= [
+                            'Out for Delivery',
+                            'Delivered'
+                        ].includes(order.orderStatus)
+                            ? 'completed'
+                            : '' %>
+                    ">
+
+                        <div class="timeline-dot">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Out for Delivery
+                            </h3>
+
+                            <p>
+                                Your order is on the way.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- DELIVERED -->
+
+                    <div class="timeline-item
+                        <%= order.orderStatus === 'Delivered'
+                            ? 'completed'
+                            : '' %>
+                    ">
+
+                        <div class="timeline-dot">
+                            ✓
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Delivered
+                            </h3>
+
+                            <p>
+                                Order delivered successfully.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+            <!-- =========================
+     CANCEL ORDER
+========================= -->
+
+<% if (
+    order.orderStatus === "Pending" ||
+    order.orderStatus === "Accepted"
+) { %>
+
+    <section class="cancel-order-card">
+
+        <div class="cancel-icon">
+            ⚠️
+        </div>
+
+        <div class="cancel-content">
+
+            <strong>
+                Want to cancel this order?
+            </strong>
+
+            <span>
+                You can cancel the order before
+                preparation starts.
+            </span>
+
+        </div>
+
+
+        <form
+            action="/customer/orders/<%= order._id %>/cancel"
+            method="POST"
+            onsubmit="return confirmCancelOrder()"
+        >
+
+            <button
+                type="submit"
+                class="cancel-btn"
+            >
+                Cancel Order
+            </button>
+
+        </form>
+
+    </section>
+
+<% } %>
+
+
+
+            <!-- =========================
+                 DELIVERY PERSON
+            ========================== -->
+
+            <% if (order.deliveryPerson) { %>
+
+                <section class="delivery-person-card">
+
+
+                    <div class="delivery-person-heading">
+
+                        <div class="delivery-person-icon">
+                            🛵
+                        </div>
+
+                        <div>
+
+                            <span>
+                                DELIVERY PARTNER
+                            </span>
+
+                            <h2>
+                                Your Delivery Partner
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="delivery-person-details">
+
+
+                        <div class="delivery-avatar">
+
+                            <%= order.deliveryPerson.name
+                                .charAt(0)
+                                .toUpperCase()
+                            %>
+
+                        </div>
+
+
+                        <div class="delivery-info">
+
+                            <strong>
+                                <%= order.deliveryPerson.name %>
+                            </strong>
+
+                            <span>
+                                📞
+                                <%= order.deliveryPerson.number %>
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="tel:<%= order.deliveryPerson.number %>"
+                            class="call-delivery-btn"
+                        >
+                            📞 Call
+                        </a>
+
+
+                    </div>
+
+
+
+                    <!-- DELIVERY MESSAGE -->
+
+                    <% if (
+                        order.orderStatus ===
+                        "Out for Delivery"
+                    ) { %>
+
+                        <div class="delivery-message">
+
+                            <span>
+                                🚚
+                            </span>
+
+                            <p>
+
+                                <strong>
+                                    Your order is on the way
+                                </strong>
+
+                                <br>
+
+                                <small>
+                                    <%= order.deliveryPerson.name %>
+                                    आपका order लेकर आ रहे हैं।
+                                </small>
+
+                            </p>
+
+                        </div>
+
+                    <% } else if (
+                        order.orderStatus ===
+                        "Delivered"
+                    ) { %>
+
+                        <div class="delivery-message delivered-message">
+
+                            <span>
+                                ✅
+                            </span>
+
+                            <p>
+
+                                <strong>
+                                    Order Delivered
+                                </strong>
+
+                                <br>
+
+                                <small>
+                                    <%= order.deliveryPerson.name %>
+                                    ने आपका order deliver किया।
+                                </small>
+
+                            </p>
+
+                        </div>
+
+                    <% } else { %>
+
+                        <div class="delivery-message waiting-message">
+
+                            <span>
+                                🕐
+                            </span>
+
+                            <p>
+
+                                <strong>
+                                    Delivery Partner Assigned
+                                </strong>
+
+                                <br>
+
+                                <small>
+                                    Order delivery ke liye ready hone par
+                                    aapko delivery updates milenge.
+                                </small>
+
+                            </p>
+
+                        </div>
+
+                    <% } %>
+
+
+                </section>
+
+            <% } %>
+
+
+
+            <!-- =========================
+                 ORDER INFO
+            ========================== -->
+
+            <section class="track-info">
+
+
+                <div>
+
+                    <span>
+                        TOTAL AMOUNT
+                    </span>
+
+                    <strong>
+                        ₹<%= Number(
+                            order.grandTotal
+                        ).toFixed(2) %>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        PAYMENT
+                    </span>
+
+                    <strong>
+                        <%= order.paymentMethod %>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        PAYMENT STATUS
+                    </span>
+
+                    <strong
+                        class="<%= order.paymentStatus === 'Paid'
+                            ? 'paid'
+                            : 'pending' %>"
+                    >
+                        <%= order.paymentStatus %>
+                    </strong>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 DELIVERY ADDRESS
+            ========================== -->
+
+            <section class="address-card">
+
+
+                <div class="address-heading">
+
+                    <div class="address-icon">
+                        📍
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Delivery Address
+                        </h2>
+
+                        <span>
+                            Your order will be delivered here
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="address-content">
+
+                    <p>
+
+                        <strong>
+                            <%= order.deliveryAddress.name %>
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        📞
+                        <%= order.deliveryAddress.number %>
+
+                    </p>
+
+
+                    <p>
+
+                        <%= order.deliveryAddress.house %>,
+
+                        <%= order.deliveryAddress.village %>,
+
+                        <%= order.deliveryAddress.district %>,
+
+                        <%= order.deliveryAddress.state %>
+
+                        -
+
+                        <%= order.deliveryAddress.pincode %>
+
+                    </p>
+
+
+                </div>
+
+
+                <% if (
+                    order.deliveryAddress.latitude &&
+                    order.deliveryAddress.longitude
+                ) { %>
+
+                    <a
+                        href="https://www.google.com/maps?q=<%= order.deliveryAddress.latitude %>,<%= order.deliveryAddress.longitude %>"
+                        target="_blank"
+                        class="map-btn"
+                    >
+                        🗺️ Open Delivery Location
+                    </a>
+
+                <% } %>
+
+
+            </section>
+
+
+
+            <!-- =========================
+                 BACK BUTTON
+            ========================== -->
+
+            <a
+                href="/customer/orders"
+                class="back-btn"
+            >
+                ← Back to My Orders
+            </a>
+
+
+        </div>
+
+        <% if (success === "cancelled") { %>
+
+    <div class="cancel-success-message">
+
+        ✓
+
+        <div>
+
+            <strong>
+                Order Cancelled Successfully!
+            </strong>
+
+            <span>
+                Your order has been cancelled and the
+                products have been added back to stock.
+            </span>
+
+        </div>
+
+    </div>
+
+<% } %>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+
+            MS Cyber Cafe & General Store
+
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+
+        </small>
+
+    </footer>
+
+<script>
+
+function confirmCancelOrder() {
+
+    return confirm(
+        "Are you sure you want to cancel this order?"
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>

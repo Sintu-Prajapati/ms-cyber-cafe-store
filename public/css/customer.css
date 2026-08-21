@@ -1,0 +1,1207 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    line-height: 1.5;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+header {
+    background: linear-gradient(
+        135deg,
+        #111827,
+        #1e3a8a
+    );
+
+    color: white;
+    padding: 22px 30px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+header h1 {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+header p {
+    margin-top: 3px;
+    color: #dbeafe;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   MAIN
+========================================= */
+
+main {
+    width: min(1400px, 94%);
+    margin: 28px auto;
+}
+
+
+/* =========================================
+   COMMON CARD
+========================================= */
+
+.billing-card,
+.welcome,
+.bill-print {
+    background: #ffffff;
+
+    border: 1px solid #e8edf4;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(15, 23, 42, 0.07);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.billing-card:hover,
+.welcome:hover {
+    box-shadow:
+        0 12px 35px rgba(15, 23, 42, 0.10);
+}
+
+
+/* =========================================
+   BILLING LAYOUT
+========================================= */
+
+.billing-container {
+    display: grid;
+
+    grid-template-columns:
+        minmax(320px, 0.9fr)
+        minmax(500px, 1.5fr);
+
+    gap: 22px;
+
+    align-items: start;
+}
+
+
+/* =========================================
+   CARD TITLE
+========================================= */
+
+.card-title {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #edf0f5;
+}
+
+.card-title h2 {
+    font-size: 20px;
+    color: #111827;
+}
+
+.card-title span {
+    background: #eef2ff;
+    color: #4338ca;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================================
+   CUSTOMER SELECT
+========================================= */
+
+.customer-select {
+    padding: 18px 22px 5px;
+}
+
+.customer-select label,
+.payment-mode label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #374151;
+}
+
+.customer-select select,
+.payment-mode select {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid #dbe1ea;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: #1f2937;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.customer-select select:focus,
+.payment-mode select:focus {
+    border-color: #4f46e5;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.10);
+}
+
+
+/* =========================================
+   PRODUCT SEARCH
+========================================= */
+
+.search-box {
+    position: relative;
+}
+
+.search-box input,
+.product-search input {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border: 1px solid #dbe1ea;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: #fff;
+
+    transition: 0.2s;
+}
+
+.search-box input:focus,
+.product-search input:focus {
+    border-color: #4f46e5;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.10);
+}
+
+
+/* =========================================
+   SEARCH RESULT
+========================================= */
+
+.search-results {
+    margin-top: 8px;
+
+    background: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    position: relative;
+
+    z-index: 10;
+}
+
+.search-result {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 12px 14px;
+
+    border-bottom: 1px solid #f0f2f5;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.search-result:hover {
+    background: #f5f7ff;
+
+    padding-left: 19px;
+}
+
+.search-result strong {
+    color: #111827;
+}
+
+.search-result span {
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   CART TABLE
+========================================= */
+
+.cart-table-wrapper {
+    overflow-x: auto;
+
+    margin: 18px 22px;
+}
+
+.cart-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 600px;
+}
+
+.cart-table th {
+    background: #f8fafc;
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    padding: 12px;
+
+    text-align: left;
+}
+
+.cart-table td {
+    padding: 13px 12px;
+
+    border-bottom: 1px solid #eef1f5;
+
+    font-size: 14px;
+}
+
+.cart-table tbody tr {
+    transition: 0.2s;
+}
+
+.cart-table tbody tr:hover {
+    background: #fafbff;
+}
+
+
+/* =========================================
+   REMOVE BUTTON
+========================================= */
+
+.remove-item {
+    width: 31px;
+    height: 31px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+    font-size: 19px;
+
+    transition: 0.2s;
+}
+
+.remove-item:hover {
+    background: #dc2626;
+
+    color: white;
+
+    transform: rotate(8deg) scale(1.05);
+}
+
+
+/* =========================================
+   BILL SUMMARY
+========================================= */
+
+.bill-summary {
+    margin: 10px 22px 20px;
+
+    padding: 17px;
+
+    background: #f8fafc;
+
+    border: 1px solid #edf0f5;
+
+    border-radius: 13px;
+}
+
+.bill-summary > div {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 7px 0;
+
+    color: #64748b;
+}
+
+.bill-summary strong {
+    color: #111827;
+}
+
+.grand-total {
+    margin-top: 8px;
+
+    padding-top: 13px !important;
+
+    border-top: 1px dashed #cbd5e1;
+
+    font-size: 17px;
+}
+
+.grand-total strong {
+    color: #2563eb;
+
+    font-size: 21px;
+}
+
+
+/* =========================================
+   PAYMENT
+========================================= */
+
+.payment-section {
+    margin: 0 22px 20px;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc,
+            #f1f5f9
+        );
+
+    border: 1px solid #e5e7eb;
+}
+
+.payment-section h3 {
+    margin-bottom: 15px;
+
+    font-size: 17px;
+
+    color: #111827;
+}
+
+
+/* TWO PAYMENT BOXES */
+
+.payment-boxes {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+
+    margin-bottom: 14px;
+}
+
+.payment-box {
+    padding: 15px;
+
+    border-radius: 13px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    transition: 0.25s;
+}
+
+.payment-box:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 20px rgba(15, 23, 42, 0.08);
+}
+
+.payment-box label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.payment-box input {
+    width: 100%;
+
+    padding: 12px;
+
+    border-radius: 9px;
+
+    border: 1px solid #d1d5db;
+
+    outline: none;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.payment-box input:focus {
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.10);
+}
+
+.paid-box {
+    border-left: 4px solid #16a34a;
+}
+
+.paid-box label {
+    color: #15803d;
+}
+
+.paid-box input:focus {
+    border-color: #16a34a;
+}
+
+.credit-box {
+    border-left: 4px solid #dc2626;
+}
+
+.credit-box label {
+    color: #dc2626;
+}
+
+.credit-box input:focus {
+    border-color: #dc2626;
+}
+
+
+/* =========================================
+   PAYMENT STATUS
+========================================= */
+
+.payment-status {
+    margin-top: 12px;
+
+    padding: 11px 13px;
+
+    border-radius: 9px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.payment-ok {
+    background: #dcfce7;
+
+    color: #166534;
+
+    border: 1px solid #bbf7d0;
+}
+
+.payment-error {
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    border: 1px solid #fecaca;
+}
+
+
+/* =========================================
+   GENERATE BILL BUTTON
+========================================= */
+
+.generate-bill-btn {
+    width: calc(100% - 44px);
+
+    margin: 0 22px 22px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 7px 18px rgba(37, 99, 235, 0.22);
+
+    transition: 0.25s;
+}
+
+.generate-bill-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(37, 99, 235, 0.30);
+}
+
+.generate-bill-btn:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================
+   CUSTOMER PAGE
+========================================= */
+
+.welcome {
+    padding: 22px;
+
+    margin-bottom: 22px;
+}
+
+.welcome h2 {
+    margin-bottom: 17px;
+
+    color: #111827;
+}
+
+.welcome h3 {
+    margin-bottom: 12px;
+}
+
+
+/* CUSTOMER FORM */
+
+.welcome form {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 10px;
+}
+
+.welcome form input,
+.welcome form select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #dbe1ea;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: white;
+}
+
+.welcome form input:focus,
+.welcome form select:focus {
+    border-color: #4f46e5;
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.08);
+}
+
+.welcome form button {
+    border: none;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.welcome form button:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   CUSTOMER TABLE
+========================================= */
+
+.table-scroll {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.welcome table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+.welcome th {
+    padding: 13px;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    text-align: left;
+}
+
+.welcome td {
+    padding: 14px 13px;
+
+    border-bottom: 1px solid #edf0f5;
+
+    font-size: 14px;
+}
+
+.welcome tbody tr {
+    transition: 0.2s;
+}
+
+.welcome tbody tr:hover {
+    background: #f8faff;
+}
+
+
+/* =========================================
+   PASSBOOK LINK
+========================================= */
+
+.passbook-link,
+.bill-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 7px 11px;
+
+    border-radius: 8px;
+
+    background: #eef2ff;
+
+    color: #4338ca;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.passbook-link:hover,
+.bill-link:hover {
+    background: #4338ca;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   BALANCE BOX
+========================================= */
+
+.balance-box {
+    margin-top: 18px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff7ed,
+            #ffedd5
+        );
+
+    border: 1px solid #fed7aa;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.balance-box span {
+    color: #9a3412;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.balance-box strong {
+    color: #c2410c;
+
+    font-size: 25px;
+}
+
+
+/* =========================================
+   TRANSACTION COLORS
+========================================= */
+
+.credit {
+    color: #dc2626;
+
+    font-weight: 700;
+}
+
+.payment {
+    color: #15803d;
+
+    font-weight: 700;
+}
+
+.item-list div {
+    margin: 3px 0;
+
+    color: #475569;
+}
+
+
+/* =========================================
+   PRINT BUTTON
+========================================= */
+
+.print-btn {
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 10px;
+
+    background: #111827;
+
+    color: white;
+
+    font-weight: 600;
+
+    margin-bottom: 25px;
+
+    transition: 0.2s;
+}
+
+.print-btn:hover {
+    background: #2563eb;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   BILL RECEIPT
+========================================= */
+
+.bill-print {
+    width: min(800px, 100%);
+
+    margin: 30px auto;
+
+    padding: 35px;
+
+    background: white;
+}
+
+.bill-header {
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+.bill-header h1 {
+    font-size: 25px;
+
+    color: #111827;
+}
+
+.bill-header p {
+    color: #64748b;
+
+    margin-top: 4px;
+}
+
+.bill-info {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+
+    margin: 20px 0;
+}
+
+.bill-info p {
+    font-size: 14px;
+
+    color: #475569;
+}
+
+
+/* BILL TABLE */
+
+.bill-print table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin-top: 20px;
+}
+
+.bill-print th {
+    background: #f1f5f9;
+
+    padding: 12px;
+
+    text-align: left;
+
+    font-size: 13px;
+}
+
+.bill-print td {
+    padding: 12px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 14px;
+}
+
+
+/* BILL TOTAL */
+
+.bill-total {
+    width: 320px;
+
+    max-width: 100%;
+
+    margin-left: auto;
+
+    margin-top: 25px;
+
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: #f8fafc;
+}
+
+.bill-total p,
+.bill-total h3 {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 6px 0;
+}
+
+.bill-total h3 {
+    border-top: 1px dashed #cbd5e1;
+
+    margin-top: 7px;
+
+    padding-top: 13px;
+
+    color: #111827;
+}
+
+.credit-text {
+    color: #dc2626;
+
+    font-weight: 700;
+}
+
+.paid-text {
+    color: #15803d;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .billing-container {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome form {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    main {
+        width: 94%;
+
+        margin-top: 18px;
+    }
+
+    header {
+        padding: 18px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    .billing-card,
+    .welcome,
+    .bill-print {
+        border-radius: 13px;
+    }
+
+    .card-title {
+        padding: 16px;
+    }
+
+    .card-title h2 {
+        font-size: 17px;
+    }
+
+    .payment-boxes {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome form {
+        grid-template-columns: 1fr;
+    }
+
+    .bill-info {
+        grid-template-columns: 1fr;
+    }
+
+    .bill-print {
+        padding: 18px;
+    }
+
+    .bill-header h1 {
+        font-size: 20px;
+    }
+
+    .balance-box {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    .balance-box strong {
+        font-size: 22px;
+    }
+
+}
+
+
+/* =========================================
+   PRINT
+========================================= */
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    header,
+    .no-print,
+    .print-btn {
+        display: none !important;
+    }
+
+    main {
+        width: 100%;
+
+        margin: 0;
+    }
+
+    .bill-print {
+        width: 100%;
+
+        margin: 0;
+
+        padding: 10px;
+
+        box-shadow: none;
+
+        border: none;
+    }
+
+    .bill-print table {
+        font-size: 12px;
+    }
+
+    .bill-print th,
+    .bill-print td {
+        padding: 7px;
+    }
+
+}
+
+.customer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.total-udhar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 18px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #fff7ed,
+        #ffedd5
+    );
+
+    border: 1px solid #fed7aa;
+
+    box-shadow:
+        0 5px 18px rgba(194, 65, 12, 0.08);
+}
+
+.total-udhar span {
+    color: #9a3412;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.total-udhar strong {
+    color: #c2410c;
+    font-size: 19px;
+}
+
+.customer-udhar {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: #fee2e2;
+
+    color: #dc2626;
+}
+
+.no-udhar {
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: #dcfce7;
+
+    color: #15803d;
+}
+
+
+@media (max-width: 650px) {
+
+    .customer-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .total-udhar {
+        justify-content: space-between;
+    }
+
+}

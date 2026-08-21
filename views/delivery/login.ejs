@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Delivery Login | MS Cyber Cafe
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/delivery-login.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <main class="login-page">
+
+
+        <div class="login-card">
+
+
+            <!-- LOGO -->
+
+            <div class="logo">
+                🚚
+            </div>
+
+
+            <div class="heading">
+
+                <span>
+                    MS CYBER CAFE
+                </span>
+
+                <h1>
+                    Delivery Login
+                </h1>
+
+                <p>
+                    Login to manage your deliveries
+                </p>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <% if (error) { %>
+
+                <div class="error-box">
+
+                    ⚠️
+
+                    <span>
+                        <%= error %>
+                    </span>
+
+                </div>
+
+            <% } %>
+
+
+            <!-- LOGIN FORM -->
+
+            <form
+                action="/delivery/login"
+                method="POST"
+            >
+
+
+                <!-- USERNAME -->
+
+                <div class="input-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span>
+                            👤
+                        </span>
+
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span>
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LOGIN -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+
+                    Login
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+            <div class="login-footer">
+
+                <span>
+                    🔐 Secure Delivery Panel
+                </span>
+
+                <small>
+                    Only authorized delivery staff can login.
+                </small>
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+
+<script>
+
+function togglePassword() {
+
+    const password =
+        document.getElementById(
+            "password"
+        );
+
+    const button =
+        document.querySelector(
+            ".show-password"
+        );
+
+
+    if (
+        password.type === "password"
+    ) {
+
+        password.type = "text";
+
+        button.textContent = "🙈";
+
+    } else {
+
+        password.type = "password";
+
+        button.textContent = "👁";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

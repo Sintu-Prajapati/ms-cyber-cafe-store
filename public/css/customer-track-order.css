@@ -1,0 +1,937 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f8fc;
+    color: #172033;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.track-page {
+    padding: 35px 15px 60px;
+}
+
+.track-container {
+    max-width: 750px;
+    margin: auto;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.page-heading {
+    margin-bottom: 25px;
+}
+
+.page-heading > span {
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .4px;
+}
+
+.page-heading h1 {
+    font-size: 29px;
+    margin: 7px 0;
+}
+
+.page-heading p {
+    color: #718096;
+    font-size: 13px;
+}
+
+
+/* =========================
+   TRACK CARD
+========================= */
+
+.track-card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 8px 30px rgba(20, 40, 80, .06);
+}
+
+
+/* =========================
+   CURRENT STATUS
+========================= */
+
+.current-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 17px;
+
+    background: #eff6ff;
+
+    border-radius: 12px;
+}
+
+.truck-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+
+    border-radius: 13px;
+
+    font-size: 25px;
+
+    box-shadow:
+        0 3px 10px rgba(20, 40, 80, .05);
+}
+
+.current-status span {
+    color: #64748b;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: .3px;
+}
+
+.current-status h2 {
+    color: #2563eb;
+
+    font-size: 18px;
+
+    margin-top: 5px;
+}
+
+.status-message {
+    color: #718096;
+
+    font-size: 10px;
+
+    margin-top: 5px;
+}
+
+
+/* =========================
+   TIMELINE
+========================= */
+
+.timeline {
+    margin-top: 30px;
+
+    margin-left: 8px;
+}
+
+.timeline-item {
+    position: relative;
+
+    display: flex;
+
+    gap: 15px;
+
+    min-height: 78px;
+
+    opacity: .38;
+}
+
+.timeline-item::before {
+    content: "";
+
+    position: absolute;
+
+    left: 15px;
+
+    top: 31px;
+
+    width: 2px;
+
+    height: 47px;
+
+    background: #dbe3ef;
+}
+
+.timeline-item:last-child::before {
+    display: none;
+}
+
+.timeline-item.completed {
+    opacity: 1;
+}
+
+.timeline-item.completed::before {
+    background: #2563eb;
+}
+
+.timeline-dot {
+    position: relative;
+
+    z-index: 2;
+
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e2e8f0;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.timeline-item.completed .timeline-dot {
+    background: #2563eb;
+
+    color: white;
+}
+
+.timeline-item h3 {
+    font-size: 13px;
+
+    margin-top: 3px;
+}
+
+.timeline-item p {
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    margin-top: 5px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   DELIVERY PERSON
+========================= */
+
+.delivery-person-card {
+    margin-top: 18px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    border: 1px solid #e8eef7;
+
+    box-shadow:
+        0 7px 25px rgba(20, 40, 80, .06);
+}
+
+
+/* HEADING */
+
+.delivery-person-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.delivery-person-icon {
+    width: 47px;
+    height: 47px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #eff6ff;
+
+    font-size: 23px;
+}
+
+.delivery-person-heading span {
+    display: block;
+
+    color: #2563eb;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+}
+
+.delivery-person-heading h2 {
+    font-size: 16px;
+
+    margin-top: 4px;
+}
+
+
+/* PERSON */
+
+.delivery-person-details {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    background: #f8fafc;
+
+    border-radius: 12px;
+}
+
+.delivery-avatar {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+.delivery-info {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.delivery-info strong {
+    display: block;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+.delivery-info span {
+    display: block;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-top: 5px;
+}
+
+
+/* CALL */
+
+.call-delivery-btn {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 9px 13px;
+
+    border-radius: 8px;
+
+    background: #16a34a;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    transition: .2s;
+}
+
+.call-delivery-btn:hover {
+    background: #15803d;
+
+    transform: translateY(-1px);
+}
+
+
+/* DELIVERY MESSAGE */
+
+.delivery-message {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    margin-top: 13px;
+
+    padding: 12px 13px;
+
+    border-radius: 10px;
+
+    background: #ecfdf5;
+
+    color: #166534;
+}
+
+.delivery-message > span {
+    font-size: 17px;
+}
+
+.delivery-message p {
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+.delivery-message strong {
+    font-size: 11px;
+}
+
+.delivery-message small {
+    color: #4b7a5a;
+
+    font-size: 10px;
+}
+
+
+/* DELIVERED */
+
+.delivered-message {
+    background: #f0fdf4;
+
+    color: #15803d;
+}
+
+
+/* WAITING */
+
+.waiting-message {
+    background: #eff6ff;
+
+    color: #1d4ed8;
+}
+
+
+/* =========================
+   ORDER INFO
+========================= */
+
+.track-info {
+    margin-top: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+}
+
+.track-info > div {
+    background: white;
+
+    padding: 16px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 20px rgba(20, 40, 80, .05);
+}
+
+.track-info span {
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 9px;
+
+    margin-bottom: 7px;
+
+    font-weight: 600;
+}
+
+.track-info strong {
+    font-size: 13px;
+}
+
+.track-info > div:first-child strong {
+    color: #2563eb;
+
+    font-size: 18px;
+}
+
+.track-info .paid {
+    color: #16a34a;
+}
+
+.track-info .pending {
+    color: #ea580c;
+}
+
+
+/* =========================
+   ADDRESS
+========================= */
+
+.address-card {
+    margin-top: 18px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 5px 20px rgba(20, 40, 80, .05);
+}
+
+.address-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 14px;
+}
+
+.address-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #eff6ff;
+
+    border-radius: 9px;
+
+    font-size: 19px;
+}
+
+.address-heading h2 {
+    font-size: 14px;
+}
+
+.address-heading span {
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 9px;
+
+    margin-top: 3px;
+}
+
+.address-content {
+    padding: 13px;
+
+    background: #f8fafc;
+
+    border-radius: 9px;
+}
+
+.address-content p {
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.7;
+}
+
+.address-content p + p {
+    margin-top: 3px;
+}
+
+
+/* MAP */
+
+.map-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 12px;
+
+    padding: 9px 13px;
+
+    border-radius: 8px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    transition: .2s;
+}
+
+.map-btn:hover {
+    background: #1d4ed8;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    margin-top: 18px;
+
+    padding: 11px 17px;
+
+    border-radius: 8px;
+
+    background: #2563eb;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.back-btn:hover {
+    background: #1d4ed8;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .track-page {
+        padding: 22px 12px 45px;
+    }
+
+    .track-card {
+        padding: 18px;
+    }
+
+    .page-heading h1 {
+        font-size: 25px;
+    }
+
+    .track-info {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .delivery-person-card {
+        padding: 16px;
+    }
+
+    .delivery-person-details {
+        align-items: center;
+    }
+
+    .delivery-info strong {
+        font-size: 13px;
+    }
+
+    .call-delivery-btn {
+        padding: 9px 10px;
+
+        white-space: nowrap;
+    }
+
+    .current-status {
+        padding: 14px;
+    }
+
+    .timeline {
+        margin-left: 2px;
+    }
+
+}
+
+/* ==========================================
+   CANCEL ORDER
+========================================== */
+
+.cancel-order-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    background: #fff7ed;
+
+    border: 1px solid #fed7aa;
+
+    border-radius: 12px;
+
+}
+
+
+.cancel-icon {
+
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #ffedd5;
+
+    border-radius: 10px;
+
+    font-size: 19px;
+
+}
+
+
+.cancel-content {
+
+    flex: 1;
+
+}
+
+
+.cancel-content strong,
+.cancel-content span {
+
+    display: block;
+
+}
+
+
+.cancel-content strong {
+
+    color: #9a3412;
+
+    font-size: 11px;
+
+}
+
+
+.cancel-content span {
+
+    color: #c2410c;
+
+    font-size: 9px;
+
+    margin-top: 4px;
+
+}
+
+
+.cancel-btn {
+
+    padding: 9px 13px;
+
+    border: 1px solid #dc2626;
+
+    background: white;
+
+    color: #dc2626;
+
+    border-radius: 8px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.cancel-btn:hover {
+
+    background: #dc2626;
+
+    color: white;
+
+}
+
+
+/* ==========================================
+   CANCEL SUCCESS
+========================================== */
+
+.cancelled-success,
+.cancel-success-message {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    background: #ecfdf5;
+
+    border: 1px solid #bbf7d0;
+
+    border-radius: 12px;
+
+    color: #166534;
+
+}
+
+
+.cancelled-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: #16a34a;
+
+    color: white;
+
+    border-radius: 50%;
+
+    font-weight: 800;
+
+}
+
+
+.cancelled-success strong,
+.cancelled-success span,
+.cancel-success-message strong,
+.cancel-success-message span {
+
+    display: block;
+
+}
+
+
+.cancelled-success strong,
+.cancel-success-message strong {
+
+    font-size: 11px;
+
+}
+
+
+.cancelled-success span,
+.cancel-success-message span {
+
+    color: #4d7c5c;
+
+    font-size: 9px;
+
+    margin-top: 4px;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .cancel-order-card {
+
+        align-items: flex-start;
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .cancel-content {
+
+        min-width: 180px;
+
+    }
+
+
+    .cancel-btn {
+
+        width: 100%;
+
+        margin-left: 54px;
+
+    }
+
+}

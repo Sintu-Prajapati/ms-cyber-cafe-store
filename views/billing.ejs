@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Billing - MS Cyber Cafe & General Store</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/customer.css">
+</head>
+
+<body class="billing-page customer-page">
+
+<header class="billing-header">
+
+    <div>
+        <h1>MS Cyber Cafe & General Store</h1>
+        <p>Billing Counter</p>
+    </div>
+
+    <a href="/" class="back-btn back-link">Dashboard</a>
+
+</header>
+
+
+<main class="billing-container">
+
+    <!-- LEFT SIDE -->
+
+    <section class="billing-left">
+
+        <div class="billing-card panel">
+
+            <div class="card-title">
+                <h2>🛒 Add Products</h2>
+            </div>
+
+
+            <!-- Product Search -->
+
+            <div class="product-search">
+
+                <label>Search Product</label>
+
+                <input
+                    type="text"
+                    id="productSearch"
+                    placeholder="Search product..."
+                    autocomplete="off"
+                >
+
+                <div id="searchResults"></div>
+
+            </div>
+
+
+            <!-- Selected Product -->
+
+            <div class="selected-product" id="selectedProduct">
+
+                <div>
+
+                    <strong id="selectedName">
+                        No Product Selected
+                    </strong>
+
+                    <small id="selectedInfo">
+                        Select a product above
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- Calculation Type -->
+
+            <div class="calculation-section">
+
+                <label>Calculation Type</label>
+
+                <select id="calculationType">
+
+                    <option value="quantity">
+                        Quantity
+                    </option>
+
+                    <option value="quantityByQuantity">
+                        Quantity by Quantity
+                    </option>
+
+                    <option value="amount">
+                        Amount
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Quantity Input -->
+
+            <div
+                class="calculation-box"
+                id="quantityBox"
+            >
+
+                <div>
+
+                    <label>Quantity</label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        min="0.001"
+                        step="0.001"
+                        value="1"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Unit</label>
+
+                    <input
+                        type="text"
+                        id="unit"
+                        readonly
+                        placeholder="Unit"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Amount Input -->
+
+            <div
+                class="calculation-box hidden"
+                id="amountBox"
+            >
+
+                <div>
+
+                    <label>Amount (₹)</label>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Enter amount"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>Calculated Quantity</label>
+
+                    <input
+                        type="text"
+                        id="calculatedQuantity"
+                        readonly
+                        placeholder="Auto"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Add Button -->
+
+            <button
+                type="button"
+                id="addToCart"
+                class="add-cart-btn"
+            >
+                + Add to Bill
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+<section class="billing-right">
+
+    <div class="billing-card cart-card panel">
+        <div class="card-title">
+
+            <h2>🧾 Current Bill</h2>
+
+            <span id="billNumber">
+                New Bill
+            </span>
+
+        </div>
+
+
+        <!-- CUSTOMER -->
+
+        <div class="customer-select">
+
+            <label>
+                Customer
+            </label>
+
+            <select
+                id="customerId"
+                required
+            >
+
+                <option value="">
+                    Select Customer
+                </option>
+
+                <% customers.forEach(customer => { %>
+
+                    <option
+                        value="<%= customer._id %>"
+                    >
+                        <%= customer.name %>
+                        -
+                        <%= customer.village || "" %>
+                    </option>
+
+                <% }) %>
+
+            </select>
+
+        </div>
+
+
+        <!-- CART -->
+
+        <div class="cart-table-wrapper customer-table-wrap">
+
+            <table class="cart-table customer-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Rate</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="cartItems">
+
+                    <tr>
+
+                        <td colspan="5">
+                            No products added
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="bill-summary">
+
+            <div>
+
+                <span>
+                    Product Total
+                </span>
+
+                <strong id="productTotal">
+                    ₹0.00
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Bill Printing
+                </span>
+
+                <strong>
+                    ₹0.00
+                </strong>
+
+            </div>
+
+
+            <div class="grand-total">
+
+                <span>
+                    Grand Total
+                </span>
+
+                <strong id="grandTotal">
+                    ₹0.00
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYMENT -->
+
+        <div class="payment-section">
+
+            <h3>
+                💰 Payment Details
+            </h3>
+
+
+            <div class="payment-boxes">
+
+
+                <!-- PAID -->
+
+                <div class="payment-box paid-box">
+
+                    <label>
+                        💵 Paid Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="paidAmount"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        placeholder="Customer ne kitna diya?"
+                    >
+
+                </div>
+
+
+                <!-- UDHAR -->
+
+                <div class="payment-box credit-box">
+
+                    <label>
+                        📒 Udhar Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="creditAmount"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        placeholder="Kitna udhar?"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT MODE -->
+
+            <div class="payment-mode">
+
+                <label>
+                    Payment Mode
+                </label>
+
+                <select id="paymentMode">
+
+                    <option value="cash">
+                        Cash
+                    </option>
+
+                    <option value="upi">
+                        UPI
+                    </option>
+
+                    <option value="mixed">
+                        Cash + UPI
+                    </option>
+
+                    <option value="credit">
+                        Udhar
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PAYMENT STATUS -->
+
+            <div
+                class="payment-status"
+                id="paymentStatus"
+            >
+                Paid + Udhar = ₹0.00
+            </div>
+
+        </div>
+
+
+        <!-- GENERATE -->
+
+        <button
+            type="button"
+            id="generateBill"
+            class="generate-bill-btn"
+        >
+            🧾 Generate Bill
+        </button>
+
+
+    </div>
+
+</section>
+
+</main>
+
+<script>
+
+    const products =
+        <%- JSON.stringify(products) %>;
+
+
+    let selectedProduct = null;
+
+    let cart = [];
+
+
+    /* =================================
+       ELEMENTS
+    ================================= */
+
+    const searchInput =
+        document.getElementById(
+            "productSearch"
+        );
+
+    const searchResults =
+        document.getElementById(
+            "searchResults"
+        );
+
+    const calculationType =
+        document.getElementById(
+            "calculationType"
+        );
+
+    const quantityBox =
+        document.getElementById(
+            "quantityBox"
+        );
+
+    const amountBox =
+        document.getElementById(
+            "amountBox"
+        );
+
+    const quantityInput =
+        document.getElementById(
+            "quantity"
+        );
+
+    const amountInput =
+        document.getElementById(
+            "amount"
+        );
+
+    const calculatedQuantity =
+        document.getElementById(
+            "calculatedQuantity"
+        );
+
+    const unitInput =
+        document.getElementById(
+            "unit"
+        );
+
+    const selectedName =
+        document.getElementById(
+            "selectedName"
+        );
+
+    const selectedInfo =
+        document.getElementById(
+            "selectedInfo"
+        );
+
+    const cartItems =
+        document.getElementById(
+            "cartItems"
+        );
+
+    const productTotal =
+        document.getElementById(
+            "productTotal"
+        );
+
+    const grandTotal =
+        document.getElementById(
+            "grandTotal"
+        );
+
+    const customerId =
+        document.getElementById(
+            "customerId"
+        );
+
+    const paidAmount =
+        document.getElementById(
+            "paidAmount"
+        );
+
+    const creditAmount =
+        document.getElementById(
+            "creditAmount"
+        );
+
+    const paymentMode =
+        document.getElementById(
+            "paymentMode"
+        );
+
+    const paymentStatus =
+        document.getElementById(
+            "paymentStatus"
+        );
+
+
+    /* =================================
+       PRODUCT SEARCH
+    ================================= */
+
+    searchInput.addEventListener(
+        "input",
+        () => {
+
+            const search =
+                searchInput.value
+                    .toLowerCase()
+                    .trim();
+
+
+            searchResults.innerHTML = "";
+
+
+            if (!search) {
+                return;
+            }
+
+
+            const results =
+                products.filter(product =>
+                    product.name
+                        .toLowerCase()
+                        .includes(search)
+                );
+
+
+            results.forEach(product => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "search-result";
+
+
+                div.innerHTML = `
+
+                    <strong>
+                        ${product.name}
+                    </strong>
+
+                    <span>
+                        ₹${Number(
+                            product.sellingPrice
+                        ).toFixed(2)}
+                        /
+                        ${product.unit}
+
+                        |
+                        Stock:
+                        ${product.stock}
+                    </span>
+
+                `;
+
+
+                div.addEventListener(
+                    "click",
+                    () => {
+
+                        selectedProduct =
+                            product;
+
+
+                        selectedName.textContent =
+                            product.name;
+
+
+                        selectedInfo.textContent =
+                            `₹${Number(
+                                product.sellingPrice
+                            ).toFixed(2)}
+                            / ${product.unit}
+                            | Stock:
+                            ${product.stock}`;
+
+
+                        unitInput.value =
+                            product.unit;
+
+
+                        searchInput.value =
+                            product.name;
+
+
+                        searchResults.innerHTML =
+                            "";
+
+
+                        quantityInput.value =
+                            1;
+
+
+                        amountInput.value =
+                            "";
+
+
+                        calculatedQuantity.value =
+                            "";
+
+                    }
+                );
+
+
+                searchResults.appendChild(
+                    div
+                );
+
+            });
+
+        }
+    );
+
+
+    /* =================================
+       CALCULATION TYPE
+    ================================= */
+
+    calculationType.addEventListener(
+        "change",
+        () => {
+
+            const type =
+                calculationType.value;
+
+
+            if (type === "amount") {
+
+                quantityBox.classList.add(
+                    "hidden"
+                );
+
+                amountBox.classList.remove(
+                    "hidden"
+                );
+
+            } else {
+
+                amountBox.classList.add(
+                    "hidden"
+                );
+
+                quantityBox.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =================================
+       AMOUNT → QUANTITY
+    ================================= */
+
+    amountInput.addEventListener(
+        "input",
+        calculateAmountQuantity
+    );
+
+
+    function calculateAmountQuantity() {
+
+        if (!selectedProduct) {
+
+            calculatedQuantity.value =
+                "";
+
+            return;
+
+        }
+
+
+        const amount =
+            Number(
+                amountInput.value
+            );
+
+
+        if (!amount || amount <= 0) {
+
+            calculatedQuantity.value =
+                "";
+
+            return;
+
+        }
+
+
+        const quantity =
+            amount /
+            Number(
+                selectedProduct.sellingPrice
+            );
+
+
+        calculatedQuantity.value =
+            formatQuantity(quantity)
+            + " "
+            + selectedProduct.unit;
+
+    }
+
+
+    /* =================================
+       FORMAT QUANTITY
+    ================================= */
+
+    function formatQuantity(value) {
+
+        return Number(
+            Number(value).toFixed(3)
+        );
+
+    }
+
+
+    /* =================================
+       ADD TO CART
+    ================================= */
+
+    document
+        .getElementById(
+            "addToCart"
+        )
+        .addEventListener(
+            "click",
+            addProductToCart
+        );
+
+
+    function addProductToCart() {
+
+        if (!selectedProduct) {
+
+            alert(
+                "Please select a product"
+            );
+
+            return;
+
+        }
+
+
+        const type =
+            calculationType.value;
+
+
+        let quantity;
+
+
+        /* -----------------------------
+           QUANTITY MODE
+        ----------------------------- */
+
+        if (
+            type === "quantity" ||
+            type === "quantityByQuantity"
+        ) {
+
+            quantity =
+                Number(
+                    quantityInput.value
+                );
+
+
+            if (
+                !quantity ||
+                quantity <= 0
+            ) {
+
+                alert(
+                    "Please enter valid quantity"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /* -----------------------------
+           AMOUNT MODE
+        ----------------------------- */
+
+        if (type === "amount") {
+
+            const enteredAmount =
+                Number(
+                    amountInput.value
+                );
+
+
+            if (
+                !enteredAmount ||
+                enteredAmount <= 0
+            ) {
+
+                alert(
+                    "Please enter amount"
+                );
+
+                return;
+
+            }
+
+
+            quantity =
+                enteredAmount /
+                Number(
+                    selectedProduct.sellingPrice
+                );
+
+
+            quantity =
+                formatQuantity(
+                    quantity
+                );
+
+
+            if (quantity <= 0) {
+
+                alert(
+                    "Amount se quantity calculate nahi ho pa rahi"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /* -----------------------------
+           PIECE VALIDATION
+        ----------------------------- */
+
+        if (
+            (
+                selectedProduct.unit ===
+                "piece"
+                ||
+                selectedProduct.unit ===
+                "pcs"
+            )
+            &&
+            !Number.isInteger(quantity)
+        ) {
+
+            alert(
+                "Piece wale product me decimal quantity allowed nahi hai."
+            );
+
+            return;
+
+        }
+
+
+        /* -----------------------------
+           STOCK CHECK
+        ----------------------------- */
+
+        const existing =
+            cart.find(
+                item =>
+                    item.productId ===
+                    selectedProduct._id
+            );
+
+
+        const currentCartQuantity =
+            existing
+                ? existing.quantity
+                : 0;
+
+
+        if (
+            currentCartQuantity +
+            quantity >
+            Number(
+                selectedProduct.stock
+            )
+        ) {
+
+            alert(
+                `Stock available sirf ${selectedProduct.stock} ${selectedProduct.unit} hai.`
+            );
+
+            return;
+
+        }
+
+
+        /* -----------------------------
+           ADD / UPDATE
+        ----------------------------- */
+
+        if (existing) {
+
+            existing.quantity +=
+                quantity;
+
+        } else {
+
+            cart.push({
+
+                productId:
+                    selectedProduct._id,
+
+                name:
+                    selectedProduct.name,
+
+                unit:
+                    selectedProduct.unit,
+
+                price:
+                    Number(
+                        selectedProduct.sellingPrice
+                    ),
+
+                quantity:
+                    quantity
+
+            });
+
+        }
+
+
+        renderCart();
+
+
+        /* RESET */
+
+        quantityInput.value =
+            1;
+
+        amountInput.value =
+            "";
+
+        calculatedQuantity.value =
+            "";
+
+    }
+
+
+    /* =================================
+       RENDER CART
+    ================================= */
+
+    function renderCart() {
+
+        cartItems.innerHTML = "";
+
+
+        let total = 0;
+
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML = `
+
+                <tr>
+
+                    <td colspan="5">
+                        No products added
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+
+        cart.forEach(
+            (item, index) => {
+
+                const itemTotal =
+                    Number(item.price) *
+                    Number(item.quantity);
+
+
+                total +=
+                    itemTotal;
+
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <strong>
+                            ${item.name}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        ${formatQuantity(
+                            item.quantity
+                        )}
+
+                        ${item.unit}
+
+                    </td>
+
+
+                    <td>
+
+                        ₹${Number(
+                            item.price
+                        ).toFixed(2)}
+
+                        /
+                        ${item.unit}
+
+                    </td>
+
+
+                    <td>
+
+                        ₹${itemTotal.toFixed(2)}
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            type="button"
+                            class="remove-item"
+                            onclick="removeItem(${index})"
+                        >
+                            ×
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                cartItems.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+        productTotal.textContent =
+            `₹${total.toFixed(2)}`;
+
+
+        const finalTotal =
+            total;
+
+
+        grandTotal.textContent =
+            `₹${finalTotal.toFixed(2)}`;
+
+
+        grandTotal.dataset.total =
+            finalTotal;
+
+
+        updatePayment();
+
+    }
+
+
+    /* =================================
+       REMOVE ITEM
+    ================================= */
+
+    function removeItem(index) {
+
+        cart.splice(
+            index,
+            1
+        );
+
+
+        renderCart();
+
+    }
+
+
+    /* =================================
+       PAYMENT CALCULATION
+    ================================= */
+
+    paidAmount.addEventListener(
+        "input",
+        () => {
+
+            const total =
+                Number(
+                    grandTotal.dataset.total
+                ) || 0;
+
+
+            let paid =
+                Number(
+                    paidAmount.value
+                ) || 0;
+
+
+            if (paid < 0) {
+                paid = 0;
+            }
+
+
+            if (paid > total) {
+
+                paid = total;
+
+                paidAmount.value =
+                    total.toFixed(2);
+
+            }
+
+
+            const udhar =
+                total - paid;
+
+
+            creditAmount.value =
+                udhar.toFixed(2);
+
+
+            updatePayment();
+
+        }
+    );
+
+
+    creditAmount.addEventListener(
+        "input",
+        () => {
+
+            const total =
+                Number(
+                    grandTotal.dataset.total
+                ) || 0;
+
+
+            let udhar =
+                Number(
+                    creditAmount.value
+                ) || 0;
+
+
+            if (udhar < 0) {
+                udhar = 0;
+            }
+
+
+            if (udhar > total) {
+
+                udhar = total;
+
+                creditAmount.value =
+                    total.toFixed(2);
+
+            }
+
+
+            const paid =
+                total - udhar;
+
+
+            paidAmount.value =
+                paid.toFixed(2);
+
+
+            updatePayment();
+
+        }
+    );
+
+
+    function updatePayment() {
+
+        const total =
+            Number(
+                grandTotal.dataset.total
+            ) || 0;
+
+
+        const paid =
+            Number(
+                paidAmount.value
+            ) || 0;
+
+
+        const udhar =
+            Number(
+                creditAmount.value
+            ) || 0;
+
+
+        const entered =
+            paid + udhar;
+
+
+        paymentStatus.textContent =
+            `Paid + Udhar = ₹${entered.toFixed(2)}
+             / Bill = ₹${total.toFixed(2)}`;
+
+
+        if (
+            Math.abs(
+                entered - total
+            ) < 0.01
+        ) {
+
+            paymentStatus.classList.add(
+                "payment-ok"
+            );
+
+            paymentStatus.classList.remove(
+                "payment-error"
+            );
+
+        } else {
+
+            paymentStatus.classList.add(
+                "payment-error"
+            );
+
+            paymentStatus.classList.remove(
+                "payment-ok"
+            );
+
+        }
+
+    }
+
+
+    /* =================================
+       GENERATE BILL
+    ================================= */
+
+    document
+        .getElementById(
+            "generateBill"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                /* CUSTOMER */
+
+                if (
+                    !customerId.value
+                ) {
+
+                    alert(
+                        "Please select customer."
+                    );
+
+                    return;
+
+                }
+
+
+                /* CART */
+
+                if (
+                    cart.length === 0
+                ) {
+
+                    alert(
+                        "Bill me product add karo."
+                    );
+
+                    return;
+
+                }
+
+
+                /* TOTAL */
+
+                const total =
+                    Number(
+                        grandTotal.dataset.total
+                    ) || 0;
+
+
+                const paid =
+                    Number(
+                        paidAmount.value
+                    ) || 0;
+
+
+                const udhar =
+                    Number(
+                        creditAmount.value
+                    ) || 0;
+
+
+                /* VALIDATION */
+
+                if (
+                    Math.abs(
+                        paid +
+                        udhar -
+                        total
+                    ) > 0.01
+                ) {
+
+                    alert(
+                        `Paid + Udhar = ₹${(
+                            paid + udhar
+                        ).toFixed(2)}
+
+Bill Total = ₹${total.toFixed(2)}
+
+Dono amount barabar hona chahiye.`
+                    );
+
+                    return;
+
+                }
+
+
+                /* PREPARE FORM */
+
+                const form =
+                    document.createElement(
+                        "form"
+                    );
+
+
+                form.method =
+                    "POST";
+
+
+                form.action =
+                    "/billing/create";
+
+
+                /* CUSTOMER */
+
+                addHiddenInput(
+                    form,
+                    "customerId",
+                    customerId.value
+                );
+
+
+                /* ITEMS */
+
+                addHiddenInput(
+                    form,
+                    "items",
+                    JSON.stringify(
+                        cart.map(item => ({
+
+                            productId:
+                                item.productId,
+
+                            name:
+                                item.name,
+
+                            quantity:
+                                item.quantity,
+
+                            unit:
+                                item.unit,
+
+                            sellingPrice:
+                                item.price,
+
+                            total:
+                                Number(
+                                    item.price
+                                ) *
+                                Number(
+                                    item.quantity
+                                )
+
+                        }))
+                    )
+                );
+
+
+                /* PAID */
+
+                addHiddenInput(
+                    form,
+                    "paidAmount",
+                    paid
+                );
+
+
+                /* UDHAR */
+
+                addHiddenInput(
+                    form,
+                    "creditAmount",
+                    udhar
+                );
+
+
+                /* PAYMENT MODE */
+
+                addHiddenInput(
+                    form,
+                    "paymentMode",
+                    paymentMode.value
+                );
+
+
+                document.body.appendChild(
+                    form
+                );
+
+
+                form.submit();
+
+            }
+        );
+
+
+    /* =================================
+       HIDDEN INPUT
+    ================================= */
+
+    function addHiddenInput(
+        form,
+        name,
+        value
+    ) {
+
+        const input =
+            document.createElement(
+                "input"
+            );
+
+
+        input.type =
+            "hidden";
+
+
+        input.name =
+            name;
+
+
+        input.value =
+            value;
+
+
+        form.appendChild(
+            input
+        );
+
+    }
+
+
+    /* =================================
+       INITIAL
+    ================================= */
+
+    grandTotal.dataset.total =
+        "0";
+
+
+    updatePayment();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Online Orders | Admin</title>
+
+    <link rel="stylesheet" href="/css/admin-orders.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">MS</div>
+
+            <div>
+                <strong>MS Cyber Cafe</strong>
+                <span>Admin Panel</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <a href="/admin/dashboard">
+                🏠 Dashboard
+            </a>
+
+            <a href="/admin/products">
+                📦 Products
+            </a>
+
+            <a href="/billing">
+                🧾 Billing
+            </a>
+
+            <a href="/admin/orders" class="active">
+                🛒 Online Orders
+            </a>
+
+            <a href="/customers">
+                👥 Customers
+            </a>
+
+        </nav>
+
+        <a href="/admin/logout" class="logout">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <span>HOME DELIVERY</span>
+
+                <h1>
+                    Online Orders
+                </h1>
+            </div>
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div>
+                    <strong>
+                        Admin
+                    </strong>
+
+                    <small>
+                        Store Admin
+                    </small>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- FILTER -->
+
+        <div class="filters">
+
+            <a href="/admin/orders" class="<%= !currentStatus ? 'active' : '' %>">
+                All
+            </a>
+
+            <a href="/admin/orders?status=Pending" class="<%= currentStatus === 'Pending' ? 'active' : '' %>">
+                Pending
+            </a>
+
+            <a href="/admin/orders?status=Accepted" class="<%= currentStatus === 'Accepted' ? 'active' : '' %>">
+                Accepted
+            </a>
+
+            <a href="/admin/orders?status=Preparing" class="<%= currentStatus === 'Preparing' ? 'active' : '' %>">
+                Preparing
+            </a>
+
+            <a href="/admin/orders?status=Ready for Delivery"
+                class="<%= currentStatus === 'Ready for Delivery' ? 'active' : '' %>">
+                Ready
+            </a>
+
+            <a href="/admin/orders?status=Out for Delivery"
+                class="<%= currentStatus === 'Out for Delivery' ? 'active' : '' %>">
+                Out for Delivery
+            </a>
+
+            <a href="/admin/orders?status=Delivered" class="<%= currentStatus === 'Delivered' ? 'active' : '' %>">
+                Delivered
+            </a>
+
+        </div>
+
+
+        <!-- ORDERS -->
+
+        <% if (!orders || orders.length===0) { %>
+
+            <div class="empty-orders">
+
+                <div>🛒</div>
+
+                <h2>
+                    No Orders Found
+                </h2>
+
+                <p>
+                    There are no online delivery orders here.
+                </p>
+
+            </div>
+
+            <% } else { %>
+
+                <div class="orders-list">
+
+                    <% orders.forEach(order=> { %>
+
+                        <div class="order-card">
+
+
+                            <!-- ORDER HEADER -->
+
+                            <div class="order-header">
+
+                                <div>
+
+                                    <span>
+                                        ORDER ID
+                                    </span>
+
+                                    <strong>
+                                        #<%= order.orderId %>
+                                    </strong>
+
+                                    <small>
+                                        <%= new Date( order.createdAt ).toLocaleString("en-IN") %>
+                                    </small>
+
+                                </div>
+
+
+                                <% let statusClass="status-pending" ; if (order.orderStatus==="Pending" ) {
+                                    statusClass="status-pending" ; } else if (order.orderStatus==="Accepted" ) {
+                                    statusClass="status-accepted" ; } else if (order.orderStatus==="Preparing" ) {
+                                    statusClass="status-preparing" ; } else if (
+                                    order.orderStatus==="Ready for Delivery" ) { statusClass="status-ready" ; } else if
+                                    ( order.orderStatus==="Out for Delivery" ) { statusClass="status-out" ; } else if (
+                                    order.orderStatus==="Delivered" ) { statusClass="status-delivered" ; } else if (
+                                    order.orderStatus==="Cancelled" ) { statusClass="status-cancelled" ; } %>
+
+                                    <span class="status-badge <%= statusClass %>">
+
+                                        <%= order.orderStatus %>
+
+                                    </span>
+
+                            </div>
+
+
+                            <!-- CUSTOMER -->
+
+                            <div class="customer-section">
+
+                                <div class="customer-info">
+
+                                    <div class="customer-icon">
+                                        👤
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            <%= order.customer ? order.customer.name : order.deliveryAddress.name %>
+                                        </strong>
+
+                                        <span>
+                                            📞
+                                            <%= order.deliveryAddress.number %>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="payment-info">
+
+                                    <strong>
+                                        ₹<%= Number( order.grandTotal ).toFixed(2) %>
+                                    </strong>
+
+                                    <span>
+                                        <%= order.paymentMethod %>
+                                            ·
+                                            <%= order.paymentStatus %>
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PRODUCTS -->
+
+                            <div class="products-section">
+
+                                <h3>
+                                    Ordered Products
+                                </h3>
+
+                                <% order.products.forEach(item=> { %>
+
+                                    <div class="product-row">
+
+                                        <div class="product-image">
+
+                                            <% if (item.image) { %>
+
+                                                <img src="<%= item.image %>" alt="<%= item.name %>">
+
+                                                <% } else { %>
+
+                                                    📦
+
+                                                    <% } %>
+
+                                        </div>
+
+                                        <div class="product-name">
+
+                                            <strong>
+                                                <%= item.name %>
+                                            </strong>
+
+                                            <span>
+                                                ₹<%= Number( item.price ).toFixed(2) %>
+                                                    ×
+                                                    <%= item.quantity %>
+                                            </span>
+
+                                        </div>
+
+                                        <strong>
+                                            ₹<%= Number( item.total ).toFixed(2) %>
+                                        </strong>
+
+                                    </div>
+
+                                    <% }) %>
+
+                            </div>
+
+
+                            <!-- ADDRESS -->
+
+                            <div class="address-section">
+
+                                <div>
+
+                                    <h3>
+                                        📍 Delivery Address
+                                    </h3>
+
+                                    <p>
+
+                                        <%= order.deliveryAddress.house %>,
+                                            <%= order.deliveryAddress.village %>,
+                                                <%= order.deliveryAddress.district %>,
+                                                    <%= order.deliveryAddress.state %>
+                                                        -
+                                                        <%= order.deliveryAddress.pincode %>
+
+                                    </p>
+
+                                </div>
+
+
+                                <% if ( order.deliveryAddress.latitude && order.deliveryAddress.longitude ) { %>
+
+                                    <a href="https://www.google.com/maps?q=<%= order.deliveryAddress.latitude %>,<%= order.deliveryAddress.longitude %>"
+                                        target="_blank" class="map-btn">
+                                        🗺️ View Map
+                                    </a>
+
+                                    <% } %>
+
+                            </div>
+
+
+                            <!-- TOTAL -->
+
+                            <div class="order-footer">
+
+                                <div class="amount-details">
+
+                                    <span>
+                                        Subtotal:
+                                        ₹<%= Number( order.subtotal ).toFixed(2) %>
+                                    </span>
+
+                                    <span>
+                                        Platform:
+                                        ₹<%= Number( order.platformCharge ).toFixed(2) %>
+                                    </span>
+
+                                    <strong>
+                                        Total:
+                                        ₹<%= Number( order.grandTotal ).toFixed(2) %>
+                                    </strong>
+
+                                </div>
+
+
+                                <!-- STATUS CHANGE -->
+
+                                <form action="/admin/orders/<%= order._id %>/status" method="POST" class="status-form">
+
+                                    <select name="status" onchange="this.form.submit()">
+
+                                        <option value="Pending" <%=order.orderStatus==="Pending" ? "selected" : "" %>
+                                            >
+                                            Pending
+                                        </option>
+
+                                        <option value="Accepted" <%=order.orderStatus==="Accepted" ? "selected" : "" %>
+                                            >
+                                            Accepted
+                                        </option>
+
+                                        <option value="Preparing" <%=order.orderStatus==="Preparing" ? "selected" : ""
+                                            %>
+                                            >
+                                            Preparing
+                                        </option>
+
+                                        <option value="Ready for Delivery" <%=order.orderStatus==="Ready for Delivery"
+                                            ? "selected" : "" %>
+                                            >
+                                            Ready for Delivery
+                                        </option>
+
+                                        <option value="Out for Delivery" <%=order.orderStatus==="Out for Delivery"
+                                            ? "selected" : "" %>
+                                            >
+                                            Out for Delivery
+                                        </option>
+
+                                        <option value="Delivered" <%=order.orderStatus==="Delivered" ? "selected" : ""
+                                            %>
+                                            >
+                                            Delivered
+                                        </option>
+
+                                        <option value="Cancelled" <%=order.orderStatus==="Cancelled" ? "selected" : ""
+                                            %>
+                                            >
+                                            Cancelled
+                                        </option>
+
+                                    </select>
+
+                                </form>
+
+                                <div class="delivery-assign">
+
+                                    <span>
+                                        🚚 Delivery Person
+                                    </span>
+
+                                    <% if (order.deliveryPerson) { %>
+
+                                        <div class="assigned-delivery-person">
+
+                                            <span class="assigned-label">
+                                                ✓ Assigned
+                                            </span>
+
+                                            <strong>
+                                                <%= order.deliveryPerson.name %>
+                                            </strong>
+
+                                            <small>
+                                                📞 <%= order.deliveryPerson.number %>
+                                            </small>
+
+                                            <% if (order.deliveryAssignedAt) { %>
+                                                <small class="assigned-time">
+                                                    Assigned <%= new Date(order.deliveryAssignedAt).toLocaleString("en-IN") %>
+                                                </small>
+                                            <% } %>
+
+                                        </div>
+
+                                        <% } else { %>
+
+                                            <form action="/admin/orders/<%= order._id %>/assign-delivery" method="POST">
+
+                                                <select name="deliveryPersonId" required>
+
+                                                    <option value="">
+                                                        Select Delivery Person
+                                                    </option>
+
+                                                    <% deliveryPersons.forEach(person=> { %>
+
+                                                        <option value="<%= person._id %>">
+                                                            <%= person.name %>
+                                                                -
+                                                                <%= person.number %>
+                                                        </option>
+
+                                                        <% }) %>
+
+                                                </select>
+
+                                                <button type="submit">
+                                                    Assign
+                                                </button>
+
+                                            </form>
+
+                                            <% } %>
+
+                                            
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <% }) %>
+
+                </div>
+
+                <% } %>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        <%= customer.name %> - E-Passbook
+    </title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/customer.css">
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+      .back-btn {
+          display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-top: 15px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    
+      }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+
+            }
+
+    </style>
+
+</head>
+
+
+<body class="passbook-page">
+
+
+    <header  style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #f8faff; border-bottom: 1px solid #d0e2ff;">
+        <div>
+
+            <h1>
+                MS Cyber Cafe & General Store
+            </h1>
+
+            <p style=" display: flex; justify-content: center; align-items: center;">
+                E-Passbook for <%= customer.name %>
+            </p>
+
+        </div>
+
+        <a href="/admin/customers" class="back-btn" >Customer Dashboard</a>
+        
+    </header>
+
+
+    <main>
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <div class="welcome">
+
+            <h2>
+                📒 <%= customer.name %>
+            </h2>
+
+
+            <p>
+                📱 Mobile:
+                <%= customer.mobile || "-" %>
+            </p>
+
+
+            <p>
+                🏠 Village:
+                <%= customer.village || "-" %>
+            </p>
+
+
+            <p>
+                📍 Address:
+                <%= customer.address || "-" %>
+            </p>
+
+
+            <% if (balance > 0) { %>
+
+    <div class="balance-box balance-due">
+
+        <span>
+            🔴 Udhar / Baaki
+        </span>
+
+        <strong>
+            ₹<%= Number(balance).toFixed(2) %>
+        </strong>
+
+    </div>
+
+<% } else { %>
+
+    <div class="balance-box balance-clear" style="background: #f8faff; border: 1px solid #d0e2ff; color: #1a73e8;">
+
+        <span style=" font-size: 20px;" >
+            🟢 Jama
+        </span>
+
+        <strong style="color: #06ab00fa;">
+            ₹<%= Number(Math.abs(balance)).toFixed(2) %>
+        </strong>
+
+    </div>
+
+<% } %>
+
+        </div>
+
+
+        <!-- PAYMENT -->
+
+        <div class="welcome no-print">
+
+            <h3>
+                💰 Receive Payment
+            </h3>
+
+
+            <form action="/admin/customers/<%= customer._id %>/payment" method="POST">
+
+                <input type="number" name="amount" placeholder="Payment Amount" min="0.01" step="0.01" required>
+
+
+                <select name="paymentMode">
+
+                    <option value="cash">
+                        Cash
+                    </option>
+
+                    <option value="upi">
+                        UPI
+                    </option>
+
+                </select>
+
+
+                <input type="text" name="description" placeholder="Description" value="Payment Received">
+
+
+                <button type="submit">
+                    💰 Add Payment
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- COMPLETE HISTORY -->
+
+        <div class="welcome">
+
+            <h2>
+                📜 Complete Transaction History
+            </h2>
+
+
+            <div class="table-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Date & Time</th>
+
+                            <th>Type</th>
+
+                            <th>Bill No.</th>
+
+                            <th>Details</th>
+
+                            <th>Total</th>
+
+                            <th>Paid</th>
+
+                            <th>Udhar</th>
+
+                            <th>Balance</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <% if (history.length===0) { %>
+
+                            <tr>
+
+                                <td colspan="8">
+                                    No transaction history
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+
+                                <% history.forEach(item=> { %>
+
+                                    <% const transaction=item.transaction; %>
+
+
+                                        <tr>
+
+                                            <td>
+
+                                                <%= new Date( transaction.date ).toLocaleString( "en-IN" ) %>
+
+                                            </td>
+
+
+                                            <!-- TYPE -->
+
+                                            <td>
+
+                                                <% if ( transaction.type==="bill" ) { %>
+
+                                                    <span class="credit">
+                                                        🛒 Udhar/Bill
+                                                    </span>
+
+                                                    <% } else { %>
+
+                                                        <span class="payment">
+                                                            💰 Payment
+                                                        </span>
+
+                                                        <% } %>
+
+                                            </td>
+
+
+                                            <!-- BILL NUMBER -->
+
+                                            <td>
+
+                                                <% if ( transaction.type==="bill" ) { %>
+
+                                                    <a href="/admin/customers/<%= customer._id %>/bill/<%= transaction._id %>"
+                                                        class="bill-link">
+                                                        <%= transaction.billNumber %>
+                                                    </a>
+
+                                                    <% } else { %>
+
+                                                        -
+
+                                                        <% } %>
+
+                                            </td>
+
+
+                                            <!-- DETAILS -->
+
+                                            <td>
+
+                                                <% if ( transaction.type==="bill" ) { %>
+
+                                                    <div class="item-list">
+
+                                                        <% transaction.items.forEach(item=> { %>
+
+                                                            <div>
+
+                                                                <%= item.name %>
+
+                                                                    —
+                                                                    <%= item.quantity %>
+                                                                        <%= item.unit %>
+
+                                                                            × ₹<%= item.price.toFixed(2) %>
+
+                                                            </div>
+
+                                                            <% }) %>
+
+                                                    </div>
+
+                                                    <% } else { %>
+
+                                                        <%= transaction.paymentDescription || "Payment Received" %>
+
+                                                            <br>
+
+                                                            <small>
+                                                                <%= transaction.paymentMode?.toUpperCase() %>
+                                                            </small>
+
+                                                            <% } %>
+
+                                            </td>
+
+
+                                            <!-- TOTAL -->
+
+                                            <td>
+
+                                                <% if ( transaction.type==="bill" ) { %>
+
+                                                    ₹<%= transaction.grandTotal.toFixed(2) %>
+
+                                                        <% } else { %>
+
+                                                            -
+
+                                                            <% } %>
+
+                                            </td>
+
+
+                                            <!-- PAID -->
+
+                                            <td class="payment">
+
+                                                <% if (transaction.type==="bill" ) { %>
+
+                                                    ₹<%= Number(transaction.paidAmount || 0).toFixed(2) %>
+
+                                                        <% } else { %>
+
+                                                            ₹<%= Number(transaction.paymentAmount || 0).toFixed(2) %>
+
+                                                                <% } %>
+
+                                            </td>
+
+
+                                            <!-- UDHAR -->
+
+                                            <td class="credit">
+
+                                                <% if ( transaction.type==="bill" ) { %>
+
+                                                    ₹<%= transaction.creditAmount.toFixed(2) %>
+
+                                                        <% } else { %>
+
+                                                            -
+
+                                                            <% } %>
+
+                                            </td>
+
+
+                                            <!-- BALANCE -->
+
+                                            <td>
+
+                                                <strong>
+                                                    ₹<%= item.balance.toFixed(2) %>
+                                                </strong>
+
+                                            </td>
+
+                                        </tr>
+
+
+                                        <% }) %>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRINT -->
+
+        <button class="print-btn no-print" onclick="window.print()">
+            🖨️ Print Passbook
+        </button>
+
+
+    </main>
+
+</body>
+
+</html>

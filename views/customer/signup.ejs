@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account | MS Cyber Cafe</title>
+
+
+    <link
+        rel="stylesheet"
+        href="/css/customer-auth.css"
+    >
+    <link rel="stylesheet" href="/css/customer-home.css">
+
+</head>
+
+
+<body>
+
+     <!-- =========================
+         NAVBAR
+    ========================== -->
+
+    <header class="customer-navbar">
+
+        <div class="brand"
+        onclick="window.location.href='/shop'"
+        >
+
+            <div class="brand-icon">
+                🛒
+            </div>
+
+            <div>
+
+                <h1>
+                    MS Cyber Cafe
+                </h1>
+
+                <span>
+                    & General Store
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <button
+                class="search-btn"
+                onclick="focusSearch()"
+                title="Search"
+            >
+                🔍
+            </button>
+
+
+            <button
+                class="cart-btn"
+                onclick="openCart()"
+                title="Cart"
+            >
+
+                🛒
+
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+                <a
+                    href="/customer/login"
+                    class="action-link login-btn"
+                    title="Login"
+                >
+                    🔐 Login
+                </a>
+
+                <a
+                    href="/customer/signup"
+                    class="action-link signup-btn"
+                    title="Sign Up"
+                >
+                    📝 Sign Up
+                </a>
+
+
+        </div>
+
+    </header>
+
+<div class="auth-container">
+
+
+    <div class="auth-card">
+
+
+        <div class="auth-logo">
+            🛒
+        </div>
+
+
+        <h1>
+            Create Account
+        </h1>
+
+
+        <p class="auth-subtitle">
+            Join MS Cyber Cafe & General Store
+        </p>
+
+
+        <form
+            action="/customer/signup"
+            method="POST"
+        >
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label>
+                    Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your name"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label>
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <div class="form-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    name="mobile"
+                    placeholder="Enter mobile number"
+                    autocomplete="tel"
+                    maxlength="10"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Create password"
+                    autocomplete="new-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="auth-btn"
+            >
+                Create Account
+            </button>
+
+
+        </form>
+
+
+        <div class="auth-bottom">
+
+            Already have an account?
+
+            <a href="/customer/login">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

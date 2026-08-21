@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Delivery Boys | Admin
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/admin-delivery-boys.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                MS
+            </div>
+
+            <div>
+
+                <strong>
+                    MS Cyber Cafe
+                </strong>
+
+                <span>
+                    Admin Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/admin/dashboard">
+                🏠 Dashboard
+            </a>
+
+            <a href="/admin/products">
+                📦 Products
+            </a>
+
+            <a href="/billing">
+                🧾 Billing
+            </a>
+
+            <a href="/admin/orders">
+                🛒 Online Orders
+            </a>
+
+            <a
+                href="/admin/delivery-boys"
+                class="active"
+            >
+                🚚 Delivery Boys
+            </a>
+
+        </nav>
+
+
+        <a
+            href="/admin/logout"
+            class="logout"
+        >
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <span>
+                    DELIVERY MANAGEMENT
+                </span>
+
+                <h1>
+                    Delivery Boys
+                </h1>
+
+            </div>
+
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div>
+
+                    <strong>
+                        Admin
+                    </strong>
+
+                    <small>
+                        Store Admin
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ADD DELIVERY BOY -->
+
+        <section class="add-card">
+
+            <div class="section-title">
+
+                <div class="add-icon">
+                    🚚
+                </div>
+
+                <div>
+
+                    <h2>
+                        Add Delivery Boy
+                    </h2>
+
+                    <p>
+                        Create login credentials for delivery staff.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <% if (error) { %>
+
+                <div class="error-box">
+                    ⚠️ <%= error %>
+                </div>
+
+            <% } %>
+
+
+            <form
+                action="/admin/delivery-boys/add"
+                method="POST"
+                class="add-form"
+            >
+
+
+                <div class="input-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        name="number"
+                        placeholder="Enter mobile number"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Create username"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Create password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="add-btn"
+                >
+                    + Add Delivery Boy
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- DELIVERY BOYS -->
+
+        <section class="list-card">
+
+
+            <div class="list-heading">
+
+                <div>
+
+                    <h2>
+                        Delivery Team
+                    </h2>
+
+                    <p>
+                        Manage your delivery staff.
+                    </p>
+
+                </div>
+
+
+                <span class="count">
+                    <%= deliveryPersons.length %>
+                    Members
+                </span>
+
+            </div>
+
+
+
+            <% if (
+                deliveryPersons.length === 0
+            ) { %>
+
+                <div class="empty">
+
+                    <div>
+                        🚚
+                    </div>
+
+                    <h3>
+                        No Delivery Boy Added
+                    </h3>
+
+                    <p>
+                        Add your first delivery boy above.
+                    </p>
+
+                </div>
+
+            <% } else { %>
+
+
+                <div class="delivery-list">
+
+
+                    <% deliveryPersons.forEach(
+                        person => {
+                    %>
+
+
+                        <div class="delivery-card">
+
+
+                            <div class="person">
+
+                                <div class="avatar">
+
+                                    <%= person.name
+                                        .charAt(0)
+                                        .toUpperCase()
+                                    %>
+
+                                </div>
+
+
+                                <div class="person-info">
+
+                                    <strong>
+                                        <%= person.name %>
+                                    </strong>
+
+                                    <span>
+                                        📞
+                                        <%= person.number %>
+                                    </span>
+
+                                    <small>
+                                        @<%= person.username %>
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="person-status">
+
+                                <% if (
+                                    person.active
+                                ) { %>
+
+                                    <span class="active">
+                                        ● Active
+                                    </span>
+
+                                <% } else { %>
+
+                                    <span class="inactive">
+                                        ● Inactive
+                                    </span>
+
+                                <% } %>
+
+                            </div>
+
+
+
+                            <form
+                                action="/admin/delivery-boys/<%= person._id %>/toggle"
+                                method="POST"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="toggle-btn"
+                                >
+
+                                    <%= person.active
+                                        ? "Disable"
+                                        : "Enable"
+                                    %>
+
+                                </button>
+
+                            </form>
+
+
+                        </div>
+
+
+                    <% }) %>
+
+
+                </div>
+
+
+            <% } %>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

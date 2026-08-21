@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Login</title>
+
+    <link
+        rel="stylesheet"
+        href="/css/admin-login.css"
+    >
+
+</head>
+
+<body>
+
+    <div class="login-page">
+
+        <div class="login-card">
+
+            <div class="logo">
+                MS
+            </div>
+
+            <h1>
+                Admin Login
+            </h1>
+
+            <p class="subtitle">
+                Login to manage your store
+            </p>
+
+
+            <% if (error) { %>
+
+                <div class="error-message">
+                    <%= error %>
+                </div>
+
+            <% } %>
+
+
+            <form
+                action="/admin/login"
+                method="POST"
+            >
+
+                <div class="input-group">
+
+                    <label>
+                        Admin ID
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter admin ID"
+                        required
+                        autocomplete="username"
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                        autocomplete="current-password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+                    Login →
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

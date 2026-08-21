@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="/css/admin-dashboard.css">
+    
+
+</head>
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                MS
+            </div>
+
+            <div>
+
+                <strong>
+                    MS Cyber Cafe
+                </strong>
+
+                <span>
+                    Admin Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="/dashboard" class="active">
+                🏠 Dashboard
+            </a>
+
+            <a href="/products">
+                📦 Products
+            </a>
+
+            <a
+    href="/admin/orders"
+    class="order-nav"
+>
+    <span>
+        🛒 Online Orders
+    </span>
+
+    <% if (pendingOrders > 0) { %>
+
+        <span class="pending-badge">
+            <%= pendingOrders %>
+        </span>
+
+    <% } %>
+</a>
+
+            <a href="/admin/delivery-boys">
+                🚚 Delivery Boys
+            </a>
+
+            <a href="/admin/customers">
+                👥 Customers
+            </a>
+
+            <a href="/products">
+                📊 Stock
+            </a>
+
+            <a href="/Billing">
+                💰 Billing
+            </a>
+
+
+        </nav>
+
+
+        <a href="/admin/logout" class="logout">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <span>
+                    ADMIN PANEL
+                </span>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+            </div>
+
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div>
+
+
+                    <small>
+                        Store Admin
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- STAT CARDS -->
+
+        <section class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    📦
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Products
+                    </span>
+
+                    <strong>
+                        <%= totalProducts %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    📊
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Stock
+                    </span>
+
+                    <strong>
+                        <%= totalStock %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon orange">
+                    🛒
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Online Orders
+                    </span>
+
+                    <strong>
+                        <%= totalOrders %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    👥
+                </div>
+
+                <div>
+
+                    <span>
+                        Offline Customers
+                    </span>
+
+                    <strong>
+                        <%= totalCustomers %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card sales-card">
+
+                <div class="stat-icon green">
+                    ₹
+                </div>
+
+                <div>
+
+                    <span>
+                        Delivered Sales
+                    </span>
+
+                    <strong>
+                        ₹<%= Number( totalSales ).toFixed(2) %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- CONTENT GRID -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- LATEST ORDERS -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Latest Orders
+                        </h2>
+
+                        <p>
+                            Recently placed orders
+                        </p>
+
+                    </div>
+
+                    <a href="/admin/orders">
+                        View All →
+                    </a>
+
+                </div>
+
+
+                <% if ( latestOrders.length===0 ) { %>
+
+                    <div class="empty">
+                        No orders yet.
+                    </div>
+
+                    <% } else { %>
+
+
+                        <div class="orders-list">
+
+                            <% latestOrders.forEach( order=> {
+                                %>
+
+                                <div class="mini-order">
+
+                                    <div class="order-icon">
+                                        🛍️
+                                    </div>
+
+                                    <div class="order-details">
+
+                                        <strong>
+                                            #<%= order.orderId %>
+                                        </strong>
+
+                                        <span>
+
+                                            <%= order.customer ? order.customer.name : "Customer" %>
+
+                                        </span>
+
+                                    </div>
+
+                                    <div class="order-right">
+
+                                        <strong>
+                                            ₹<%= Number( order.grandTotal ).toFixed(2) %>
+                                        </strong>
+
+                                        <span class="status">
+                                            <%= order.orderStatus %>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+
+                        <% } %>
+
+            </div>
+
+
+
+            <!-- LOW STOCK -->
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Low Stock
+                        </h2>
+
+                        <p>
+                            Products needing restock
+                        </p>
+
+                    </div>
+
+                    <a href="/admin/stock">
+                        Manage →
+                    </a>
+
+                </div>
+
+
+                <% if ( lowStockProducts.length===0 ) { %>
+
+                    <div class="empty">
+
+                        <span>
+                            ✅
+                        </span>
+
+                        <p>
+                            All products have sufficient stock.
+                        </p>
+
+                    </div>
+
+                    <% } else { %>
+
+
+                        <div class="stock-list">
+
+                            <% lowStockProducts.forEach( product=> {
+                                %>
+
+                                <div class="stock-item">
+
+                                    <div class="stock-product">
+
+                                        <% if ( product.image ) { %>
+
+                                            <img src="<%= product.image %>" alt="<%= product.name %>">
+
+                                            <% } else { %>
+
+                                                <div class="no-image">
+                                                    📦
+                                                </div>
+
+                                                <% } %>
+
+
+                                                    <div>
+
+                                                        <strong>
+                                                            <%= product.name %>
+                                                        </strong>
+
+                                                        <span>
+                                                            Stock remaining
+                                                        </span>
+
+                                                    </div>
+
+                                    </div>
+
+
+                                    <strong class="stock-count">
+                                        <%= product.stock %>
+                                    </strong>
+
+                                </div>
+
+                                <% }) %>
+
+                        </div>
+
+                        <% } %>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+    <footer>
+
+       
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store   
+            <a class="footer-link" href="/customer/about">About Us</a>
+
+        </small>
+
+
+
+
+    </footer>
+
+
+    <!-- =========================
+     NEW ORDER NOTIFICATION
+========================= -->
+
+<div
+    id="newOrderNotification"
+    class="new-order-notification"
+>
+
+    <div class="notification-icon">
+        🛒
+    </div>
+
+    <div class="notification-content">
+
+        <strong>
+            New Order Received!
+        </strong>
+
+        <span>
+            A new online order is waiting.
+        </span>
+
+    </div>
+
+    <button
+        type="button"
+        onclick="closeOrderNotification()"
+    >
+        ×
+    </button>
+
+</div>
+
+
+<audio
+    id="orderNotificationSound"
+    preload="auto"
+>
+    <source
+        src="/sounds/notification.mpeg"
+        type="audio/mpeg"
+    >
+</audio>
+
+
+<script>
+
+let currentPendingOrders =
+    <%= pendingOrders %>;
+
+let notificationShown = false;
+let notificationSoundUnlocked = false;
+
+
+function unlockNotificationSound() {
+
+    if (notificationSoundUnlocked) {
+        return;
+    }
+
+
+    const sound =
+        document.getElementById(
+            "orderNotificationSound"
+        );
+
+
+    if (!sound) {
+        return;
+    }
+
+
+    sound.play().then(() => {
+
+        sound.pause();
+        sound.currentTime = 0;
+        notificationSoundUnlocked = true;
+
+    }).catch((error) => {
+
+        console.warn(
+            "Notification sound could not be enabled:",
+            error
+        );
+
+    });
+
+}
+
+
+document.addEventListener(
+    "pointerdown",
+    unlockNotificationSound,
+    { once: true }
+);
+
+
+async function checkPendingOrders() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/pending-order-count"
+            );
+
+
+        if (!response.ok) {
+            return;
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+            return;
+        }
+
+
+        const newPendingOrders =
+            Number(
+                data.pendingOrders
+            );
+
+
+        /*
+         * नया pending order आया
+         */
+
+        if (
+            newPendingOrders >
+            currentPendingOrders
+        ) {
+
+            showNewOrderNotification();
+
+        }
+
+
+        currentPendingOrders =
+            newPendingOrders;
+
+
+        /*
+         * Badge update
+         */
+
+        updatePendingBadge(
+            newPendingOrders
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Order notification error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   BADGE UPDATE
+========================= */
+
+function updatePendingBadge(count) {
+
+    const badge =
+        document.getElementById(
+            "pendingOrderBadge"
+        );
+
+
+    if (count > 0) {
+
+        if (badge) {
+
+            badge.textContent =
+                count;
+
+        } else {
+
+            location.reload();
+
+        }
+
+    } else {
+
+        if (badge) {
+
+            badge.remove();
+
+        }
+
+    }
+
+}
+
+
+/* =========================
+   SHOW NOTIFICATION
+========================= */
+
+function showNewOrderNotification() {
+
+    const notification =
+        document.getElementById(
+            "newOrderNotification"
+        );
+
+
+    notification.classList.add(
+        "show"
+    );
+
+
+    /*
+     * Sound
+     */
+
+    const sound =
+        document.getElementById(
+            "orderNotificationSound"
+        );
+
+
+    if (sound) {
+
+        sound.currentTime = 0;
+
+        sound.play().catch((error) => {
+
+            console.warn(
+                "Notification sound was blocked by the browser:",
+                error
+            );
+
+        });
+
+    }
+
+
+    /*
+     * Automatically hide
+     */
+
+    setTimeout(() => {
+
+        notification.classList.remove(
+            "show"
+        );
+
+    }, 7000);
+
+}
+
+
+/* =========================
+   CLOSE
+========================= */
+
+function closeOrderNotification() {
+
+    const notification =
+        document.getElementById(
+            "newOrderNotification"
+        );
+
+
+    notification.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =========================
+   CHECK EVERY 5 SECONDS
+========================= */
+
+setInterval(
+    checkPendingOrders,
+    5000
+);
+
+</script>
+
+</body>
+
+</html>

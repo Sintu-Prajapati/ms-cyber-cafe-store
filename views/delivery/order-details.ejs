@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Order Details | Delivery
+    </title>
+
+    <link rel="stylesheet" href="/css/delivery-order-details.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                🚚
+            </div>
+
+            <div>
+
+                <strong>
+                    MS Cyber Cafe
+                </strong>
+
+                <span>
+                    Delivery Panel
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-actions">
+
+            <a href="/delivery/orders" class="back-link">
+                ← My Orders
+            </a>
+
+            <a href="/delivery/logout" class="logout">
+                Logout
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="page">
+
+
+        <!-- TITLE -->
+
+        <div class="page-heading">
+
+            <span>
+                DELIVERY ORDER
+            </span>
+
+            <h1>
+                #<%= order.orderId %>
+            </h1>
+
+            <p>
+
+                <%= new Date( order.createdAt ).toLocaleString("en-IN") %>
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <section class="status-card">
+
+            <div class="status-icon">
+                <%= order.orderStatus==="Delivered" ? "✓" : "🛵" %>
+            </div>
+
+            <div>
+
+                <span>
+                    CURRENT STATUS
+                </span>
+
+                <h2>
+                    <%= order.orderStatus %>
+                </h2>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- CUSTOMER -->
+
+        <section class="card">
+
+            <div class="section-heading">
+
+                <span>
+                    CUSTOMER
+                </span>
+
+                <h2>
+                    Customer Details
+                </h2>
+
+            </div>
+
+
+            <div class="customer-box">
+
+                <div class="customer-avatar">
+
+                    <%= ( order.customer ? order.customer.name : order.deliveryAddress.name ) .charAt(0) .toUpperCase()
+                        %>
+
+                </div>
+
+
+                <div class="customer-info">
+
+                    <strong>
+
+                        <%= order.customer ? order.customer.name : order.deliveryAddress.name %>
+
+                    </strong>
+
+                    <span>
+                        📞
+                        <%= order.deliveryAddress.number %>
+                    </span>
+
+                </div>
+
+
+                <a href="tel:<%= order.deliveryAddress.number %>" class="call-btn">
+                    📞 Call Customer
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PRODUCTS -->
+
+        <section class="card">
+
+            <div class="section-heading">
+
+                <span>
+                    ORDER ITEMS
+                </span>
+
+                <h2>
+                    Products
+                </h2>
+
+            </div>
+
+
+            <div class="products">
+
+
+                <% order.products.forEach( item=> {
+                    %>
+
+
+                    <div class="product">
+
+                        <div class="product-image">
+
+                            <% if (item.image) { %>
+
+                                <img src="<%= item.image %>" alt="<%= item.name %>">
+
+                                <% } else { %>
+
+                                    📦
+
+                                    <% } %>
+
+                        </div>
+
+
+                        <div class="product-info">
+
+                            <strong>
+                                <%= item.name %>
+                            </strong>
+
+                            <span>
+
+                                ₹<%= Number( item.price ).toFixed(2) %>
+
+                                    ×
+
+                                    <%= item.quantity %>
+
+                            </span>
+
+                        </div>
+
+
+                        <strong class="product-total">
+
+                            ₹<%= Number( item.total ).toFixed(2) %>
+
+                        </strong>
+
+                    </div>
+
+
+                    <% }) %>
+
+
+            </div>
+
+
+            <!-- TOTALS -->
+
+            <div class="totals">
+
+                <div>
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong>
+                        ₹<%= Number( order.subtotal ).toFixed(2) %>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Platform Charge
+                    </span>
+
+                    <strong>
+                        ₹<%= Number( order.platformCharge || 0 ).toFixed(2) %>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Delivery Charge
+                    </span>
+
+                    <strong>
+
+                        <% if ( Number( order.deliveryCharge || 0 )> 0
+                            ) { %>
+
+                            ₹<%= Number( order.deliveryCharge ).toFixed(2) %>
+
+                                <% } else { %>
+
+                                    FREE
+
+                                    <% } %>
+
+                    </strong>
+
+                </div>
+
+
+                <div class="grand-total">
+
+                    <span>
+                        Grand Total
+                    </span>
+
+                    <strong>
+                        ₹<%= Number( order.grandTotal ).toFixed(2) %>
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PAYMENT -->
+
+        <section class="card">
+
+            <div class="section-heading">
+
+                <span>
+                    PAYMENT
+                </span>
+
+                <h2>
+                    Payment Details
+                </h2>
+
+            </div>
+
+
+            <div class="payment-box">
+
+
+                <div>
+
+                    <span>
+                        Method
+                    </span>
+
+                    <strong>
+                        <%= order.paymentMethod %>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Status
+                    </span>
+
+                    <strong class="<%= order.paymentStatus === 'Paid'
+                            ? 'paid'
+                            : 'pending' %>">
+                        <%= order.paymentStatus %>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Amount
+                    </span>
+
+                    <strong>
+                        ₹<%= Number( order.paymentAmount || order.grandTotal || 0 ).toFixed(2) %>
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <% if ( order.paymentMethod==="COD" && order.paymentStatus !=="Paid" ) { %>
+
+
+                <div class="collect-box">
+
+                    <div>
+                        💰
+                    </div>
+
+                    <div>
+
+                        <span>
+                            CASH TO COLLECT
+                        </span>
+
+                        <strong>
+                            ₹<%= Number( order.grandTotal ).toFixed(2) %>
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <% } else if ( order.paymentMethod !=="COD" && order.paymentStatus==="Paid" ) { %>
+
+
+                    <div class="paid-box">
+
+                        ✅
+
+                        <strong>
+                            Payment already received
+                        </strong>
+
+                    </div>
+
+
+                    <% } %>
+
+
+        </section>
+
+
+
+        <!-- ADDRESS -->
+
+        <section class="card">
+
+            <div class="section-heading">
+
+                <span>
+                    DELIVERY
+                </span>
+
+                <h2>
+                    Delivery Address
+                </h2>
+
+            </div>
+
+
+            <div class="address-box">
+
+                <strong>
+                    <%= order.deliveryAddress.name %>
+                </strong>
+
+                <p>
+
+                    📞
+                    <%= order.deliveryAddress.number %>
+
+                </p>
+
+                <p>
+
+                    <%= order.deliveryAddress.house %>,
+
+                        <%= order.deliveryAddress.village %>,
+
+                            <%= order.deliveryAddress.district %>,
+
+                                <%= order.deliveryAddress.state %>
+
+                                    -
+
+                                    <%= order.deliveryAddress.pincode %>
+
+                </p>
+
+            </div>
+
+
+            <% if ( order.deliveryAddress.latitude && order.deliveryAddress.longitude ) { %>
+
+
+                <a href="https://www.google.com/maps?q=<%= order.deliveryAddress.latitude %>,<%= order.deliveryAddress.longitude %>"
+                    target="_blank" class="map-btn">
+                    🗺️ Open Location in Google Maps
+                </a>
+
+
+                <% } %>
+
+
+        </section>
+
+
+
+        <!-- ACTIONS -->
+
+        <section class="actions">
+
+
+            <% if ( order.orderStatus==="Ready for Delivery" ) { %>
+
+
+                <form action="/delivery/orders/<%= order._id %>/start" method="POST">
+
+                    <button type="submit" class="start-btn">
+                        🛵 Start Delivery
+                    </button>
+
+                </form>
+
+
+                <% } %>
+
+
+
+                    <% if ( order.paymentMethod==="COD" && order.paymentStatus !=="Paid" ) { %>
+
+
+                        <form action="/delivery/orders/<%= order._id %>/payment" method="POST">
+                            <button type="submit" class="payment-btn">
+                                💰 Mark Payment Received
+                            </button>
+                        </form>
+
+
+                        <% } %>
+
+
+
+                            <% if ( order.orderStatus==="Out for Delivery" ) { %>
+
+
+                                <form action="/delivery/orders/<%= order._id %>/delivered" method="POST"
+                                    onsubmit="return confirmDelivery()">
+
+                                    <button type="submit" class="delivered-btn">
+                                        ✓ Mark Delivered
+                                    </button>
+
+                                </form>
+
+
+                                <% } %>
+
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+       
+        <div class="footer-brand">
+
+            🛒
+
+            <strong>
+                MS Cyber Cafe & General Store
+            </strong>
+
+        </div>
+
+
+        <p>
+            Your trusted local store for daily needs.
+        </p>
+
+
+        <small>
+
+            © <%= new Date().getFullYear() %>
+            MS Cyber Cafe & General Store   
+            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+
+        </small>
+
+
+
+
+    </footer>
+
+
+    <script>
+
+        function confirmDelivery() {
+
+            return confirm(
+                "Kya order customer ko successfully deliver ho gaya hai?"
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

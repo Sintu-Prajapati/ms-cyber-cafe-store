@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers - MS Cyber Cafe</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/customer.css">
+
+
+</head>
+
+
+<body>
+
+    <header class="customer-header">
+
+        <div>
+
+            <h1>
+                MS Cyber Cafe & General Store
+            </h1>
+
+            <p>
+                Customer Management
+            </p>
+
+        </div>
+
+
+        <div class="total-udhar">
+
+            <span>
+                📒 Total Udhar
+            </span>
+
+            <strong>
+                ₹<%= totalUdhar.toFixed(2) %>
+            </strong>
+
+        </div>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- ADD CUSTOMER -->
+
+        <div class="welcome">
+            <a class="back_btn" href="/">Back to Dashboard</a>
+
+            <h2>➕ Add Customer</h2>
+
+
+            <form action="/admin/add" method="POST">
+
+                <input type="text" name="name" placeholder="Customer Name" required>
+
+
+                <input type="text" name="mobile" placeholder="Mobile Number">
+
+
+                <input type="text" name="village" placeholder="Village">
+
+
+                <input type="text" name="address" placeholder="Address">
+
+
+                <input type="number" name="openingBalance" placeholder="Opening Udhar" min="0" step="0.01" value="0">
+
+
+                <button type="submit">
+                    Add Customer
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- CUSTOMER LIST -->
+
+        <div class="welcome">
+
+            <h2>👥 Customer List</h2>
+
+
+            <div class="table-scroll">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Village</th>
+                            <th>Address</th>
+                            <th>Udhar</th>
+                            <th>Passbook</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <% if (customers.length===0) { %>
+
+                            <tr>
+
+                                <td colspan="5">
+                                    No customers found
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+
+                                <% customers.forEach(customer=> { %>
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                <%= customer.name %>
+                                            </strong>
+                                        </td>
+
+
+                                        <td>
+                                            <%= customer.mobile || "-" %>
+                                        </td>
+
+
+                                        <td>
+                                            <%= customer.village || "-" %>
+                                        </td>
+
+
+                                        <td>
+                                            <%= customer.address || "-" %>
+                                        </td>
+
+                                        <td>
+
+                                            <% if (customer.currentUdhar> 0) { %>
+
+                                                <strong class="customer-udhar">
+                                                    ₹<%= customer.currentUdhar.toFixed(2) %>
+                                                </strong>
+
+                                                <% } else { %>
+
+                                                    <strong class="no-udhar">
+                                                        ₹0.00
+                                                    </strong>
+
+                                                    <% } %>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <a class="passbook-link" href="/admin/customers/<%= customer._id %>/passbook">
+                                                📒 Open Passbook
+                                            </a>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <% }) %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

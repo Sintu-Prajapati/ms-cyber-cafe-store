@@ -1,0 +1,339 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f8fc;
+    color: #172033;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.success-page {
+    min-height: 75vh;
+
+    padding: 50px 15px 70px;
+}
+
+.success-container {
+    max-width: 650px;
+
+    margin: auto;
+
+    text-align: center;
+}
+
+
+/* =========================
+   SUCCESS ICON
+========================= */
+
+.success-icon {
+    width: 75px;
+    height: 75px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    color: #16a34a;
+
+    font-size: 42px;
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 25px rgba(22, 163, 74, .12);
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.success-container h1 {
+    font-size: 28px;
+
+    margin-bottom: 10px;
+}
+
+.success-message {
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    max-width: 500px;
+
+    margin: auto;
+}
+
+
+/* =========================
+   ORDER CARD
+========================= */
+
+.order-card {
+    background: #fff;
+
+    margin-top: 30px;
+
+    padding: 22px;
+
+    border-radius: 16px;
+
+    text-align: left;
+
+    box-shadow:
+        0 8px 30px rgba(20, 40, 80, .07);
+}
+
+
+/* =========================
+   ORDER HEADER
+========================= */
+
+.order-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.order-header > div:first-child {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.order-header span {
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    font-weight: 700;
+}
+
+.order-header strong {
+    font-size: 17px;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status-badge {
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    background: #fff7ed;
+
+    color: #ea580c;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
+
+.divider {
+    height: 1px;
+
+    background: #edf0f5;
+
+    margin: 20px 0;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
+.details-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+.detail {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.detail span {
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+.detail strong {
+    font-size: 13px;
+}
+
+.detail .amount {
+    color: #2563eb;
+
+    font-size: 19px;
+}
+
+
+/* =========================
+   ADDRESS
+========================= */
+
+.address-section {
+    margin-top: 22px;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+}
+
+.address-section h3 {
+    font-size: 13px;
+
+    margin-bottom: 10px;
+}
+
+.address-section p {
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.success-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    justify-content: center;
+
+    margin-top: 25px;
+}
+
+.success-buttons a {
+    min-height: 45px;
+
+    padding: 0 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.primary-btn {
+    background: #2563eb;
+
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+.secondary-btn {
+    background: white;
+
+    color: #2563eb;
+
+    border: 1px solid #dbe3ef;
+}
+
+.secondary-btn:hover {
+    background: #f8fafc;
+}
+
+
+/* =========================
+   BOTTOM MESSAGE
+========================= */
+
+.bottom-message {
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .success-page {
+        padding: 35px 12px 50px;
+    }
+
+    .success-container h1 {
+        font-size: 24px;
+    }
+
+    .order-card {
+        padding: 17px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .success-buttons {
+        flex-direction: column;
+    }
+
+    .success-buttons a {
+        width: 100%;
+    }
+
+}
