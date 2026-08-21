@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 
 const CustomerAuth = require("../models/CustomerAuth");
-const Product = require("../models/Product");
+const Product = require("../models/product");
 
 
 
