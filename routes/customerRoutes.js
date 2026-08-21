@@ -9,7 +9,7 @@ const { route } = require("./productRoutes");
 const Order = require("../models/Order");
 const adminAuth =
     require("../middleware/adminAuth");
-const Product = require("../models/Product");
+const Product = require("../models/product");
 
 
 
