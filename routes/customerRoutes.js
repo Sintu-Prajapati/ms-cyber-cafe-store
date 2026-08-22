@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 exports.router = router;
 
-const Customer = require("../models/Ccstomer");
+const Customer = require("../models/customer");
 const CustomerAuth = require("../models/CustomerAuth");
 const Transaction = require("../models/Transaction");
 const { route } = require("./productRoutes");
