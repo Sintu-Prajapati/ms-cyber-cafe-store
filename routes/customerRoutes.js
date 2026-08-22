@@ -6,7 +6,7 @@ const Customer = require("../models/customer");
 const CustomerAuth = require("../models/CustomerAuth");
 const Transaction = require("../models/Transaction");
 const { route } = require("./productRoutes");
-const Order = require("../models/Order");
+const Order = require("../models/order");
 const adminAuth =
     require("../middleware/adminAuth");
 const Product = require("../models/product");
