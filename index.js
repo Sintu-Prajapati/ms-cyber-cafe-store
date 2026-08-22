@@ -34,10 +34,10 @@ app.use(
 
 const productRoutes = require("./routes/productRoutes");
 const billingRoutes = require("./routes/billingRoutes")
-const Product = require("./models/Product");;
-const Customer = require("./models/Customer");
+const Product = require("./models/product");;
+const Customer = require("./models/customer");
 const Transaction = require("./models/Transaction");
-const Order = require("./models/Order");
+const Order = require("./models/order");
 const customerRoutes =
     require("./routes/customerRoutes");
 const customerAuthRoutes =
