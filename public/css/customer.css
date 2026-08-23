@@ -1081,6 +1081,125 @@ main {
         font-size: 22px;
     }
 
+    .billing-header {
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .billing-header > div,
+    .billing-header .back-btn {
+        width: 100%;
+    }
+
+    .billing-header .back-btn {
+        text-align: center;
+    }
+
+    .billing-card {
+        padding: 0;
+    }
+
+    .card-title {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .card-title h2 {
+        min-width: 0;
+    }
+
+    .product-search,
+    .selected-product,
+    .calculation-section,
+    .calculation-box {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .calculation-box {
+        grid-template-columns: 1fr;
+    }
+
+    .add-cart-btn {
+        width: calc(100% - 32px);
+        margin: 0 16px 18px;
+    }
+
+    .cart-table-wrapper {
+        margin: 16px;
+    }
+
+    .cart-table {
+        min-width: 0;
+    }
+
+    .cart-table thead {
+        display: none;
+    }
+
+    .cart-table,
+    .cart-table tbody,
+    .cart-table tr,
+    .cart-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .cart-table tr {
+        padding: 10px 0;
+        border-bottom: 1px solid #eef1f5;
+    }
+
+    .cart-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 5px 0;
+        border-bottom: 0;
+        text-align: right;
+    }
+
+    .cart-table td:first-child {
+        display: block;
+        padding-top: 0;
+        text-align: left;
+    }
+
+    .cart-table td:not(:first-child):not(:last-child)::before {
+        color: #6b7280;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .cart-table td:nth-child(2)::before {
+        content: "Qty";
+    }
+
+    .cart-table td:nth-child(3)::before {
+        content: "Rate";
+    }
+
+    .cart-table td:nth-child(4)::before {
+        content: "Total";
+    }
+
+    .cart-table td:last-child {
+        justify-content: flex-end;
+        padding-bottom: 0;
+    }
+
+    .cart-table td[colspan] {
+        display: block;
+        padding: 12px 0;
+        text-align: center;
+    }
+
+    .payment-boxes {
+        grid-template-columns: 1fr;
+    }
+
 }
 
 
