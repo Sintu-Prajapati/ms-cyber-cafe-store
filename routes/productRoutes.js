@@ -147,6 +147,11 @@ router.put("/:id/price", async (req, res) => {
 
 });
 
+// ==========================================
+// ADD MORE PRODUCT PHOTOS
+// MAX TOTAL = 4
+// ==========================================
+
 router.put(
     "/:id/image",
     upload.array("images", 4),
@@ -154,62 +159,140 @@ router.put(
 
         try {
 
-            if (!req.files || req.files.length === 0) {
+            if (
+                !req.files ||
+                req.files.length === 0
+            ) {
 
                 return res.json({
+
                     success: false,
-                    message: "Image select kare."
+
+                    message:
+                        "Kam se kam 1 photo select karein."
+
                 });
 
             }
 
 
-            const product = await Product.findById(req.params.id);
+            const product =
+                await Product.findById(
+                    req.params.id
+                );
+
 
             if (!product) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Product nahi mila."
-                });
-            }
 
-            const existingImages = product.images.length
-                ? product.images
-                : (product.image ? [product.image] : []);
-            const newImages = req.files.map(
-                file => "/uploads/products/" + file.filename
-            );
-
-            if (existingImages.length + newImages.length > 4) {
                 return res.json({
+
                     success: false,
-                    message: `Is product me maximum 4 photos ho sakti hain. Abhi ${existingImages.length} photos hain.`
+
+                    message:
+                        "Product nahi mila."
+
                 });
+
             }
 
-            await Product.findByIdAndUpdate(req.params.id, {
-                images: [...existingImages, ...newImages]
-            });
+
+            // New uploaded photos
+            const newImages =
+                req.files.map(
+                    file =>
+                        "/uploads/products/" +
+                        file.filename
+                );
 
 
-            res.json({
-                success: true
+            // Existing images
+            const oldImages =
+                Array.isArray(
+                    product.images
+                )
+                    ? product.images.filter(
+                        Boolean
+                    )
+                    : [];
+
+
+            // Old products ke liye
+            // single image support
+            const legacyImage =
+                product.image &&
+                !oldImages.includes(
+                    product.image
+                )
+                    ? [
+                        product.image
+                    ]
+                    : [];
+
+
+            const existingImages = [
+
+                ...oldImages,
+
+                ...legacyImage
+
+            ];
+
+
+            // Total maximum 4 photos
+            const finalImages = [
+
+                ...existingImages,
+
+                ...newImages
+
+            ].slice(0, 4);
+
+
+            product.images =
+                finalImages;
+
+
+            // Backward compatibility
+            product.image =
+                finalImages[0] ||
+                null;
+
+
+            await product.save();
+
+
+            return res.json({
+
+                success: true,
+
+                images:
+                    finalImages
+
             });
 
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "MULTIPLE IMAGE UPDATE ERROR:",
+                error
+            );
 
-            res.status(500).json({
+
+            return res.status(500).json({
+
                 success: false,
-                message: "Image update failed."
+
+                message:
+                    "Photos update failed."
+
             });
 
         }
 
     }
 );
+
 
 
 module.exports = router;

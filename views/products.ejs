@@ -293,7 +293,8 @@
 
                     <div class="form-group">
                         <label>Product Photos</label>
-                        <input type="file" id="product-images" name="images" accept="image/jpeg,image/png,image/webp" multiple onchange="validateProductImages(this)">
+                        <input type="file" id="product-images" name="images" accept="image/jpeg,image/png,image/webp"
+                            multiple onchange="validateProductImages(this)">
                     </div>
 
                 </div>
@@ -354,13 +355,12 @@
                                     <%= product.stock %>
                                 </td>
                                 <td>
-                                      <button
-    type="button"
-    class="update-image-btn"
-    onclick="updateImages('<%= product._id %>', <%= (product.images && product.images.length) || (product.image ? 1 : 0) %>)"
->
-    🖼️ Update Photos
-</button>
+                                    <button type="button" class="update-image-btn" onclick="updateImages(
+                                  '<%= product._id %>',
+                                    <%= product.images ? product.images.length : (product.image ? 1 : 0) %>
+                                    )">
+                                        🖼️ Update Photos
+                                    </button>
                                 </td>
 
                                 <td> <button type="button" onclick="updateStock('<%= product._id %>')"
@@ -504,98 +504,136 @@
 
         }
 
-function updateImages(id, currentImageCount) {
 
-    const input = document.createElement("input");
+function updateImages(
+    id,
+    currentImageCount
+) {
+
+    const input =
+        document.createElement("input");
 
     input.type = "file";
-    input.accept = "image/*";
+
+    input.accept =
+        "image/jpeg,image/png,image/webp";
+
     input.multiple = true;
 
-    input.onchange = async function () {
 
-        if (
-            !input.files ||
-            input.files.length === 0
-        ) {
-            return;
-        }
+    input.onchange =
+        async function () {
 
-
-        const remainingSlots = 4 - currentImageCount;
-
-        if (input.files.length > remainingSlots) {
-
-            alert(
-                `Maximum 4 photos ho sakti hain. Is product me ${remainingSlots} photo slot bachi hain.`
-            );
-
-            return;
-        }
+            if (
+                !input.files ||
+                input.files.length === 0
+            ) {
+                return;
+            }
 
 
-        const formData = new FormData();
+            const remainingSlots =
+                4 - currentImageCount;
 
 
-        for (
-            let i = 0;
-            i < input.files.length;
-            i++
-        ) {
-
-            formData.append(
-                "images",
-                input.files[i]
-            );
-
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    `/products/${id}/image`,
-                    {
-                        method: "PUT",
-                        body: formData
-                    }
-                );
-
-
-            const data =
-                await response.json();
-
-
-            if (data.success) {
+            if (
+                remainingSlots <= 0
+            ) {
 
                 alert(
-                    "Product photos updated successfully."
+                    "Is product me maximum 4 photos already hain."
                 );
 
-                location.reload();
+                return;
 
-            } else {
+            }
+
+
+            if (
+                input.files.length >
+                remainingSlots
+            ) {
 
                 alert(
-                    data.message ||
-                    "Photos update nahi hui."
+                    `Maximum 4 photos ho sakti hain. Is product me ${remainingSlots} photo slot bachi hain.`
+                );
+
+                return;
+
+            }
+
+
+            const formData =
+                new FormData();
+
+
+            for (
+                let i = 0;
+                i < input.files.length;
+                i++
+            ) {
+
+                formData.append(
+                    "images",
+                    input.files[i]
                 );
 
             }
 
 
-        } catch (error) {
+            try {
 
-            console.error(error);
+                const response =
+                    await fetch(
+                        `/products/${id}/image`,
+                        {
 
-            alert(
-                "Photos update karne me error aaya."
-            );
+                            method: "PUT",
 
-        }
+                            body:
+                                formData
 
-    };
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    data.success
+                ) {
+
+                    alert(
+                        "Product photos updated successfully."
+                    );
+
+                    location.reload();
+
+                } else {
+
+                    alert(
+                        data.message ||
+                        "Photos update nahi hui."
+                    );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+                alert(
+                    "Photos update karne me error aaya."
+                );
+
+            }
+
+        };
 
 
     input.click();
@@ -603,13 +641,26 @@ function updateImages(id, currentImageCount) {
 }
 
 
+function validateProductImages(
+    input
+) {
+
+    if (
+        input.files.length > 4
+    ) {
+
+        alert(
+            "Ek product me maximum 4 photos select kar sakte hain."
+        );
+
+        input.value = "";
+
+    }
+
+}
+   
+
     </script>
-        function validateProductImages(input) {
-            if (input.files.length > 4) {
-                alert("Ek product me maximum 4 photos select kar sakte hain.");
-                input.value = "";
-            }
-        }
 
 </body>
 
