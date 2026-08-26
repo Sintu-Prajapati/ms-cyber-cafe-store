@@ -41,7 +41,12 @@ const productSchema = new mongoose.Schema(
             min: 0,
             default: 0
         },
+        images: {
+            type: [String],
+            default: []
+        },
 
+        // Purane products ke liye backward compatibility
         image: {
             type: String,
             default: null

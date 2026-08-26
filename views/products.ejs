@@ -238,7 +238,7 @@
             <a class="back_btn" href="/">Back to Dashboard</a>
             <h2>➕ Add New Product</h2>
 
-            <form action="/products/add" method="POST">
+            <form action="/products/add" method="POST" enctype="multipart/form-data">
 
                 <div class="form-grid">
 
@@ -289,6 +289,11 @@
                     <div class="form-group">
                         <label>Stock</label>
                         <input type="number" name="stock" step="0.001" min="0" placeholder="e.g. 50" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Product Photos</label>
+                        <input type="file" id="product-images" name="images" accept="image/jpeg,image/png,image/webp" multiple onchange="validateProductImages(this)">
                     </div>
 
                 </div>
@@ -350,12 +355,12 @@
                                 </td>
                                 <td>
                                       <button
-        type="button"
-        class="update-image-btn"
-        onclick="updateImage('<%= product._id %>')"
-    >
-        🖼️ Update
-    </button>
+    type="button"
+    class="update-image-btn"
+    onclick="updateImages('<%= product._id %>', <%= (product.images && product.images.length) || (product.image ? 1 : 0) %>)"
+>
+    🖼️ Update Photos
+</button>
                                 </td>
 
                                 <td> <button type="button" onclick="updateStock('<%= product._id %>')"
@@ -499,43 +504,74 @@
 
         }
 
-        function updateImage(id) {
+function updateImages(id, currentImageCount) {
 
     const input = document.createElement("input");
 
     input.type = "file";
     input.accept = "image/*";
+    input.multiple = true;
 
     input.onchange = async function () {
 
-        if (!input.files || input.files.length === 0) {
+        if (
+            !input.files ||
+            input.files.length === 0
+        ) {
             return;
         }
 
-        const file = input.files[0];
+
+        const remainingSlots = 4 - currentImageCount;
+
+        if (input.files.length > remainingSlots) {
+
+            alert(
+                `Maximum 4 photos ho sakti hain. Is product me ${remainingSlots} photo slot bachi hain.`
+            );
+
+            return;
+        }
+
 
         const formData = new FormData();
 
-        formData.append("image", file);
+
+        for (
+            let i = 0;
+            i < input.files.length;
+            i++
+        ) {
+
+            formData.append(
+                "images",
+                input.files[i]
+            );
+
+        }
 
 
         try {
 
-            const response = await fetch(
-                `/products/${id}/image`,
-                {
-                    method: "PUT",
-                    body: formData
-                }
-            );
+            const response =
+                await fetch(
+                    `/products/${id}/image`,
+                    {
+                        method: "PUT",
+                        body: formData
+                    }
+                );
 
 
-            const data = await response.json();
+            const data =
+                await response.json();
 
 
             if (data.success) {
 
-                alert("Product image updated successfully.");
+                alert(
+                    "Product photos updated successfully."
+                );
 
                 location.reload();
 
@@ -543,16 +579,19 @@
 
                 alert(
                     data.message ||
-                    "Image update nahi hua."
+                    "Photos update nahi hui."
                 );
 
             }
+
 
         } catch (error) {
 
             console.error(error);
 
-            alert("Image update failed.");
+            alert(
+                "Photos update karne me error aaya."
+            );
 
         }
 
@@ -562,7 +601,16 @@
     input.click();
 
 }
+
+
     </script>
+        function validateProductImages(input) {
+            if (input.files.length > 4) {
+                alert("Ek product me maximum 4 photos select kar sakte hain.");
+                input.value = "";
+            }
+        }
+
 </body>
 
 </html>

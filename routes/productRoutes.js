@@ -8,7 +8,7 @@ const adminAuth =
 
 // Product page
 router.get("/", adminAuth, async (req, res) => {
-  
+
     try {
         const products = await Product.find().sort({ createdAt: -1 });
 
@@ -22,9 +22,12 @@ router.get("/", adminAuth, async (req, res) => {
 });
 
 // Add product
-router.post("/add", async (req, res) => {
+router.post("/add", upload.array("images", 4), async (req, res) => {
     try {
         const { name, category, unit, printPrice, sellingPrice, stock } = req.body;
+        const images = (req.files || []).map(
+            file => "/uploads/products/" + file.filename
+        );
 
         await Product.create({
             name,
@@ -32,7 +35,8 @@ router.post("/add", async (req, res) => {
             unit,
             printPrice: Number(printPrice),
             sellingPrice: Number(sellingPrice),
-            stock
+            stock,
+            images
         });
 
         res.redirect("/products");
@@ -145,12 +149,12 @@ router.put("/:id/price", async (req, res) => {
 
 router.put(
     "/:id/image",
-    upload.single("image"),
+    upload.array("images", 4),
     async (req, res) => {
 
         try {
 
-            if (!req.file) {
+            if (!req.files || req.files.length === 0) {
 
                 return res.json({
                     success: false,
@@ -160,12 +164,32 @@ router.put(
             }
 
 
-            await Product.findByIdAndUpdate(
-                req.params.id,
-                {
-                    image: "/uploads/products/" + req.file.filename
-                }
+            const product = await Product.findById(req.params.id);
+
+            if (!product) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Product nahi mila."
+                });
+            }
+
+            const existingImages = product.images.length
+                ? product.images
+                : (product.image ? [product.image] : []);
+            const newImages = req.files.map(
+                file => "/uploads/products/" + file.filename
             );
+
+            if (existingImages.length + newImages.length > 4) {
+                return res.json({
+                    success: false,
+                    message: `Is product me maximum 4 photos ho sakti hain. Abhi ${existingImages.length} photos hain.`
+                });
+            }
+
+            await Product.findByIdAndUpdate(req.params.id, {
+                images: [...existingImages, ...newImages]
+            });
 
 
             res.json({

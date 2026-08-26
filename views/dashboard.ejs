@@ -390,9 +390,9 @@
 
                                     <div class="stock-product">
 
-                                        <% if ( product.image ) { %>
+                                        <% if ( (product.images && product.images.length) || product.image ) { %>
 
-                                            <img src="<%= product.image %>" alt="<%= product.name %>">
+                                            <img src="<%= (product.images && product.images.length ? product.images[0] : product.image) %>" alt="<%= product.name %>">
 
                                             <% } else { %>
 

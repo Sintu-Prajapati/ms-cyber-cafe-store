@@ -432,13 +432,31 @@
 
                         <div class="product-image">
 
+                            <% const productImages = (product.images && product.images.length)
+                                ? product.images
+                                : (product.image ? [product.image] : []); %>
 
-                            <% if (product.image) { %>
+                            <% if (productImages.length) { %>
 
-                                <img
-                                    src="<%= product.image %>"
-                                    alt="<%= product.name %>"
-                                >
+                                <div class="product-image-carousel">
+                                    <% productImages.forEach((image, imageIndex) => { %>
+                                        <img
+                                            class="product-carousel-image<%= imageIndex === 0 ? ' active' : '' %>"
+                                            src="<%= image %>"
+                                            alt="<%= product.name %> photo <%= imageIndex + 1 %>"
+                                        >
+                                    <% }) %>
+
+                                    <% if (productImages.length > 1) { %>
+                                        <button type="button" class="carousel-arrow carousel-prev" onclick="changeProductImage(this, -1)" aria-label="Previous photo">‹</button>
+                                        <button type="button" class="carousel-arrow carousel-next" onclick="changeProductImage(this, 1)" aria-label="Next photo">›</button>
+                                        <div class="carousel-dots">
+                                            <% productImages.forEach((image, imageIndex) => { %>
+                                                <button type="button" class="carousel-dot<%= imageIndex === 0 ? ' active' : '' %>" onclick="showProductImage(this, <%= imageIndex %>)" aria-label="Show photo <%= imageIndex + 1 %>"></button>
+                                            <% }) %>
+                                        </div>
+                                    <% } %>
+                                </div>
 
                             <% } else { %>
 
@@ -974,9 +992,26 @@
 
 
 
+        function showProductImage(dot, imageIndex) {
+            const carousel = dot.closest(".product-image-carousel");
+            const images = carousel.querySelectorAll(".product-carousel-image");
+            const dots = carousel.querySelectorAll(".carousel-dot");
+
+            images.forEach((image, index) => image.classList.toggle("active", index === imageIndex));
+            dots.forEach((item, index) => item.classList.toggle("active", index === imageIndex));
+        }
+
+        function changeProductImage(button, direction) {
+            const carousel = button.closest(".product-image-carousel");
+            const images = carousel.querySelectorAll(".product-carousel-image");
+            const currentIndex = Array.from(images).findIndex(image => image.classList.contains("active"));
+            const nextIndex = (currentIndex + direction + images.length) % images.length;
+            showProductImage(carousel.querySelectorAll(".carousel-dot")[nextIndex], nextIndex);
+        }
+
         /* =========================
            ADD TO CART
-        ========================== */
+        ========================= */
 
         function addToCart(
             id,
