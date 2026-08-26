@@ -14,7 +14,7 @@
 
     <link
         rel="stylesheet"
-        href="/css/customer-home.css"
+        href="/css/customer-home.css?v=3"
 
     >
    
@@ -1006,6 +1006,19 @@
             const nextIndex = (currentIndex + direction + images.length) % images.length;
             showProductImage(carousel.querySelectorAll(".carousel-dot")[nextIndex], nextIndex);
         }
+
+        document.querySelectorAll(".product-image-carousel").forEach(carousel => {
+            const dots = carousel.querySelectorAll(".carousel-dot");
+
+            if (dots.length > 1) {
+                setInterval(() => {
+                    const currentIndex = Array.from(carousel.querySelectorAll(".product-carousel-image"))
+                        .findIndex(image => image.classList.contains("active"));
+                    const nextIndex = (currentIndex + 1) % dots.length;
+                    showProductImage(dots[nextIndex], nextIndex);
+                }, 3000);
+            }
+        });
 
         /* =========================
            ADD TO CART
