@@ -13,16 +13,42 @@
     <title>
         Track Order | MS Cyber Cafe
     </title>
+    <link
+        rel="stylesheet"
+        href="/css/customer-home.css"
+    >
 
     <link
         rel="stylesheet"
         href="/css/customer-track-order.css"
     >
 
-    <link
-        rel="stylesheet"
-        href="/css/customer-home.css"
-    >
+
+    <style>
+        .about-link {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .customer-navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                padding: 14px 16px;
+            }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .track-page {
+                padding: 20px 14px 50px;
+            }
+        }
+    </style>
 
 </head>
 
@@ -833,7 +859,7 @@
 
             MS Cyber Cafe & General Store
 
-            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+            <a class="about-link" href="/customer/about">About Us</a>
 
 
         </small>

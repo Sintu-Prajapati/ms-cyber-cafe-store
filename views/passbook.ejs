@@ -19,28 +19,67 @@
                 display: none;
             }
         }
-      .back-btn {
-          display: block;
-    width: fit-content;
-    margin-left: auto;
-    margin-top: 15px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 9px;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    text-decoration: none;
-    
-      }
+
+        .back-btn {
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-top: 15px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
 
         .back-btn:hover {
             background: linear-gradient(135deg, #7c3aed, #4f46e5);
+        }
 
+        .passbook-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #f8faff;
+            border-bottom: 1px solid #d0e2ff;
+        }
+
+        .passbook-header p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .balance-box.balance-clear {
+            background: #f8faff;
+            border: 1px solid #d0e2ff;
+            color: #1a73e8;
+        }
+
+        .balance-box.balance-clear .balance-label {
+            font-size: 20px;
+        }
+
+        .balance-box.balance-clear strong {
+            color: #06ab00fa;
+        }
+
+        @media (max-width: 768px) {
+            .passbook-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
             }
 
+            .back-btn {
+                margin-left: 0;
+            }
+        }
     </style>
 
 </head>
@@ -49,14 +88,14 @@
 <body class="passbook-page">
 
 
-    <header  style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #f8faff; border-bottom: 1px solid #d0e2ff;">
+    <header class="passbook-header">
         <div>
 
             <h1>
                 MS Cyber Cafe & General Store
             </h1>
 
-            <p style=" display: flex; justify-content: center; align-items: center;">
+            <p>
                 E-Passbook for <%= customer.name %>
             </p>
 
@@ -113,13 +152,13 @@
 
 <% } else { %>
 
-    <div class="balance-box balance-clear" style="background: #f8faff; border: 1px solid #d0e2ff; color: #1a73e8;">
+    <div class="balance-box balance-clear">
 
-        <span style=" font-size: 20px;" >
+        <span class="balance-label">
             🟢 Jama
         </span>
 
-        <strong style="color: #06ab00fa;">
+        <strong>
             ₹<%= Number(Math.abs(balance)).toFixed(2) %>
         </strong>
 

@@ -13,6 +13,32 @@
 
     <link rel="stylesheet" href="/css/delivery-order-details.css">
 
+    <style>
+        .about-link {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .page {
+                padding: 20px 14px 50px;
+            }
+        }
+    </style>
+
 </head>
 
 
@@ -564,7 +590,7 @@
 
             © <%= new Date().getFullYear() %>
             MS Cyber Cafe & General Store   
-            <a style="text-decoration: none; color: white; font-weight: 600;" href="/customer/about">About Us</a>
+            <a class="about-link" href="/customer/about">About Us</a>
 
         </small>
 

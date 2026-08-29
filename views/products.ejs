@@ -290,19 +290,63 @@
                         <label>Stock</label>
                         <input type="number" name="stock" step="0.001" min="0" placeholder="e.g. 50" required>
                     </div>
+                    
 
                     <div class="form-group">
+    <label>Product Photos</label>
 
-                        <label>Product Photos</label>
+    <input
+        type="file"
+        id="product-images"
+        name="images"
+        accept="image/jpeg,image/png,image/webp"
+        multiple
+        onchange="validateProductImages(this)"
+    >
 
-                        <input type="file" id="product-images" name="images" accept="image/jpeg,image/png,image/webp"
-                            multiple onchange="validateProductImages(this)">
+ <button
+    type="button"
+    class="camera-btn"
+    onclick="openCamera()"
+>
+    📷 Take Photo
+</button>
 
-                        <small>
-                            Maximum 4 photos • JPG, PNG, WEBP • 5MB each
-                        </small>
+    <!-- Camera -->
+    <div id="cameraBox" class="camera-box">
 
-                    </div>
+    <video
+        id="cameraVideo"
+        autoplay
+        playsinline
+    ></video>
+
+    <div class="camera-actions">
+
+        <button
+            type="button"
+            onclick="takePhoto()"
+        >
+            📸 Capture
+        </button>
+
+        <button
+            type="button"
+            onclick="closeCamera()"
+        >
+            ❌ Close
+        </button>
+
+    </div>
+
+    <canvas
+        id="cameraCanvas"
+        style="display:none;"
+    ></canvas>
+
+</div>
+</div>
+                    
 
                 </div>
 
@@ -875,6 +919,258 @@ async function deleteImages(
     }
 
 }
+
+let cameraStream = null;
+
+let selectedFiles = new DataTransfer();
+
+const productImagesInput =
+    document.getElementById("product-images");
+
+
+/* =========================
+   NORMAL FILE SELECT
+========================= */
+
+productImagesInput.addEventListener("change", function () {
+
+    const newFiles = Array.from(this.files);
+
+    newFiles.forEach(file => {
+
+        if (selectedFiles.files.length >= 4) {
+            return;
+        }
+
+        selectedFiles.items.add(file);
+
+    });
+
+    this.files = selectedFiles.files;
+
+    validateProductImages(this);
+
+});
+
+
+/* =========================
+   OPEN CAMERA
+========================= */
+
+async function openCamera() {
+
+    if (selectedFiles.files.length >= 4) {
+
+        alert(
+            "Ek product me maximum 4 photos add kar sakte hain."
+        );
+
+        return;
+    }
+
+    const cameraBox =
+        document.getElementById("cameraBox");
+
+    const video =
+        document.getElementById("cameraVideo");
+
+    try {
+
+        cameraStream =
+            await navigator.mediaDevices.getUserMedia({
+
+                video: {
+                    facingMode: {
+                        ideal: "environment"
+                    }
+                },
+
+                audio: false
+
+            });
+
+        video.srcObject = cameraStream;
+
+        cameraBox.classList.add("show");
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Camera open nahi ho pa raha. Browser me camera permission Allow kare."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   TAKE PHOTO
+========================= */
+
+function takePhoto() {
+
+    const video =
+        document.getElementById("cameraVideo");
+
+    const canvas =
+        document.getElementById("cameraCanvas");
+
+    if (
+        !video.videoWidth ||
+        !video.videoHeight
+    ) {
+
+        alert("Camera ready nahi hai. Thoda wait kare.");
+
+        return;
+
+    }
+
+
+    if (selectedFiles.files.length >= 4) {
+
+        alert(
+            "Maximum 4 photos add kar sakte hain."
+        );
+
+        closeCamera();
+
+        return;
+
+    }
+
+
+    canvas.width =
+        video.videoWidth;
+
+    canvas.height =
+        video.videoHeight;
+
+
+    const context =
+        canvas.getContext("2d");
+
+
+    context.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    canvas.toBlob(
+        function (blob) {
+
+            if (!blob) {
+
+                alert("Photo capture nahi hui.");
+
+                return;
+
+            }
+
+
+            const file =
+                new File(
+                    [blob],
+                    `camera-photo-${Date.now()}.jpg`,
+                    {
+                        type: "image/jpeg"
+                    }
+                );
+
+
+            /* IMPORTANT */
+
+            selectedFiles.items.add(file);
+
+            productImagesInput.files =
+                selectedFiles.files;
+
+
+            alert(
+                `Photo add ho gayi. Total photos: ${selectedFiles.files.length}/4`
+            );
+
+
+            if (
+                selectedFiles.files.length >= 4
+            ) {
+
+                closeCamera();
+
+            }
+
+        },
+        "image/jpeg",
+        0.9
+    );
+
+}
+
+
+/* =========================
+   CLOSE CAMERA
+========================= */
+
+function closeCamera() {
+
+    const cameraBox =
+        document.getElementById("cameraBox");
+
+
+    if (cameraStream) {
+
+        cameraStream
+            .getTracks()
+            .forEach(track => track.stop());
+
+        cameraStream = null;
+
+    }
+
+
+    cameraBox.classList.remove("show");
+
+}
+
+
+/* =========================
+   VALIDATE
+========================= */
+
+function validateProductImages(input) {
+
+    if (input.files.length > 4) {
+
+        alert(
+            "Ek product me maximum 4 photos select kar sakte hain."
+        );
+
+        const dt = new DataTransfer();
+
+        Array
+            .from(input.files)
+            .slice(0, 4)
+            .forEach(file => {
+
+                dt.items.add(file);
+
+            });
+
+        selectedFiles = dt;
+
+        input.files = selectedFiles.files;
+
+    }
+
+}
+
     </script>
 
 </body>
