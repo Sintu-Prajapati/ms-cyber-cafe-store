@@ -1,7 +1,9 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const Product = require("../models/product");
 const router = express.Router();
 
-const Product = require("../models/product");
 const upload = require("../config/multer");
 const adminAuth =
     require("../middleware/adminAuth");
@@ -22,29 +24,81 @@ router.get("/", adminAuth, async (req, res) => {
 });
 
 // Add product
-router.post("/add", upload.array("images", 4), async (req, res) => {
-    try {
-        const { name, category, unit, printPrice, sellingPrice, stock } = req.body;
-        const images = (req.files || []).map(
-            file => "/uploads/products/" + file.filename
-        );
+router.post(
+    "/add",
+    upload.array("images", 4),
+    async (req, res) => {
 
-        await Product.create({
-            name,
-            category,
-            unit,
-            printPrice: Number(printPrice),
-            sellingPrice: Number(sellingPrice),
-            stock,
-            images
-        });
+        try {
 
-        res.redirect("/products");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("that product can't be added");
+            const {
+                name,
+                category,
+                unit,
+                printPrice,
+                sellingPrice,
+                stock
+            } = req.body;
+
+            if (
+                Number(sellingPrice) >
+                Number(printPrice)
+            ) {
+
+                return res.status(400).send(
+                    "Selling Price MRP se zyada nahi ho sakta."
+                );
+
+            }
+
+            const images = req.files
+                ? req.files.map(
+                    file =>
+                        "/uploads/products/" +
+                        file.filename
+                )
+                : [];
+
+            const product =
+                new Product({
+
+                    name,
+
+                    category,
+
+                    unit,
+
+                    printPrice:
+                        Number(printPrice),
+
+                    sellingPrice:
+                        Number(sellingPrice),
+
+                    stock:
+                        Number(stock),
+
+                    images
+
+                });
+
+            await product.save();
+
+            res.redirect("/products");
+
+        } catch (error) {
+
+            console.error(
+                "Product add error:",
+                error
+            );
+
+            res.status(500).send(
+                "Product add nahi hua."
+            );
+        }
+
     }
-});
+);
 
 router.put("/:id/stock", async (req, res) => {
 
@@ -159,28 +213,10 @@ router.put(
 
         try {
 
-            if (
-                !req.files ||
-                req.files.length === 0
-            ) {
-
-                return res.json({
-
-                    success: false,
-
-                    message:
-                        "Kam se kam 1 photo select karein."
-
-                });
-
-            }
-
-
             const product =
                 await Product.findById(
                     req.params.id
                 );
-
 
             if (!product) {
 
@@ -195,96 +231,77 @@ router.put(
 
             }
 
+            const currentImages =
+                Array.isArray(product.images)
+                    ? product.images
+                    : (
+                        product.image
+                            ? [product.image]
+                            : []
+                    );
 
-            // New uploaded photos
             const newImages =
-                req.files.map(
-                    file =>
-                        "/uploads/products/" +
-                        file.filename
-                );
-
-
-            // Existing images
-            const oldImages =
-                Array.isArray(
-                    product.images
-                )
-                    ? product.images.filter(
-                        Boolean
+                req.files
+                    ? req.files.map(
+                        file =>
+                            "/uploads/products/" +
+                            file.filename
                     )
                     : [];
 
+            if (
+                currentImages.length +
+                newImages.length >
+                4
+            ) {
 
-            // Old products ke liye
-            // single image support
-            const legacyImage =
-                product.image &&
-                !oldImages.includes(
-                    product.image
-                )
-                    ? [
-                        product.image
-                    ]
-                    : [];
+                return res.json({
 
+                    success: false,
 
-            const existingImages = [
+                    message:
+                        "Ek product me maximum 4 photos ho sakti hain."
 
-                ...oldImages,
+                });
 
-                ...legacyImage
-
-            ];
-
-
-            // Total maximum 4 photos
-            const finalImages = [
-
-                ...existingImages,
-
-                ...newImages
-
-            ].slice(0, 4);
-
+            }
 
             product.images =
-                finalImages;
+                [
+                    ...currentImages,
+                    ...newImages
+                ];
 
-
-            // Backward compatibility
-            product.image =
-                finalImages[0] ||
-                null;
-
+            // Old image field ko remove/ignore
+            product.image = null;
 
             await product.save();
 
-
-            return res.json({
+            res.json({
 
                 success: true,
 
+                message:
+                    "Product photos updated successfully.",
+
                 images:
-                    finalImages
+                    product.images
 
             });
-
 
         } catch (error) {
 
             console.error(
-                "MULTIPLE IMAGE UPDATE ERROR:",
+                "Image update error:",
                 error
             );
 
-
-            return res.status(500).json({
+            res.status(500).json({
 
                 success: false,
 
                 message:
-                    "Photos update failed."
+                    "Photos update karne me error aaya."
 
             });
 
@@ -292,6 +309,173 @@ router.put(
 
     }
 );
+
+
+// ==========================================
+// DELETE PRODUCT IMAGE
+// ==========================================
+
+router.delete("/:id/image/:imageIndex", async (req, res) => {
+
+    try {
+
+        const { id, imageIndex } = req.params;
+
+        const index = Number(imageIndex);
+
+        if (!Number.isInteger(index) || index < 0) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Invalid image index."
+            });
+
+        }
+
+        const product = await Product.findById(id);
+
+        if (!product) {
+
+            return res.status(404).json({
+                success: false,
+                message: "Product nahi mila."
+            });
+
+        }
+
+
+        // ------------------------------------------
+        // NEW MULTIPLE IMAGES
+        // ------------------------------------------
+
+        if (
+            Array.isArray(product.images) &&
+            product.images.length > 0
+        ) {
+
+            if (index >= product.images.length) {
+
+                return res.status(400).json({
+                    success: false,
+                    message: "Image nahi mili."
+                });
+
+            }
+
+
+            const imagePath =
+                product.images[index];
+
+
+            // MongoDB se image remove
+            product.images.splice(index, 1);
+
+
+            // ------------------------------------------
+            // LOCAL FILE DELETE
+            // ------------------------------------------
+
+            if (
+                imagePath &&
+                imagePath.startsWith("/uploads/")
+            ) {
+
+                const filePath = path.join(
+                    __dirname,
+                    "..",
+                    "public",
+                    imagePath
+                );
+
+
+                if (fs.existsSync(filePath)) {
+
+                    fs.unlinkSync(filePath);
+
+                }
+
+            }
+
+
+            await product.save();
+
+
+            return res.json({
+                success: true,
+                message: "Photo delete ho gayi.",
+                images: product.images
+            });
+
+        }
+
+
+        // ------------------------------------------
+        // OLD SINGLE IMAGE
+        // ------------------------------------------
+
+        if (product.image) {
+
+            const imagePath =
+                product.image;
+
+
+            if (
+                imagePath &&
+                imagePath.startsWith("/uploads/")
+            ) {
+
+                const filePath = path.join(
+                    __dirname,
+                    "..",
+                    "public",
+                    imagePath
+                );
+
+
+                if (fs.existsSync(filePath)) {
+
+                    fs.unlinkSync(filePath);
+
+                }
+
+            }
+
+
+            product.image = null;
+
+            await product.save();
+
+
+            return res.json({
+                success: true,
+                message: "Photo delete ho gayi.",
+                images: []
+            });
+
+        }
+
+
+        return res.status(404).json({
+            success: false,
+            message: "Product me koi photo nahi hai."
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete image error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message: "Photo delete karne me error aaya."
+        });
+
+    }
+
+});
 
 
 

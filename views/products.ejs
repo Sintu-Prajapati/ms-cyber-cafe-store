@@ -292,9 +292,16 @@
                     </div>
 
                     <div class="form-group">
+
                         <label>Product Photos</label>
+
                         <input type="file" id="product-images" name="images" accept="image/jpeg,image/png,image/webp"
                             multiple onchange="validateProductImages(this)">
+
+                        <small>
+                            Maximum 4 photos • JPG, PNG, WEBP • 5MB each
+                        </small>
+
                     </div>
 
                 </div>
@@ -355,12 +362,36 @@
                                     <%= product.stock %>
                                 </td>
                                 <td>
-                                    <button type="button" class="update-image-btn" onclick="updateImages(
-                                  '<%= product._id %>',
-                                    <%= product.images ? product.images.length : (product.image ? 1 : 0) %>
-                                    )">
-                                        🖼️ Update Photos
-                                    </button>
+                                <td>
+
+                                    <div class="image-action-buttons">
+
+    <button
+        type="button"
+        class="update-image-btn"
+        onclick="updateImages(
+            '<%= product._id %>',
+            <%= product.images ? product.images.length : (product.image ? 1 : 0) %>
+        )"
+    >
+        🖼️ Update Photos
+    </button>
+
+
+    <button
+        type="button"
+        class="delete-image-btn"
+        onclick="deleteImages(
+            '<%= product._id %>',
+            <%= product.images ? product.images.length : (product.image ? 1 : 0) %>
+        )"
+    >
+        🗑️ Delete Photos
+    </button>
+
+</div>
+
+                                </td>
                                 </td>
 
                                 <td> <button type="button" onclick="updateStock('<%= product._id %>')"
@@ -504,14 +535,94 @@
 
         }
 
+function validateProductImages(input) {
 
-function updateImages(
+    if (!input.files) {
+        return;
+    }
+
+    if (input.files.length > 4) {
+
+        alert(
+            "Ek product me maximum 4 photos select kar sakte hain."
+        );
+
+        input.value = "";
+
+        return;
+    }
+
+    for (
+        let i = 0;
+        i < input.files.length;
+        i++
+    ) {
+
+        const file =
+            input.files[i];
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+        if (
+            !allowedTypes.includes(
+                file.type
+            )
+        ) {
+
+            alert(
+                "Sirf JPG, PNG aur WEBP images allowed hain."
+            );
+
+            input.value = "";
+
+            return;
+        }
+
+        if (
+            file.size >
+            5 * 1024 * 1024
+        ) {
+
+            alert(
+                "Har image maximum 5MB ki ho sakti hai."
+            );
+
+            input.value = "";
+
+            return;
+        }
+    }
+}
+
+
+async function updateImages(
     id,
     currentImageCount
 ) {
 
+    const remainingSlots =
+        4 - Number(currentImageCount);
+
+
+    if (
+        remainingSlots <= 0
+    ) {
+
+        alert(
+            "Is product me maximum 4 photos already hain."
+        );
+
+        return;
+    }
+
+
     const input =
         document.createElement("input");
+
 
     input.type = "file";
 
@@ -528,24 +639,8 @@ function updateImages(
                 !input.files ||
                 input.files.length === 0
             ) {
-                return;
-            }
-
-
-            const remainingSlots =
-                4 - currentImageCount;
-
-
-            if (
-                remainingSlots <= 0
-            ) {
-
-                alert(
-                    "Is product me maximum 4 photos already hain."
-                );
 
                 return;
-
             }
 
 
@@ -555,10 +650,30 @@ function updateImages(
             ) {
 
                 alert(
-                    `Maximum 4 photos ho sakti hain. Is product me ${remainingSlots} photo slot bachi hain.`
+                    `Sirf ${remainingSlots} photo aur add kar sakte hain.`
                 );
 
                 return;
+            }
+
+
+            for (
+                let i = 0;
+                i < input.files.length;
+                i++
+            ) {
+
+                if (
+                    input.files[i].size >
+                    5 * 1024 * 1024
+                ) {
+
+                    alert(
+                        "Har image maximum 5MB ki ho sakti hai."
+                    );
+
+                    return;
+                }
 
             }
 
@@ -587,12 +702,8 @@ function updateImages(
                     await fetch(
                         `/products/${id}/image`,
                         {
-
                             method: "PUT",
-
-                            body:
-                                formData
-
+                            body: formData
                         }
                     );
 
@@ -620,12 +731,9 @@ function updateImages(
 
                 }
 
-
             } catch (error) {
 
-                console.error(
-                    error
-                );
+                console.error(error);
 
                 alert(
                     "Photos update karne me error aaya."
@@ -641,25 +749,132 @@ function updateImages(
 }
 
 
-function validateProductImages(
-    input
+
+// ==========================================
+// DELETE PRODUCT IMAGE
+// ==========================================
+
+async function deleteImages(
+    id,
+    currentImageCount
 ) {
 
+    if (!currentImageCount || currentImageCount <= 0) {
+
+        alert(
+            "Is product me koi photo nahi hai."
+        );
+
+        return;
+
+    }
+
+
+    let message =
+        "Kaunsi photo delete karni hai?\n\n";
+
+
+    for (
+        let i = 1;
+        i <= currentImageCount;
+        i++
+    ) {
+
+        message +=
+            `${i}. Photo ${i}\n`;
+
+    }
+
+
+    const choice =
+        prompt(
+            message +
+            "\nPhoto number enter kare:"
+        );
+
+
+    if (choice === null) return;
+
+
+    const imageNumber =
+        Number(choice);
+
+
     if (
-        input.files.length > 4
+        !Number.isInteger(imageNumber) ||
+        imageNumber < 1 ||
+        imageNumber > currentImageCount
     ) {
 
         alert(
-            "Ek product me maximum 4 photos select kar sakte hain."
+            "Valid photo number enter kare."
         );
 
-        input.value = "";
+        return;
+
+    }
+
+
+    const imageIndex =
+        imageNumber - 1;
+
+
+    const confirmed =
+        confirm(
+            `Photo ${imageNumber} permanently delete karna hai?`
+        );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/products/${id}/image/${imageIndex}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            alert(
+                "Photo successfully delete ho gayi."
+            );
+
+            location.reload();
+
+        } else {
+
+            alert(
+                data.message ||
+                "Photo delete nahi hui."
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete image error:",
+            error
+        );
+
+        alert(
+            "Photo delete karne me error aaya."
+        );
 
     }
 
 }
-   
-
     </script>
 
 </body>

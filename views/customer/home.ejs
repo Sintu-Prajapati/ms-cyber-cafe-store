@@ -14,7 +14,7 @@
 
     <link
         rel="stylesheet"
-        href="/css/customer-home.css?v=3"
+        href="/css/customer-home.css?v=4"
 
     >
    
@@ -989,36 +989,175 @@
         }
 
 
+function showProductImage(element, imageIndex) {
 
-        function showProductImage(dot, imageIndex) {
-            const carousel = dot.closest(".product-image-carousel");
-            const images = carousel.querySelectorAll(".product-carousel-image");
-            const dots = carousel.querySelectorAll(".carousel-dot");
+    const carousel = element.closest(".product-image-carousel");
 
-            images.forEach((image, index) => image.classList.toggle("active", index === imageIndex));
-            dots.forEach((item, index) => item.classList.toggle("active", index === imageIndex));
+    if (!carousel) return;
+
+    const images = carousel.querySelectorAll(
+        ".product-carousel-image"
+    );
+
+    const dots = carousel.querySelectorAll(
+        ".carousel-dot"
+    );
+
+    if (!images.length) return;
+
+    if (imageIndex < 0) {
+        imageIndex = images.length - 1;
+    }
+
+    if (imageIndex >= images.length) {
+        imageIndex = 0;
+    }
+
+    images.forEach((image, index) => {
+
+        image.classList.toggle(
+            "active",
+            index === imageIndex
+        );
+
+    });
+
+    dots.forEach((dot, index) => {
+
+        dot.classList.toggle(
+            "active",
+            index === imageIndex
+        );
+
+    });
+
+}
+
+
+function changeProductImage(button, direction) {
+
+    const carousel =
+        button.closest(".product-image-carousel");
+
+    if (!carousel) return;
+
+    const images =
+        carousel.querySelectorAll(
+            ".product-carousel-image"
+        );
+
+    if (images.length <= 1) return;
+
+    let currentIndex = 0;
+
+    images.forEach((image, index) => {
+
+        if (
+            image.classList.contains("active")
+        ) {
+            currentIndex = index;
         }
 
-        function changeProductImage(button, direction) {
-            const carousel = button.closest(".product-image-carousel");
-            const images = carousel.querySelectorAll(".product-carousel-image");
-            const currentIndex = Array.from(images).findIndex(image => image.classList.contains("active"));
-            const nextIndex = (currentIndex + direction + images.length) % images.length;
-            showProductImage(carousel.querySelectorAll(".carousel-dot")[nextIndex], nextIndex);
-        }
+    });
 
-        document.querySelectorAll(".product-image-carousel").forEach(carousel => {
-            const dots = carousel.querySelectorAll(".carousel-dot");
+    let nextIndex =
+        currentIndex + direction;
 
-            if (dots.length > 1) {
-                setInterval(() => {
-                    const currentIndex = Array.from(carousel.querySelectorAll(".product-carousel-image"))
-                        .findIndex(image => image.classList.contains("active"));
-                    const nextIndex = (currentIndex + 1) % dots.length;
-                    showProductImage(dots[nextIndex], nextIndex);
-                }, 3000);
-            }
+    if (nextIndex < 0) {
+        nextIndex = images.length - 1;
+    }
+
+    if (nextIndex >= images.length) {
+        nextIndex = 0;
+    }
+
+    const dots =
+        carousel.querySelectorAll(
+            ".carousel-dot"
+        );
+
+    if (dots.length) {
+
+        showProductImage(
+            dots[nextIndex],
+            nextIndex
+        );
+
+    } else {
+
+        images.forEach((image, index) => {
+
+            image.classList.toggle(
+                "active",
+                index === nextIndex
+            );
+
         });
+
+    }
+
+}
+
+
+document
+    .querySelectorAll(
+        ".product-image-carousel"
+    )
+    .forEach(carousel => {
+
+        const images =
+            carousel.querySelectorAll(
+                ".product-carousel-image"
+            );
+
+        const dots =
+            carousel.querySelectorAll(
+                ".carousel-dot"
+            );
+
+        if (images.length <= 1) return;
+
+        setInterval(() => {
+
+            let currentIndex = 0;
+
+            images.forEach((image, index) => {
+
+                if (
+                    image.classList.contains("active")
+                ) {
+                    currentIndex = index;
+                }
+
+            });
+
+            const nextIndex =
+                (currentIndex + 1) %
+                images.length;
+
+            if (dots.length) {
+
+                showProductImage(
+                    dots[nextIndex],
+                    nextIndex
+                );
+
+            } else {
+
+                images.forEach((image, index) => {
+
+                    image.classList.toggle(
+                        "active",
+                        index === nextIndex
+                    );
+
+                });
+
+            }
+
+        }, 3000);
+
+    });
 
         /* =========================
            ADD TO CART

@@ -1293,3 +1293,427 @@ footer small {
 .carousel-dot.active {
     background: #2563eb;
 }
+
+/* =========================================
+   PRODUCT IMAGE CAROUSEL
+========================================= */
+
+.product-image-carousel {
+    position: relative;
+    width: 100%;
+    height: 240px;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: #f8fafc;
+}
+
+
+.product-carousel-image {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: none;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.4s ease;
+}
+
+
+.product-carousel-image.active {
+    display: block;
+    opacity: 1;
+}
+
+
+/* =========================================
+   CAROUSEL ARROWS
+========================================= */
+
+.carousel-arrow {
+    position: absolute;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 0, 0, 0.55);
+
+    color: white;
+
+    font-size: 28px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    z-index: 10;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition:
+        all 0.2s ease;
+}
+
+
+.carousel-arrow:hover {
+
+    background:
+        rgba(0, 0, 0, 0.85);
+
+    transform:
+        translateY(-50%) scale(1.08);
+
+}
+
+
+.carousel-prev {
+    left: 10px;
+}
+
+
+.carousel-next {
+    right: 10px;
+}
+
+
+/* =========================================
+   CAROUSEL DOTS
+========================================= */
+
+.carousel-dots {
+
+    position: absolute;
+
+    bottom: 10px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    z-index: 10;
+
+}
+
+
+.carousel-dot {
+
+    width: 8px;
+    height: 8px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 0, 0, 0.25);
+
+    cursor: pointer;
+
+    transition:
+        all 0.25s ease;
+
+}
+
+
+.carousel-dot.active {
+
+    width: 20px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(0, 0, 0, 0.7);
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .product-image-carousel {
+
+        height: 210px;
+
+    }
+
+
+    .carousel-arrow {
+
+        width: 32px;
+        height: 32px;
+
+        font-size: 24px;
+
+    }
+
+
+    .carousel-prev {
+
+        left: 7px;
+
+    }
+
+
+    .carousel-next {
+
+        right: 7px;
+
+    }
+
+}
+
+/* =========================================
+   PRODUCT IMAGE CAROUSEL
+========================================= */
+
+.product-image {
+    position: relative;
+    width: 100%;
+    height: 230px;
+    overflow: hidden;
+    background: #f8fafc;
+    border-radius: 16px 16px 0 0;
+}
+
+.product-image-carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.product-carousel-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
+
+    transform: scale(0.98);
+}
+
+.product-carousel-image.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+
+
+/* =========================================
+   CAROUSEL ARROWS
+========================================= */
+
+.carousel-arrow {
+    position: absolute;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(17, 24, 39, 0.65);
+
+    color: white;
+
+    font-size: 28px;
+    line-height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    z-index: 5;
+
+    opacity: 0.8;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.carousel-arrow:hover {
+    background: #4f46e5;
+    opacity: 1;
+}
+
+.carousel-arrow:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+
+/* =========================================
+   CAROUSEL DOTS
+========================================= */
+
+.carousel-dots {
+    position: absolute;
+
+    left: 50%;
+    bottom: 10px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    z-index: 6;
+}
+
+.carousel-dot {
+    width: 7px;
+    height: 7px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.65);
+
+    cursor: pointer;
+
+    transition:
+        width 0.25s ease,
+        background 0.25s ease;
+}
+
+.carousel-dot.active {
+    width: 20px;
+    border-radius: 10px;
+    background: white;
+}
+
+
+/* =========================================
+   NO IMAGE
+========================================= */
+
+.no-image {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 50px;
+
+    color: #94a3b8;
+
+    background: #f8fafc;
+}
+
+
+/* =========================================
+   OFFER BADGE
+========================================= */
+
+.product-image .offer-badge {
+    position: absolute;
+
+    top: 12px;
+    left: 12px;
+
+    z-index: 10;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    background: #dc2626;
+    color: white;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .product-image {
+        height: 200px;
+    }
+
+    .carousel-arrow {
+        width: 32px;
+        height: 32px;
+
+        font-size: 24px;
+    }
+
+    .carousel-prev {
+        left: 7px;
+    }
+
+    .carousel-next {
+        right: 7px;
+    }
+
+}

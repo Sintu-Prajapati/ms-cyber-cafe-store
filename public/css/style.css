@@ -853,6 +853,92 @@ main {
     gap: 5px;
 }
 
+/* =========================================
+   IMAGE ACTION BUTTONS
+========================================= */
+
+.image-action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+
+/* =========================================
+   DELETE IMAGE BUTTON
+========================================= */
+
+.delete-image-btn {
+
+    border: 1px solid #fecaca;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: #fef2f2;
+
+    color: #dc2626;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+}
+
+
+.delete-image-btn:hover {
+
+    background: #dc2626;
+
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px rgba(220, 38, 38, 0.20);
+
+}
+
+
+.delete-image-btn:active {
+
+    transform: scale(0.96);
+
+}
+
+
+@media (max-width: 600px) {
+
+    .image-action-buttons {
+        width: 100%;
+    }
+
+    .delete-image-btn,
+    .update-image-btn {
+
+        width: 100%;
+
+        padding: 9px 6px;
+
+        font-size: 11px;
+
+    }
+
+}
+
 .update-image-btn:hover {
     background: #2563eb;
 

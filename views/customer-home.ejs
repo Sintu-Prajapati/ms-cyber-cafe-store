@@ -428,60 +428,106 @@
                     >
 
 
-                        <!-- PRODUCT IMAGE -->
+                       <!-- PRODUCT IMAGE -->
 
-                        <div class="product-image">
+<div class="product-image">
 
-                            <% const productImages = (product.images && product.images.length)
-                                ? product.images
-                                : (product.image ? [product.image] : []); %>
-
-                            <% if (productImages.length) { %>
-
-                                <div class="product-image-carousel">
-                                    <% productImages.forEach((image, imageIndex) => { %>
-                                        <img
-                                            class="product-carousel-image<%= imageIndex === 0 ? ' active' : '' %>"
-                                            src="<%= image %>"
-                                            alt="<%= product.name %> photo <%= imageIndex + 1 %>"
-                                        >
-                                    <% }) %>
-
-                                    <% if (productImages.length > 1) { %>
-                                        <button type="button" class="carousel-arrow carousel-prev" onclick="changeProductImage(this, -1)" aria-label="Previous photo">‹</button>
-                                        <button type="button" class="carousel-arrow carousel-next" onclick="changeProductImage(this, 1)" aria-label="Next photo">›</button>
-                                        <div class="carousel-dots">
-                                            <% productImages.forEach((image, imageIndex) => { %>
-                                                <button type="button" class="carousel-dot<%= imageIndex === 0 ? ' active' : '' %>" onclick="showProductImage(this, <%= imageIndex %>)" aria-label="Show photo <%= imageIndex + 1 %>"></button>
-                                            <% }) %>
-                                        </div>
-                                    <% } %>
-                                </div>
-
-                            <% } else { %>
-
-                                <span class="no-image">
-                                    🛍️
-                                </span>
-
-                            <% } %>
+    <%
+        const productImages =
+            (
+                product.images &&
+                Array.isArray(product.images) &&
+                product.images.length > 0
+            )
+                ? product.images
+                : (
+                    product.image
+                        ? [product.image]
+                        : []
+                );
+    %>
 
 
+    <% if (productImages.length > 0) { %>
 
-                            <!-- DISCOUNT -->
+        <div class="product-image-carousel">
 
-                            <% if (discount > 0) { %>
+            <% productImages.forEach((image, imageIndex) => { %>
 
-                                <span class="offer-badge">
+                <img
+                    src="<%= image %>"
+                    class="product-carousel-image <%= imageIndex === 0 ? 'active' : '' %>"
+                    alt="<%= product.name %>"
+                    loading="lazy"
+                >
 
-                                    <%= discount %>% OFF
-
-                                </span>
-
-                            <% } %>
+            <% }) %>
 
 
-                        </div>
+            <% if (productImages.length > 1) { %>
+
+                <button
+                    type="button"
+                    class="carousel-arrow carousel-prev"
+                    onclick="changeProductImage(this, -1)"
+                    aria-label="Previous photo"
+                >
+                    ‹
+                </button>
+
+
+                <button
+                    type="button"
+                    class="carousel-arrow carousel-next"
+                    onclick="changeProductImage(this, 1)"
+                    aria-label="Next photo"
+                >
+                    ›
+                </button>
+
+
+                <div class="carousel-dots">
+
+                    <% productImages.forEach((image, imageIndex) => { %>
+
+                        <button
+                            type="button"
+                            class="carousel-dot <%= imageIndex === 0 ? 'active' : '' %>"
+                            onclick="showProductImage(this, <%= imageIndex %>)"
+                            aria-label="Show photo <%= imageIndex + 1 %>"
+                        ></button>
+
+                    <% }) %>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+
+    <% } else { %>
+
+        <span class="no-image">
+            🛍️
+        </span>
+
+    <% } %>
+
+
+    <!-- DISCOUNT -->
+
+    <% if (discount > 0) { %>
+
+        <span class="offer-badge">
+
+            <%= discount %>% OFF
+
+        </span>
+
+    <% } %>
+
+</div>
 
 
 
@@ -992,22 +1038,197 @@
 
 
 
-        function showProductImage(dot, imageIndex) {
-            const carousel = dot.closest(".product-image-carousel");
-            const images = carousel.querySelectorAll(".product-carousel-image");
-            const dots = carousel.querySelectorAll(".carousel-dot");
+       /* =========================================
+   PRODUCT IMAGE CAROUSEL
+========================================= */
 
-            images.forEach((image, index) => image.classList.toggle("active", index === imageIndex));
-            dots.forEach((item, index) => item.classList.toggle("active", index === imageIndex));
+function showProductImage(
+    button,
+    imageIndex
+) {
+
+    const carousel =
+        button.closest(
+            ".product-image-carousel"
+        );
+
+
+    if (!carousel) return;
+
+
+    const images =
+        carousel.querySelectorAll(
+            ".product-carousel-image"
+        );
+
+
+    const dots =
+        carousel.querySelectorAll(
+            ".carousel-dot"
+        );
+
+
+    if (
+        imageIndex < 0 ||
+        imageIndex >= images.length
+    ) {
+
+        return;
+
+    }
+
+
+    images.forEach(
+        (image, index) => {
+
+            image.classList.toggle(
+                "active",
+                index === imageIndex
+            );
+
+        }
+    );
+
+
+    dots.forEach(
+        (dot, index) => {
+
+            dot.classList.toggle(
+                "active",
+                index === imageIndex
+            );
+
+        }
+    );
+
+}
+
+
+function changeProductImage(
+    button,
+    direction
+) {
+
+    const carousel =
+        button.closest(
+            ".product-image-carousel"
+        );
+
+
+    if (!carousel) return;
+
+
+    const images =
+        carousel.querySelectorAll(
+            ".product-carousel-image"
+        );
+
+
+    const dots =
+        carousel.querySelectorAll(
+            ".carousel-dot"
+        );
+
+
+    if (images.length <= 1) {
+        return;
+    }
+
+
+    let currentIndex =
+        Array.from(images).findIndex(
+            image =>
+                image.classList.contains(
+                    "active"
+                )
+        );
+
+
+    if (currentIndex === -1) {
+        currentIndex = 0;
+    }
+
+
+    const nextIndex =
+        (
+            currentIndex +
+            direction +
+            images.length
+        ) % images.length;
+
+
+    showProductImage(
+        dots[nextIndex],
+        nextIndex
+    );
+
+}
+
+
+/* =========================================
+   AUTO SLIDE
+========================================= */
+
+document
+    .querySelectorAll(
+        ".product-image-carousel"
+    )
+    .forEach(carousel => {
+
+        const images =
+            carousel.querySelectorAll(
+                ".product-carousel-image"
+            );
+
+
+        const dots =
+            carousel.querySelectorAll(
+                ".carousel-dot"
+            );
+
+
+        if (
+            images.length <= 1
+        ) {
+
+            return;
+
         }
 
-        function changeProductImage(button, direction) {
-            const carousel = button.closest(".product-image-carousel");
-            const images = carousel.querySelectorAll(".product-carousel-image");
-            const currentIndex = Array.from(images).findIndex(image => image.classList.contains("active"));
-            const nextIndex = (currentIndex + direction + images.length) % images.length;
-            showProductImage(carousel.querySelectorAll(".carousel-dot")[nextIndex], nextIndex);
-        }
+
+        setInterval(
+            () => {
+
+                const currentIndex =
+                    Array.from(images)
+                        .findIndex(
+                            image =>
+                                image.classList.contains(
+                                    "active"
+                                )
+                        );
+
+
+                const nextIndex =
+                    (
+                        (
+                            currentIndex === -1
+                                ? 0
+                                : currentIndex
+                        ) + 1
+                    ) % images.length;
+
+
+                showProductImage(
+                    dots[nextIndex],
+                    nextIndex
+                );
+
+            },
+            3000
+        );
+
+    });
 
         document.querySelectorAll(".product-image-carousel").forEach(carousel => {
             const dots = carousel.querySelectorAll(".carousel-dot");

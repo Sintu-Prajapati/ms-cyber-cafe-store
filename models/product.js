@@ -12,12 +12,18 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true,
             trim: true,
-            default: "Grocery"
+            default: "grocery"
         },
 
         unit: {
             type: String,
-            enum: ["piece", "kg", "gram", "litre", "ml"],
+            enum: [
+                "piece",
+                "kg",
+                "gram",
+                "litre",
+                "ml"
+            ],
             required: true
         },
 
@@ -41,20 +47,24 @@ const productSchema = new mongoose.Schema(
             min: 0,
             default: 0
         },
+
+        // New multiple images
         images: {
             type: [String],
             default: []
         },
 
-        // Purane products ke liye backward compatibility
+        // Old products compatibility
         image: {
             type: String,
             default: null
         }
     },
+
     {
         timestamps: true
     }
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports =
+    mongoose.model("Product", productSchema);

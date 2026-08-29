@@ -2,7 +2,14 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const uploadDirectory = path.join(__dirname, "..", "public", "uploads", "products");
+const uploadDirectory = path.join(
+    __dirname,
+    "..",
+    "public",
+    "uploads",
+    "products"
+);
+
 fs.mkdirSync(uploadDirectory, { recursive: true });
 
 const storage = multer.diskStorage({
@@ -17,7 +24,7 @@ const storage = multer.diskStorage({
             Date.now() +
             "-" +
             Math.round(Math.random() * 1E9) +
-            path.extname(file.originalname);
+            path.extname(file.originalname).toLowerCase();
 
         cb(null, uniqueName);
     }
@@ -26,17 +33,26 @@ const storage = multer.diskStorage({
 
 const fileFilter = function (req, file, cb) {
 
-    const allowedTypes = /jpeg|jpg|png|webp/;
+    const allowedExtensions = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    ];
 
-    const extname =
-        allowedTypes.test(
-            path.extname(file.originalname).toLowerCase()
-        );
+    const allowedMimeTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
 
-    const mimetype =
-        allowedTypes.test(file.mimetype);
+    const extension =
+        path.extname(file.originalname).toLowerCase();
 
-    if (extname && mimetype) {
+    if (
+        allowedExtensions.includes(extension) &&
+        allowedMimeTypes.includes(file.mimetype)
+    ) {
 
         cb(null, true);
 
@@ -59,7 +75,8 @@ const upload = multer({
     fileFilter: fileFilter,
 
     limits: {
-        fileSize: 5 * 1024 * 1024
+        fileSize: 5 * 1024 * 1024,
+        files: 4
     }
 
 });
